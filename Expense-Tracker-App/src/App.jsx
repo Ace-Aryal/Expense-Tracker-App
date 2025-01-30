@@ -1,8 +1,14 @@
 import React from 'react'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import Navbar from './components/Layouts/Navbar'
 
 function App() {
   return (
-    <div className='text-red-800'>App</div>
+    <>
+    <Navbar/>
+   <Dashboard/>
+   </>
   )
 }
 
