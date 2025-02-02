@@ -1,10 +1,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { NavLink } from 'react-router-dom'
 
 let balance = 100
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Add', href: '#', current: false },
+  { name: 'Dashboard', href: '/', current: true },
+  { name: 'Add', href: '/add', current: false },
   { name: 'View', href: '#', current: false },
   { name: 'Analyze', href: '#', current: false },
 ]
@@ -38,9 +39,9 @@ export default function Navbar() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <NavLink
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
                       item.current ? 'bg-gray-900 text-white' : 'text-gray-800 hover:bg-gray-700 hover:text-white',
@@ -48,7 +49,7 @@ export default function Navbar() {
                     )}
                   >
                     {item.name}
-                  </a>
+                  </NavLink>
                 ))}
               </div>
             </div>
