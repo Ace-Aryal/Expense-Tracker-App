@@ -6,26 +6,29 @@ import {  Routes, Route } from "react-router-dom";
 import Reports from './pages/Reports'
 import PageNotFound from './pages/PageNotFound'
 import Addexpenses from './pages/Addexpenses';
-import updateExpenses from './pages/updateExpenses';
+import UpdateExpenses from './pages/UpdateExpenses';
+import Navbar from './components/Layouts/Navbar';
+import Footer from './components/Layouts/Footer';
 function App() {
 
 
   
   return (
   <div>
- 
-  
+    
+  <Navbar/>
    <Routes>
-        <Route index element={<Layout/>} >
-          <Route imdex element={<Dashboard/>} />
-          <Route path="reports" element={<Reports/>} />
+    
+          <Route index element={<Dashboard/>} />
+          <Route path="analyse" element={<Reports/>} />
           <Route path="add" element={<Addexpenses/>} />
-        </Route>
+          <Route path='update' element={<UpdateExpenses/>}/>
+
         
         <Route path="*" element={<PageNotFound/>} />
 
       </Routes>
-      
+  <Footer />
       
   
 </div>

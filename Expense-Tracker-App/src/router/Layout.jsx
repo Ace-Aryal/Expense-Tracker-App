@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <div>
       
-      
+      <Navbar/>
       {/* Outlet is where the routed components will render */}
       <main>
         <Outlet />

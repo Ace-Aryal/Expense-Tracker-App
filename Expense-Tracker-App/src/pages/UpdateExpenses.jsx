@@ -2,7 +2,7 @@ import React from 'react'
 
 const updateExpenses = () => {
   return (
-    <div>updateExpenses</div>
+    <div>update Expenses</div>
   )
 }
 

@@ -6,8 +6,8 @@ let balance = 100
 const navigation = [
   { name: 'Dashboard', href: '/', current: true },
   { name: 'Add', href: '/add', current: false },
-  { name: 'View', href: '#', current: false },
-  { name: 'Analyze', href: '#', current: false },
+  { name: 'View', href: '/update', current: false },
+  { name: 'Analyze', href: '/analyse', current: false },
 ]
 
 function classNames(...classes) {
