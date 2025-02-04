@@ -14,7 +14,7 @@ function App() {
 
   
   return (
-  <div>
+  <div className='bg-[#dfe8f1]'>
     
   <Navbar/>
    <Routes>

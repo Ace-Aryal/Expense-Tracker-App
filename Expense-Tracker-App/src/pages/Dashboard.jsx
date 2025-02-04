@@ -4,7 +4,7 @@ import React from 'react'
 const Dashboard = () => {
   return (
     
-    <div id='container' className='w-full h-[90vh] flex flex-col bg-[#dfe8f1]'>
+    <div id='container' className='w-full h-[90vh] flex flex-col mb-4 bg-[#dfe8f1]'>
     <div id="dashboard-top" className='flex justify-between mx-4 my-4 text-xl '>
         <span className='text-3xl '>Dashboard</span>
         <div >Spent $100 this month</div>
