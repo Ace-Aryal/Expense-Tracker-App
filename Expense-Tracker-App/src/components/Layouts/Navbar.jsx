@@ -1,6 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { NavLink } from 'react-router-dom'
+import {Link, NavLink } from 'react-router-dom'
 
 let balance = 100
 const navigation = [
@@ -30,11 +30,12 @@ export default function Navbar() {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <img
+              <Link to="/" >  <img
                 alt="Your Company"
                 src="https://logosandtypes.com/wp-content/uploads/2024/12/xsplit.svg"
                 className="h-8 w-auto"
               />
+              </Link>
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Layout from './router/Layout'
@@ -11,9 +11,21 @@ import Navbar from './components/Layouts/Navbar';
 import Footer from './components/Layouts/Footer';
 function App() {
 
+  const [isLoggedin , setIsLoggedin] = React.useState(false)
+
+useEffect(()=>{
+
+  console.log(isLoggedin);
+  
+},[isLoggedin])
+
+  if(!isLoggedin){
+    return <Login setIsLoggedin={setIsLoggedin}/>
+  }
 
   
   return (
+
   <div className='bg-[#dfe8f1]'>
     
   <Navbar/>

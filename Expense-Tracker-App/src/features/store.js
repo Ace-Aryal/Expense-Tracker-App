@@ -5,7 +5,7 @@ import authSlice from "./authSlice"
 export const store = configureStore({
   reducer: {
     balance: balanceSlice  ,
-    auth: authSlice,
+    credentials: authSlice,
     expense : expenseSlice
   },
 });

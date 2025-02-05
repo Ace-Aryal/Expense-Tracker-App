@@ -1,43 +1,143 @@
-import * as React from 'react';
-import { AppProvider } from '@toolpad/core/AppProvider';
-import { SignInPage } from '@toolpad/core/SignInPage';
-import { useTheme } from '@mui/material/styles';
+import React from "react";
+import { useSelector } from "react-redux";
 
-const providers = [{ id: 'credentials', name: 'Credentials' }];
-// preview-start
-const BRANDING = {
-  logo: (
-    <img
-      src="https://logosandtypes.com/wp-content/uploads/2024/12/xsplit.svg"
-      alt="Xpenso logo"
-      style={{ height: 24 }}
-    />
-  ),
-  title: 'Xpenso',
-};
-// preview-end
+function Login(props) {
+  const credentialsListArr = useSelector(
+    (state) => state.credentials.credentialsList
+  );
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  console.log(credentialsListArr);
 
-const signIn = async (provider) => {
-  const promise = new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(`Sign in with ${provider.id}`);
-      resolve();
-    }, 500);
-  });
-  return promise;
-};
+  function handleCreditianlsChange(e) {
+    if (e.target.name === "email") {
+      setEmail(e.target.value);
+    } else {
+      setPassword(e.target.value);
+    }
+  }
 
-export default function Login() {
-  const theme = useTheme();
+  function handleSubmit(e) {
+    e.preventDefault();
+    let results = credentialsListArr.find((cred) =>(cred.email === email && cred.password === password) ); 
+    if(results){
+      props.setIsLoggedin(true)
+      return
+    }
+    props.setIsLoggedin(false)
+    return
+  
+
+
+
+  }
+
   return (
-    // preview-start
-    <AppProvider branding={BRANDING} theme={theme}>
-      <SignInPage
-        signIn={signIn}
-        providers={providers}
-        slotProps={{ emailField: { autoFocus: false } }}
-      />
-    </AppProvider>
-    // preview-end
+    <section class="bg-gray-50 dark:bg-gray-900">
+      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a
+          href="#"
+          class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+        >
+          <img
+            class="w-8 h-8 mr-2"
+            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            alt="logo"
+          />
+          Flowbite
+        </a>
+        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Sign in to your account
+            </h1>
+            <form
+              onSubmit={handleSubmit}
+              class="space-y-4 md:space-y-6"
+              action="#"
+            >
+              <div>
+                <label
+                  for="email"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Your email
+                </label>
+                <input
+                  onChange={handleCreditianlsChange}
+                  type="email"
+                  name="email"
+                  id="email"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="name@company.com"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Password
+                </label>
+                <input
+                  onChange={handleCreditianlsChange}
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required=""
+                />
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-start">
+                  <div class="flex items-center h-5">
+                    <input
+                      id="remember"
+                      aria-describedby="remember"
+                      type="checkbox"
+                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-indigo-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-600 dark:ring-offset-gray-800"
+                      required=""
+                    />
+                  </div>
+                  <div class="ml-3 text-sm">
+                    <label
+                      for="remember"
+                      class="text-gray-500 dark:text-gray-300"
+                    >
+                      Remember me
+                    </label>
+                  </div>
+                </div>
+                <a
+                  href="#"
+                  class="text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-500"
+                >
+                  Forgot password?
+                </a>
+              </div>
+              <button
+                type="submit"
+                class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
+              >
+                Sign in
+              </button>
+              <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                Don’t have an account yet?{" "}
+                <a
+                  href="#"
+                  class="font-medium text-indigo-600 hover:underline dark:text-indigo-500"
+                >
+                  Sign up
+                </a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
+
+export default Login;
