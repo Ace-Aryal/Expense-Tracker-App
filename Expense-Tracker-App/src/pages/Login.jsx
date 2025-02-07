@@ -41,10 +41,10 @@ function Login(props) {
         >
           <img
             class="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            src="https://logosandtypes.com/wp-content/uploads/2024/12/xsplit.svg"
             alt="logo"
           />
-          Flowbite
+          <h2 className="font-bold text-2xl ">Xpense</h2>
         </a>
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
