@@ -3,7 +3,7 @@ import ExpenseItem from '../components/Expenses/ExpenseItem'
 import { useSelector } from 'react-redux'
 const updateExpenses = () => {
 
-  const fetchedData = useSelector((state) => state.expense)
+  const fetchedData = useSelector((state) => state.expense.expenses)
   
   
   return (

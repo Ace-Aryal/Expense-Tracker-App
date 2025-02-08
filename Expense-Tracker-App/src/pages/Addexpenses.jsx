@@ -15,7 +15,7 @@ const Addexpenses = () => {
  
   // dispatch function
   const dispatch = useDispatch()
-  const fetchedData = useSelector((state) => state.expense)
+  const fetchedData = useSelector((state) => state.expense.expenses)
 
  
   function handlechange(e){
@@ -31,7 +31,7 @@ const Addexpenses = () => {
       return
     }
     if(name === 'date') {
-      console.log(value);
+      
       
       setDate(value)
       return

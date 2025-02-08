@@ -1,6 +1,18 @@
 import React from 'react'
-
+import { useDispatch } from 'react-redux'
+import { deleteItem } from '../../features/expenseSlice'
 function ExpenseItem({expenseArray, showAllData}) {
+  const dispatch = useDispatch()
+
+
+
+  function handleDelete(e, id){
+    e.preventDefault()
+    console.log(id);
+    dispatch(deleteItem(id)) // all the delete is handled by redux reducers
+  }
+  
+
   return (
 
     <div className="container mx-auto p-4 flex flex-col justify-center items-center">
@@ -16,7 +28,12 @@ function ExpenseItem({expenseArray, showAllData}) {
 
         {/*list datas*/}
         {
-      expenseArray.map((item) =>  (
+      expenseArray.map((item,index) =>  { // each time array updates this whole function re-executes and latest values
+        // are added 
+        if(!showAllData && index > 2){
+          return 
+        }
+        return (
         <>
         <div className='bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5'>{item.expense}</div>
         <div className='bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5'>{item.amount}</div>
@@ -26,10 +43,14 @@ function ExpenseItem({expenseArray, showAllData}) {
             <option value="others">Others</option>
         </select>
         <div className='bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5'>{item.date}</div>
-        <button className='bg-cyan-500 px-2 py-0.5'>Edit</button>
-        <button className='bg-red-500 px-2 py-0.5'>Delete</button>
+        <button className='bg-cyan-500 px-2 py-0.5' >Edit</button>
+        <button type="submit" className='bg-red-500 px-2 py-0.5'  onClick={(e)=> {
+          e.preventDefault()
+          handleDelete(e, item.id)
+        }}>Delete</button>
         </>
         )
+      }
       )
     }
     </div>

@@ -2,47 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export  const expenseSlice = createSlice({
     name: "expense",
-    initialState :  [{
-            id: 1,
-            expense: "Grocery",
-            amount: 200,
-            date: "2021-09-01",
-            category: "Food"
-        },
-        {
-            id: 2,
-            expense: "Rent",
-            amount: 2000,
-            date: "2021-09-01",
-            category: "Home"
-        
-    } ],
+    initialState : {
+        expenses : JSON.parse(localStorage.getItem("expenses")) || [ ], // use this general syntax to avoid any unnecessary errors
+    },
 
     reducers : {
-        addItem : (state = initialState, action) =>{ //expecting object as payload
-            state.push(action.payload)
-           /* for (let index = 0; index < state.length; index++) {
-                for (let j = index+1; j <= index ; j++) {
-                    console.log(state[index].id, state[j].id);
-                    
-                    if(state[index].id > state[j].id ){
-                        let temp = state[index]
-                        state[index] = state[j]
-                        state[j] = temp
-                    }
-                    console.log(state[index].id, state[j].id);
+        addItem : (state = initialState, action) =>{//expecting object as payload
+            state.expenses.unshift(action.payload) 
+            
+            localStorage.setItem('expenses', JSON.stringify(state.expenses))
+                },
 
-                    
-                }
-                
-            } */
+        deleteItem : (state = initialState, action ) =>{ //expecting id as payload
+            console.log(action.payload);
             
-            
-        },
-        deleteItem : (state, action ) =>{ //expecting id as payload
-            state =  action.payload 
+            state.expenses =  state.expenses.filter(item => item.id !== action.payload)
+            localStorage.setItem('expenses', JSON.stringify(state.expenses))
+             // in reudux toolkit we can mutate the state directly but not in react with useState
         }
+    
     }
 })
-export const {addItem, deleteItem} = expenseSlice.actions
-export default expenseSlice.reducer
+export const {addItem, deleteItem} = expenseSlice.actions // to use the reducers from components
+export default expenseSlice.reducer // for store 
