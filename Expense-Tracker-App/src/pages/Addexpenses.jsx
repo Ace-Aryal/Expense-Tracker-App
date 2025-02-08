@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import { addItem } from '../features/expenseSlice';
 import { useSelector } from 'react-redux';
+import ExpenseItem from '../components/Expenses/ExpenseItem';
 const Addexpenses = () => {
 
   
@@ -29,7 +30,9 @@ const Addexpenses = () => {
       setAmount(value)
       return
     }
-    if(name === 'date'){
+    if(name === 'date') {
+      console.log(value);
+      
       setDate(value)
       return
     }
@@ -66,10 +69,10 @@ function handleSubmit(e){
 
 
   return (
-    <div className='flex flex-col justify-center items-center w-[100vw] h-[85vh]' id='container'>
-      <h1 className='text-center text-3xl mb-6 font-bold'>Add Expenses</h1>
+    <div className='flex flex-col  items-center w-[100vw] min-h-[85vh]' id='container'>
+      <h1 className='text-center text-3xl mb-6 font-bold mt-[10vh]'>Add Expenses</h1>
       <form className='flex flex-col items-center bg-[#a7c6ed] 
-      text-xl p-6 rounded-md px-10 shadow-gray shadow-xl text-center'
+      text-xl p-6 rounded-md px-10 shadow-gray shadow-xl text-center mb-14'
       onSubmit={handleSubmit}
       action="">
         <div id="input-grid" className='grid grid-cols-2 gap-4 gap-y-6 p-2  '>
@@ -101,6 +104,8 @@ function handleSubmit(e){
           </div>
         <button className='mt-10 rounded bg-indigo-400 p-1 px-2 text-white ' type="submit">Add Expense</button>
       </form>
+      <h2 className='text-center text-xl font-semibold'>Recent Expenses</h2>
+    <ExpenseItem expenseArray={fetchedData} showAllData={false} />
     </div>
   )
 }

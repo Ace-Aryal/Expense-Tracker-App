@@ -21,6 +21,21 @@ export  const expenseSlice = createSlice({
     reducers : {
         addItem : (state = initialState, action) =>{ //expecting object as payload
             state.push(action.payload)
+           /* for (let index = 0; index < state.length; index++) {
+                for (let j = index+1; j <= index ; j++) {
+                    console.log(state[index].id, state[j].id);
+                    
+                    if(state[index].id > state[j].id ){
+                        let temp = state[index]
+                        state[index] = state[j]
+                        state[j] = temp
+                    }
+                    console.log(state[index].id, state[j].id);
+
+                    
+                }
+                
+            } */
             
             
         },
