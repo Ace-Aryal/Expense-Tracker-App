@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteItem } from '../../features/expenseSlice'
+import {useState} from "react"
 function ExpenseItem({expenseArray, showAllData}) {
   const dispatch = useDispatch()
 
@@ -12,6 +13,11 @@ function ExpenseItem({expenseArray, showAllData}) {
     dispatch(deleteItem(id)) // all the delete is handled by redux reducers
   }
   
+  function handleUpdate(setIsEditable) {
+    setIsEditable(prevValue=> !prevValue)
+
+
+  }
 
   return (
 
@@ -30,24 +36,48 @@ function ExpenseItem({expenseArray, showAllData}) {
         {
       expenseArray.map((item,index) =>  { // each time array updates this whole function re-executes and latest values
         // are added 
+/// from here 
+        //local fn for each item
+        const [isEditable , setIsEditable] = useState(false)
+        const [updatedData , setUpdatedData] = useState(item)
+
+        function handleChange (e) {
+          const {name} = e.target
+        
+          setUpdatedData( prevdata =>  { 
+            return {
+            ...prevdata,
+            [item[name]]: e.target.innerText
+            }
+          })
+       
+          
+          console.log(updatedData);
+          
+        }
+// to here
         if(!showAllData && index > 2){
           return 
         }
         return (
-        <>
-        <div className='bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5'>{item.expense}</div>
-        <div className='bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5'>{item.amount}</div>
-        <select name="catagory" id="catagory" disabled className='appearance-none bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5'>
+        <> 
+        <div id='expense' name="expense" contentEditable={isEditable} onInput={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` } >{item.expense}</div>
+        <div id='amount' name="amount" contentEditable={isEditable} onInput={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` }>{item.amount}</div>
+        <select id="category"  name="category"  onInput={handleChange} disabled={isEditable ? false : true} className={` ${item.id} appearance-none bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5`}>
             <option value="food" selected>{item.category}</option>
             <option value="transport">Transport</option>
             <option value="others">Others</option>
         </select>
-        <div className='bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5'>{item.date}</div>
-        <button className='bg-cyan-500 px-2 py-0.5' >Edit</button>
+        <div id='date' name="date" contentEditable={isEditable} onInput={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` }>{item.date}</div>
+        <button className='bg-cyan-500 px-2 py-0.5' 
+          onClick={(e)=> { 
+            e.preventDefault()
+            handleUpdate(setIsEditable)}}
+        ><i class={isEditable ? "fa-solid fa-floppy-disk" : "fa-solid fa-pen-to-square"}></i></button>
         <button type="submit" className='bg-red-500 px-2 py-0.5'  onClick={(e)=> {
           e.preventDefault()
           handleDelete(e, item.id)
-        }}>Delete</button>
+        }}><i class= "fa-solid fa-trash-can"></i></button>
         </>
         )
       }

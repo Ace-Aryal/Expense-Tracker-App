@@ -7,7 +7,7 @@ const Addexpenses = () => {
 
   
   
-// state variables  
+// state variables  // need to fix this for optimization use a object instead
  const [expense, setExpense] = React.useState('')
  const [amount, setAmount] = React.useState('')
   const [date, setDate] = React.useState()
