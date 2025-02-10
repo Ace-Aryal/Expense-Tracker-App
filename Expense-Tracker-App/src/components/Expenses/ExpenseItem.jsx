@@ -1,8 +1,11 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteItem } from '../../features/expenseSlice'
+import { updateItems } from '../../features/expenseSlice'
 import {useState} from "react"
+import { categoryList } from '../../pages/Addexpenses'
 function ExpenseItem({expenseArray, showAllData}) {
+
   const dispatch = useDispatch()
 
 
@@ -13,16 +16,11 @@ function ExpenseItem({expenseArray, showAllData}) {
     dispatch(deleteItem(id)) // all the delete is handled by redux reducers
   }
   
-  function handleUpdate(setIsEditable) {
-    setIsEditable(prevValue=> !prevValue)
-
-
-  }
 
   return (
 
-    <div className="container mx-auto p-4 flex flex-col justify-center items-center">
-    <div className=" w-[60%] grid grid-cols-[4fr_2fr_2fr_2fr_0.5fr_0.5fr] gap-1  ">
+    <div className=" mx-auto w-[60%] p-4 flex flex-col justify-center items-center">
+    <div className="   grid grid-cols-[4fr_2fr_2fr_2fr_1fr_1fr] gap-1  ">
         {/*list headers*/}
         <div className='bg-[#ea5322]  px-2 mb-1  py-1 text-lg text-white'>Expense</div>
         <div className='bg-[#ea5322] px-2 mb-1  py-1 text-lg text-white'>Amount</div>
@@ -35,44 +33,59 @@ function ExpenseItem({expenseArray, showAllData}) {
         {/*list datas*/}
         {
       expenseArray.map((item,index) =>  { // each time array updates this whole function re-executes and latest values
-        // are added 
-/// from here 
-        //local fn for each item
-        const [isEditable , setIsEditable] = useState(false)
-        const [updatedData , setUpdatedData] = useState(item)
+        // are added  from here 
+
+
+        //local callback fn for each item
+      //item is the object containing id , expense name , amount , date an category
 
         function handleChange (e) {
-          const {name} = e.target
+          const attributeKey = e.target.name
         
           setUpdatedData( prevdata =>  { 
             return {
             ...prevdata,
-            [item[name]]: e.target.innerText
+            [attributeKey]: e.target.value
             }
           })
-       
-          
-          console.log(updatedData);
-          
         }
-// to here
+          
+  function handleUpdate() {
+   
+    
+    console.log("isEditable" , isEditable);
+    
+    
+    if(!isEditable) return
+    if(isEditable){
+      updateItems(updatedData)
+    }
+
+
+  }
+          
+          
+        
+
         if(!showAllData && index > 2){
           return 
         }
         return (
         <> 
-        <div id='expense' name="expense" contentEditable={isEditable} onInput={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` } >{item.expense}</div>
-        <div id='amount' name="amount" contentEditable={isEditable} onInput={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` }>{item.amount}</div>
-        <select id="category"  name="category"  onInput={handleChange} disabled={isEditable ? false : true} className={` ${item.id} appearance-none bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5`}>
-            <option value="food" selected>{item.category}</option>
-            <option value="transport">Transport</option>
-            <option value="others">Others</option>
+        <input type='text' id='expense' name="expense" readOnly={!isEditable} onChange={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` } value={updatedData.expense} />
+        <input type='number'  id='amount' name="amount" readOnly={!isEditable} onChange={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} `} value={updatedData.amount}/>
+        <select id="category"  name="category"  onChange={handleChange} disabled={!isEditable} className={` ${item.id} ${isEditable ? "" : "appearance-none"} bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5`}>
+              {categoryList.map(category => (
+                <option value={category} selected={item.category === category}>{category}</option>
+              ) )}          
         </select>
-        <div id='date' name="date" contentEditable={isEditable} onInput={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` }>{item.date}</div>
+        < input type='date' id='date' name="date" readOnly={!isEditable} onChange={handleChange} className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ` } value={updatedData.date}/>
         <button className='bg-cyan-500 px-2 py-0.5' 
           onClick={(e)=> { 
             e.preventDefault()
-            handleUpdate(setIsEditable)}}
+            setIsEditable(prevValue=> !prevValue)
+            handleUpdate()
+          }} // updates the data on save
         ><i class={isEditable ? "fa-solid fa-floppy-disk" : "fa-solid fa-pen-to-square"}></i></button>
         <button type="submit" className='bg-red-500 px-2 py-0.5'  onClick={(e)=> {
           e.preventDefault()

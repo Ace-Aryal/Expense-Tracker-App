@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '../features/expenseSlice';
 import { useSelector } from 'react-redux';
 import ExpenseItem from '../components/Expenses/ExpenseItem';
-const Addexpenses = () => {
+export const categoryList = ["food","transport","lodging" , "gadgets" , "fees" , "bills" ,"miscellenous" ,"others"]
 
+const Addexpenses = () => {
+// constant variables 
   
   
 // state variables  // need to fix this for optimization use a object instead
@@ -95,10 +97,9 @@ function handleSubmit(e){
           <label className='' htmlFor="category">Category</label>
           <select className='focus:outline-none focus:ring-indigo-600 
           focus:ring-2 rounded' name="category" id="category" required value={category} onChange={(e) => { handlechange(e)}}> { /*do it dynamically using array of catgories */}
-            <option value="food" >Food</option>
-            <option value="transport">Transport</option>
-            <option value="bills">Bills</option>
-            <option value="others">Others</option>
+           {categoryList.map(item => (
+              <option value={item}>{item}</option>
+           ))}
           </select>
           </div>
           </div>
