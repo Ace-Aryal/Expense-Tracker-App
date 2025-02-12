@@ -1,8 +1,10 @@
 import { NumberInput } from '@mantine/core';
 import { useState } from 'react';
+import { useSelector , useDispatch } from 'react-redux';
+function InputField({handle}) {
+   const dispatch = useDispatch() 
+   const [value, setValue] = useState<string | number>('');
 
-function InputField() {
-    
 
   return (
     <NumberInput
@@ -12,6 +14,8 @@ function InputField() {
       min="0"
       thousandSeparator=","
       prefix='$'
+      value={value}
+      onChange={setValue}
       
     />
   );
