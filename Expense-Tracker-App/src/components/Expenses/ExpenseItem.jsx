@@ -1,8 +1,11 @@
 import React from 'react'
 import ExpenseList from './ExpenseList'
+import { calculateTotal , setBalance } from '../../features/expenseSlice'
+import { useDispatch  } from 'react-redux'
 function ExpenseItem({expenseArray, showAllData}) {
-
- 
+const dispatch = useDispatch()
+dispatch(calculateTotal())
+dispatch(setBalance())
 
 
   return (
@@ -20,10 +23,9 @@ function ExpenseItem({expenseArray, showAllData}) {
 
         {
           
-      expenseArray.map((item,index) =>  { // each time array updates this whole function re-executes and latest values
-        // are added  from here 
-      
-        
+      expenseArray.map((item,index) =>  {
+       
+        dispatch(setBalance())
         return  <ExpenseList key={item.id} index={index} item={item} showAllData={showAllData}/>
 
 

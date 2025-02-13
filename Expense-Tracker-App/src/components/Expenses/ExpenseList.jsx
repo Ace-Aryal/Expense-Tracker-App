@@ -26,9 +26,11 @@ function ExpenseList({ item, showAllData, index }) {
   const dispatch = useDispatch();
 
   function handleDelete(e, id) {
+
     e.preventDefault();
     console.log(id);
     dispatch(deleteItem(id)); // all the delete is handled by redux reducers
+     dispatch(calculateTotal())
   }
 
   function handleChange(e) {
@@ -53,6 +55,7 @@ function ExpenseList({ item, showAllData, index }) {
 
         
       dispatch(updateItems(updatedData));
+       dispatch(calculateTotal())
     }
   }
 

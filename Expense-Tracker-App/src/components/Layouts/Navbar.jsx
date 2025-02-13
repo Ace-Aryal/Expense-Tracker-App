@@ -9,9 +9,9 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, NavLink } from "react-router-dom";
-import { calculateTotal } from "../../features/expenseSlice";
+
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 
 const navigation = [
@@ -26,11 +26,9 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const monthlyTotal = useSelector( state=> state.expense.totals.monthTotal)
-  
-  const [monthBalance , setMonthlyBalance] =  useState(0)
-  console.log(monthlyTotal);
-  
+const monthlyBalance = useSelector(state =>state.expense.balance.monthlyBalance)  
+
+
   return (
     <Disclosure as="nav" className="bg-[#a7c6ed] ">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 sticky">
@@ -86,7 +84,7 @@ export default function Navbar() {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"></div>
           {/* Profile dropdown */}
           <div className="bg-indigo-400 p-2 rounded-xl text-white shadow-gray-500 ">
-            Balance: ${monthlyTotal}
+            Balance: $ {monthlyBalance }
           </div>
 
           <DisclosurePanel className="sm:hidden bg-indigo-400 text-white rounded">

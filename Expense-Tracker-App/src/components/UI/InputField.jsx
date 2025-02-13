@@ -1,10 +1,21 @@
 import { NumberInput } from '@mantine/core';
 import { useState } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
-function InputField({handle}) {
-   const dispatch = useDispatch() 
-   const [value, setValue] = useState<string | number>('');
+import { setBudget , setBalance} from '../../features/expenseSlice';
 
+function InputField({submitBudget }) {
+   const dispatch = useDispatch() 
+   const budget = useSelector(state => state.expense.balance.monthlyBalance) || 0 // default Balance
+   const [value, setValue] = useState(budget);
+  console.log(submitBudget)
+   if(submitBudget){
+    dispatch(setBudget(value))
+    dispatch(setBalance())
+   }
+   
+  
+  
+   
 
   return (
     <NumberInput

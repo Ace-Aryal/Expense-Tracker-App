@@ -8,10 +8,9 @@ import { useDispatch } from "react-redux";
 import { setBalance } from "../features/expenseSlice";
 const Reports = () => {
   const [isInputOn, setIsInputOn] = useState(false);
+  const [submitBudget , setSubmitBudget] = useState(false)
   const dispatch = useDispatch()
-  function setStoreBalance (budget) {
-    dispatch(setBalance(budget))
-  }
+ 
 
   return (
     <div id="container" className="flex flex-col mt-8 items-center ">
@@ -24,15 +23,15 @@ const Reports = () => {
             <Button variant="filled"
              onClick={()=>{
               setIsInputOn(prevValue => !prevValue)
-              if (!isInputOn) {
-                
-              }
+             setSubmitBudget(prevValue=> !prevValue)
              }}
+            
+             
              color="violet">
               Set Budget
             </Button>{" "}
             {/* if bujdet is 0 setBudjet else Update Budjet*/}
-            {isInputOn ? <InputField  /> : null}
+            {isInputOn ? <InputField  submitBudget = { submitBudget} /> : null}
           </div>
           <div>Spent $200 in 18 days </div>
         </div>

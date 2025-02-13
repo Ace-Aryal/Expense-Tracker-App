@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '../features/expenseSlice';
 import { useSelector } from 'react-redux';
 import ExpenseItem from '../components/Expenses/ExpenseItem';
+import { calculateTotal } from '../features/expenseSlice';
 export const categoryList = ["food","transport","lodging" , "gadgets" , "fees" , "bills" ,"miscellenous" ,"others"]
 
 const Addexpenses = () => {
@@ -57,6 +58,7 @@ function handleSubmit(e){
   }
 // upadate the redux store here using addExpense action
   dispatch(addItem(expenseObj))
+   dispatch(calculateTotal())
   setExpense('')
   setAmount('')
   setDate('')

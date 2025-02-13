@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Layout from './router/Layout'
@@ -9,19 +9,16 @@ import Addexpenses from './pages/Addexpenses';
 import UpdateExpenses from './pages/UpdateExpenses';
 import Navbar from './components/Layouts/Navbar';
 import Footer from './components/Layouts/Footer';
+import { calculateTotal , setBalance} from './features/expenseSlice';
+import { useDispatch ,useSelector } from 'react-redux';
 function App() {
-
-  const [isLoggedin , setIsLoggedin] = React.useState(false)
-
-useEffect(()=>{
-
-  console.log(isLoggedin);
   
-},[isLoggedin])
+  const [isLoggedin , setIsLoggedin] = React.useState(false)
 
   if(!isLoggedin){
     return <Login setIsLoggedin={setIsLoggedin}/>
   }
+
 
   
   return (

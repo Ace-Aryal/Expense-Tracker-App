@@ -4,7 +4,7 @@ export const expenseSlice = createSlice({
   name: "expense",
   initialState: {
     expenses: JSON.parse(localStorage.getItem("expenses")) || [], // use this general syntax to avoid any unnecessary errors
-    totals : {
+    totals : JSON.parse(localStorage.getItem("totals"))||{
       todaytotal: 0,
       weekTotal: 0,
       monthTotal: 0,
@@ -12,7 +12,7 @@ export const expenseSlice = createSlice({
       oneYearTotal: 0,
       allTimeTotal: 0,
     },
-    balance : {
+    balance : JSON.parse(localStorage.getItem("balance")) || {
       dailyBalance : 0,
       weeklyBalance :0,
       monthlyBalance :0,
@@ -20,6 +20,9 @@ export const expenseSlice = createSlice({
       yearlyBalance : 0,
 
 
+    },
+    budget : JSON.parse(localStorage.getItem("budget")) || {
+      monthlyBudget : 0,
     }
   },
 
@@ -59,20 +62,23 @@ export const expenseSlice = createSlice({
     // total: state. total :)
 
       state.expenses.map((expense) => {
-        const expenselife = Math.floor((Date.now() - expense.id) * 86400000);
+        const expenselife = Math.floor((Date.now() - expense.id) / 86400000);
+        console.log(expenselife);
+        
         switch (true) {
           case expenselife < 1: {
+            
             state.totals = {
-                ...prevVal,
-                todaytotal: todaytotal + expense.amount,
+                ...state.totals,
+                todaytotal: state.totals.todaytotal + Number(expense.amount),
             }
               };
           
         
           case expenselife < 7:{
             state.totals = {
-                ...prevVal,
-                weekTotal: weekTotal + expense.amount,
+                ...state.totals,
+                weekTotal: state.totals.weekTotal + Number(expense.amount),
             }
               };
         
@@ -80,8 +86,8 @@ export const expenseSlice = createSlice({
 
           case expenselife < 30:
            {
-              state.totals = { ...prevVal,
-                monthTotal: monthTotal + expense.amount,
+              state.totals = { ...state.totals,
+                monthTotal: state.totals.monthTotal + Number(expense.amount),
               }
               };
        
@@ -89,39 +95,51 @@ export const expenseSlice = createSlice({
 
           case expenselife < 90:
             
-              {state.totals = {  ...prevVal,
-                threeMonthTottal: (todaytotal + expense.amount),
+              {state.totals = {  ...state.totals,
+                threeMonthTotal: (state.totals.threeMonthTotal + Number(expense.amount)),
                 }
               };
         
          
           case expenselife < 365:  { state.totals =  {
-                ...prevVal,
-                oneYearTotal: (oneYearTotal + expense.amount),
+                ...state.totals,
+                oneYearTotal: (state.totals.oneYearTotal +Number(expense.amount)),
               };
            
             }
 
           default: {
             state.totals = {
-                ...prevVal,
-                allTimeTotal: (allTimeTotal + expense.amount),
+                ...state.totals,
+                allTimeTotal: (state.totals.allTimeTotal + Number(expense.amount)),
               };
             }
             break;
         }
+        console.log(state.totals);
+        
     
     })
+
+    localStorage.setItem("totals",JSON.stringify(state.totals))
   },
 
   setBalance : (state, action ) => {
-      state.balance.monthlyBalance = action.payload - state.totals.monthTotal
-      state.balance.dailyBalance = action.payload / 30 - state.totals.todaytotal
-      state.balance.weeklyBalance = action.payload /30 * 7 - state.totals.weekTotal
-      state.balance.quaterlyBAlance = action.payload * 3 - state.totals.threeMonthTotal
-      state.balance.annualBAlance = action.payload / 30 *365 - state.totals.oneYearTotal
+
+      state.balance.monthlyBalance =  state.budget.monthlyBudget - state.totals.monthTotal
+      state.balance.dailyBalance = state.budget.monthlyBudget  / 30 - state.totals.todaytotal
+      state.balance.weeklyBalance =  state.budget.monthlyBudget /30 * 7 - state.totals.weekTotal
+      state.balance.quaterlyBAlance =  state.budget.monthlyBudget * 3 - state.totals.threeMonthTotal
+      state.balance.annualBAlance =  state.budget.monthlyBudget / 30 *365 - state.totals.oneYearTotal
+
+      localStorage.setItem("budget",JSON.stringify(state.budget))
+      localStorage.setItem("balance" , JSON.stringify(state.balance))
+  },
+
+  setBudget : (state , action)=> {
+    state.budget.monthlyBudget = action.payload
   }
 },
 });
-export const { addItem, deleteItem, updateItems ,calculateTotal ,setBalance } = expenseSlice.actions; // to use the reducers from components
+export const { addItem, deleteItem, updateItems ,calculateTotal ,setBalance , setBudget} = expenseSlice.actions; // to use the reducers from components
 export default expenseSlice.reducer; // for store
