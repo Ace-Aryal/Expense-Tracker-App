@@ -54,7 +54,8 @@ function handleSubmit(e){
     expense,
     amount,
     date,
-    category
+    category ,
+    isMapped : false
   }
 // upadate the redux store here using addExpense action
   dispatch(addItem(expenseObj))

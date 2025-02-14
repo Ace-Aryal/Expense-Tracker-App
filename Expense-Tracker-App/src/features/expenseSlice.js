@@ -64,6 +64,7 @@ export const expenseSlice = createSlice({
       state.expenses.map((expense) => {
         const expenselife = Math.floor((Date.now() - expense.id) / 86400000);
         console.log(expenselife);
+        if(expense.isMapped) return
         
         switch (true) {
           case expenselife < 1: {
@@ -116,7 +117,7 @@ export const expenseSlice = createSlice({
             }
             break;
         }
-        console.log(state.totals);
+        expense.isMapped = true
         
     
     })
@@ -124,22 +125,51 @@ export const expenseSlice = createSlice({
     localStorage.setItem("totals",JSON.stringify(state.totals))
   },
 
-  setBalance : (state, action ) => {
+  updateTotal : (state , action ) => { //expecting object containing id of expense an adjust amount
+    console.log("updating" , state.totals);
+    
+    const expenseLife = (Date.now() - action.payload.id )/ 86_400_000
 
+    state.totals.allTimeTotal += action.payload.adjustAmount
+    if(expenseLife < 365) {
+      state.totals.oneYearTotal += action.payload.adjustAmount
+    }
+    if(expenseLife < 120){
+      state.totals.threeMonthTotal += action.payload.adjustAmount
+    }
+    if(expenseLife < 30){
+      state.totals.monthTotal += action.payload.adjustAmount
+    }
+    if(expenseLife < 7){
+      state.totals.weekTotal += action.payload.adjustAmount
+    }
+    if(expenseLife < 1){
+      state.totals.todaytotal += action.payload.adjustAmount
+    }
+
+    console.log("updated", state.totals);
+    
+
+    
+    
+  } ,
+
+  setBalance : (state, action ) => {
+      
+       
       state.balance.monthlyBalance =  state.budget.monthlyBudget - state.totals.monthTotal
       state.balance.dailyBalance = state.budget.monthlyBudget  / 30 - state.totals.todaytotal
       state.balance.weeklyBalance =  state.budget.monthlyBudget /30 * 7 - state.totals.weekTotal
       state.balance.quaterlyBAlance =  state.budget.monthlyBudget * 3 - state.totals.threeMonthTotal
       state.balance.annualBAlance =  state.budget.monthlyBudget / 30 *365 - state.totals.oneYearTotal
 
-      localStorage.setItem("budget",JSON.stringify(state.budget))
-      localStorage.setItem("balance" , JSON.stringify(state.balance))
   },
 
   setBudget : (state , action)=> {
     state.budget.monthlyBudget = action.payload
+    localStorage.setItem("budget",JSON.stringify(state.budget))
   }
 },
 });
-export const { addItem, deleteItem, updateItems ,calculateTotal ,setBalance , setBudget} = expenseSlice.actions; // to use the reducers from components
+export const { addItem, deleteItem, updateItems ,calculateTotal ,setBalance , setBudget , updateTotal} = expenseSlice.actions; // to use the reducers from components
 export default expenseSlice.reducer; // for store

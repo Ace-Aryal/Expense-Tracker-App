@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
 import { setBudget , setBalance} from '../../features/expenseSlice';
 
-function InputField({submitBudget }) {
+function InputField({submitBudget , isInputOn }) {
    const dispatch = useDispatch() 
-   const budget = useSelector(state => state.expense.balance.monthlyBalance) || 0 // default Balance
-   const [value, setValue] = useState(budget);
+   const monthlyBudget = useSelector(state=> state.expense.budget.monthlyBudget)
+   const [value, setValue] = useState(monthlyBudget || 0);
   console.log(submitBudget)
    if(submitBudget){
     dispatch(setBudget(value))
@@ -19,7 +19,7 @@ function InputField({submitBudget }) {
 
   return (
     <NumberInput
-    className='font-semibold text-2xl transition transform ease-in-out'
+    className={`font-semibold text-2xl transition transform ease-in-out ${isInputOn? "" : "hidden"}`}
       label="Budget"
       placeholder="Input Monthly Budget"
       min="0"

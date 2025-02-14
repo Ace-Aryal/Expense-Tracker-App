@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mantine/core";
+import { useSelector } from "react-redux";
 const Dashboard = () => {
+  const monthlyExpense = useSelector(state => state.expense.totals.monthTotal)
   return (
     <div
       id="container"
@@ -12,7 +14,7 @@ const Dashboard = () => {
         className="flex justify-between mx-4 my-4 text-xl "
       >
         <span className="text-3xl font-bold ">Dashboard</span>
-        <div className="font-semibold">Spent $100 this month</div>
+        <div className="font-semibold">Spent ${monthlyExpense} in last 30 days</div>
       </div>
       <div
         id="budjet-v-expense-graph"

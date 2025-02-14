@@ -12,25 +12,26 @@
 
 
 import React, { useState } from "react";
-import { updateItems } from "../../features/expenseSlice";
+import { setBalance, updateItems } from "../../features/expenseSlice";
 import { categoryList } from "../../pages/Addexpenses";
 import { deleteItem } from "../../features/expenseSlice";
 import { useDispatch } from "react-redux";
-
+import { updateTotal } from "../../features/expenseSlice";
 function ExpenseList({ item, showAllData, index }) {
-
 
   const [isEditable, setIsEditable] = useState(false);
   const [updatedData, setUpdatedData] = useState(item);
+  
 
   const dispatch = useDispatch();
 
   function handleDelete(e, id) {
-
+   const adjustAmount = 0 - item.amount
     e.preventDefault();
     console.log(id);
     dispatch(deleteItem(id)); // all the delete is handled by redux reducers
-     dispatch(calculateTotal())
+     dispatch(updateTotal({id :item.id , adjustAmount : adjustAmount }))
+     dispatch(setBalance())
   }
 
   function handleChange(e) {
@@ -51,13 +52,17 @@ function ExpenseList({ item, showAllData, index }) {
     console.log("isEditable", isEditable);
     setIsEditable(!isEditable);
 
-    if (!isEditable) {
-
+    if (isEditable) {
+        const adjustAmount =  updatedData.amount  - item.amount
+        console.log(adjustAmount);
+        
         
       dispatch(updateItems(updatedData));
-       dispatch(calculateTotal())
-    }
+      dispatch(updateTotal({id : item.id , adjustAmount : adjustAmount}))
+      dispatch(setBalance())
+       
   }
+}
 
   if (!showAllData && index > 2) {
     return;

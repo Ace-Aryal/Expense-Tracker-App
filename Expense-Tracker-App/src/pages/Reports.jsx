@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { setBalance } from "../features/expenseSlice";
 const Reports = () => {
   const [isInputOn, setIsInputOn] = useState(false);
-  const [submitBudget , setSubmitBudget] = useState(false)
+  const [submitBudget , setSubmitBudget] = useState(true)
   const dispatch = useDispatch()
  
 
@@ -31,7 +31,7 @@ const Reports = () => {
               Set Budget
             </Button>{" "}
             {/* if bujdet is 0 setBudjet else Update Budjet*/}
-            {isInputOn ? <InputField  submitBudget = { submitBudget} /> : null}
+             <InputField  submitBudget = { submitBudget} isInputOn= {isInputOn}/> 
           </div>
           <div>Spent $200 in 18 days </div>
         </div>
