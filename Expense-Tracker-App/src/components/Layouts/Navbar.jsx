@@ -11,7 +11,6 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, NavLink } from "react-router-dom";
 
 import { useSelector } from "react-redux";
-import { useState, useMemo } from "react";
 
 
 const navigation = [

@@ -6,6 +6,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./features/store";
 import { MantineProvider } from "@mantine/core";
+import '@mantine/charts/styles.css';
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(

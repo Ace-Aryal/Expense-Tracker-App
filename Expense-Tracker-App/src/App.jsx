@@ -12,13 +12,15 @@ import Footer from './components/Layouts/Footer';
 import { calculateTotal , setBalance} from './features/expenseSlice';
 import { useDispatch ,useSelector } from 'react-redux';
 function App() {
-  
+  const dispatch = useDispatch()
   const [isLoggedin , setIsLoggedin] = React.useState(false)
 
   if(!isLoggedin){
     return <Login setIsLoggedin={setIsLoggedin}/>
   }
-
+  dispatch(calculateTotal())
+  dispatch(setBalance())
+  
 
   
   return (

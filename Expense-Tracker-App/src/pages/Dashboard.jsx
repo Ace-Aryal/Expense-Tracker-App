@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mantine/core";
 import { useSelector } from "react-redux";
+import Chart from "../components/Expenses/Chart";
 const Dashboard = () => {
   const monthlyExpense = useSelector(state => state.expense.totals.monthTotal)
   return (
@@ -18,13 +19,15 @@ const Dashboard = () => {
       </div>
       <div
         id="budjet-v-expense-graph"
-        className="  mt-10 not-sm:w-[100vw]   min-w-3/5 sm:h-[40vw] min-h-[40vh] bg-amber-700 self-center "
-      ></div>
+        className="  mt-10 w-[45vw] self-center "
+      >
+        <Chart height="40vh"/>
+      </div>
       <div
         id="nav-area"
         className=" text-center mt-6 self-center flex flex-col items-center gap-y-4"
       >
-        <h2 id="message" className="text-3xl font-bold">
+        <h2 id="message" className="text-3xl font-bold mt-10">
           Track Your Spending, Achive Your Goals
         </h2>
 

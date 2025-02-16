@@ -55,8 +55,18 @@ function handleSubmit(e){
     amount,
     date,
     category ,
-    isMapped : false
-  }
+    isMapped : false,
+    addedDateFrame : {
+      addedToDay : false ,
+      addedToWeek : false ,
+      addedToMonth : false ,
+      addedToQuarter : false,
+      addedToYear : false,
+      addedToCalenderWeek : false ,
+      addedToCalenderMonth : false, 
+      addedToCalenderYear : false
+    }
+    }
 // upadate the redux store here using addExpense action
   dispatch(addItem(expenseObj))
    dispatch(calculateTotal())

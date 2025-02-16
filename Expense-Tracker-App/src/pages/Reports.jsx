@@ -6,6 +6,7 @@ import InputField from "../components/UI/InputField";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setBalance } from "../features/expenseSlice";
+import Chart from "../components/Expenses/Chart";
 const Reports = () => {
   const [isInputOn, setIsInputOn] = useState(false);
   const [submitBudget , setSubmitBudget] = useState(true)
@@ -36,15 +37,18 @@ const Reports = () => {
           <div>Spent $200 in 18 days </div>
         </div>
         <div className="container">
-          <div className="w-full h-[35vh] bg-amber-300">
-            {" "}
-            Graph on center and 1 trackers on each side{" "}
+          <div className="w-full  flex items-end ">
+           <div className="basis-1/4 bg-red-400  "></div>
+           <div className="basis-1/2 " >
+           <Chart/>
+           </div>
+           <div className="basis-1/4 bg-red-400 "></div>
           </div>
           <h1 className="text-center text-xl font-semibold ">Message</h1>
-          <div className="flex justify-around">
-            <div className="w-[50px] h-[50px] bg-amber-700"></div>
-            <div className="w-[50px] h-[50px] bg-amber-700"></div>
-            <div className="w-[50px] h-[50px] bg-amber-700"></div>
+          <div className="flex w-full justify-around">
+            <div className="basis-1/4 h-auto bg-amber-700"></div>
+            <div className="basis-1/4 h-auto bg-amber-700"></div>
+            <div className="basis-1/4 h-auto bg-amber-700"></div>
           </div>
         </div>
       </div>
