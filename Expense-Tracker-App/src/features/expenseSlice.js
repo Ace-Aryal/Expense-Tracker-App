@@ -85,7 +85,9 @@ export const expenseSlice = createSlice({
       state.expenses.map((expense) => {
         const expenselife = Math.floor((Date.now() - expense.id) / 86400000);
        
-        if (expense.isMapped){ // updates the total if the totals are outdated
+        if (expense.isMapped){
+          console.log(expense);
+           // updates the total if the totals are outdated
           if(expenselife > 1 && expense.addedDateFrame.addedToDay ) state.totals.todaytotal -= expense.amount
           if(expenselife > 7 && expense.addedDateFrame.addedToWeek ) state.totals.weekTotal -= expense.amount
           if(expenselife > 30 && expense.addedDateFrame.addedToMonth ) state.totals.monthTotal -= expense.amount

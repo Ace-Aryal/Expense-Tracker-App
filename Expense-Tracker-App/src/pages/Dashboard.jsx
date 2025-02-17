@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mantine/core";
 import { useSelector } from "react-redux";
-import Chart from "../components/Expenses/Chart";
+import AreaGraph from "../components/Expenses/AreaGarph";
 const Dashboard = () => {
   const monthlyExpense = useSelector(state => state.expense.totals.monthTotal)
   return (
@@ -21,7 +21,7 @@ const Dashboard = () => {
         id="budjet-v-expense-graph"
         className="  mt-10 w-[45vw] self-center "
       >
-        <Chart height="40vh"/>
+        <AreaGraph />
       </div>
       <div
         id="nav-area"

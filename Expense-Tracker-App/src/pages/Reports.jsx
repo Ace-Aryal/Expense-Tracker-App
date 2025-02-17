@@ -6,7 +6,7 @@ import InputField from "../components/UI/InputField";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setBalance } from "../features/expenseSlice";
-import Chart from "../components/Expenses/Chart";
+import LineGraph from "../components/Expenses/LineGraph";
 const Reports = () => {
   const [isInputOn, setIsInputOn] = useState(false);
   const [submitBudget , setSubmitBudget] = useState(true)
@@ -40,7 +40,7 @@ const Reports = () => {
           <div className="w-full  flex items-end ">
            <div className="basis-1/4 bg-red-400  "></div>
            <div className="basis-1/2 " >
-           <Chart/>
+           <LineGraph/>
            </div>
            <div className="basis-1/4 bg-red-400 "></div>
           </div>
