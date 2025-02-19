@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { addItem } from '../features/expenseSlice';
 import { useSelector } from 'react-redux';
@@ -74,10 +74,18 @@ function handleSubmit(e){
   setAmount('')
   setDate('')
   setCategory('')
-  console.log(fetchedData);
+  
   
 
 }
+
+useEffect(() => {
+  localStorage.setItem("expenses", JSON.stringify(fetchedData));
+
+
+ 
+}, [fetchedData])
+
   
 
 

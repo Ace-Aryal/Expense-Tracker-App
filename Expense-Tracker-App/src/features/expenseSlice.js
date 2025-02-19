@@ -42,9 +42,17 @@ export const expenseSlice = createSlice({
   reducers: {
     addItem: (state = initialState, action) => {
       //expecting object as payload
-      state.expenses.unshift(action.payload);
+      
+      
+      
+    
+        return {
+          ...state,
+          expenses: [...state.expenses, action.payload].sort((a, b) => Number(b.date.split("-").join("")) - Number(a.date.split("-").join(""))),
+        };
+      
+      
 
-      localStorage.setItem("expenses", JSON.stringify(state.expenses));
     },
 
     deleteItem: (state = initialState, action) => {

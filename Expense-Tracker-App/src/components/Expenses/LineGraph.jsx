@@ -2,11 +2,20 @@ import { LineChart } from '@mantine/charts';
 
 import { useSelector , useDispatch } from 'react-redux';
 import { createDatasFromExpenseData } from '../../features/chartDataSlice';
+import { useEffect } from 'react';
 function LineGraph(props) {
   const dispatch = useDispatch()
-   dispatch(createDatasFromExpenseData(7))
-   const data = useSelector(state=> state.chartData.datas.weekData)
 
+  useEffect(() => {
+    dispatch(createDatasFromExpenseData(7))
+
+    
+  }, [dispatch])
+  
+   
+   const data = useSelector(state=> state.chartData.datas.weekData)
+  console.log(data);
+  
   return (
     <LineChart
       h={props.height  || 300}
