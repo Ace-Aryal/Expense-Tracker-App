@@ -1,7 +1,17 @@
 import { AreaChart } from '@mantine/charts';
-import { data } from './chartData';
 
+import { useSelector , useDispatch } from 'react-redux';
+import { createDatasFromExpenseData } from '../../features/chartDataSlice';
+import {useEffect} from "react"
 function AreaGraph() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(createDatasFromExpenseData(30))
+
+    
+  }, [dispatch])
+
+  const data = useSelector(state=> state.chartData.datas.monthData)
   return (
     <AreaChart
       h={300}

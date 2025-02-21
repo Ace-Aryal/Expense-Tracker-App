@@ -11,8 +11,11 @@ export const chartSlice = createSlice({
   reducers: {
     createDatasFromExpenseData: (state, action) => {
       class DailyExpensesTotals {
-        constructor(date, amount) {
-          (this.date = date), (this.amount = amount);
+        constructor(date, amount ,id) {
+          (this.date = date), 
+          (this.amount = Number(amount)), 
+          (this.id = id )
+          ;
         }
       }
 
@@ -34,43 +37,61 @@ export const chartSlice = createSlice({
         helperDataStorer.map((item, index) => {
           if (item.date === expense.date) {
             date = item.date;
-            dailyAmount += item.amount;
+            dailyAmount += Number(item.amount);
           }
         });
 
-       ;( (age) => {
-          if (age === 7) {
+          if (action.payload === 7) {
+            
             state.datas.weekData.map((item, index) => {
-              if (item.date === expense.date) {
-                state.datas.weekData[index].amount = amount;
+              const formattedDate = format(parseISO(expense.date), "MMM-d");
+              console.log(item.date,formattedDate);
+
+              
+              if (item.date === formattedDate) {
+              
+                
+                console.log("im inside 2nd 7");
+                
+                state.datas.weekData[index].amount = Number(dailyAmount);
+                isOnState = true
+              }
+            });
+
+            
+          }
+
+          if (action.payload === 30) {
+              state.datas.monthData.map((item, index) => {
+              const formattedDate = format(parseISO(expense.date), "MMM-d");
+              if (item.date === formattedDate) {
+                state.datas.monthData[index].amount = Number(dailyAmount);
+                isOnState = true
               }
             });
           }
 
-          if (age === 30) {
-            state.datas.monthData.map((item, index) => {
-              if (item.date === expense.date) {
-                state.datas.monthData[index].amount = amount;
-              }
-            });
-          }
-          return;
-        })()
+          if(isOnState) return
+          
 
         // YY-MM-DD format
-
+          const id = Date.parse(date)
+         
         const formattedDate = format(parseISO(date), "MMM-d"); // Outputs: Feb-16
 
-        if (action.payload === 7)
-          state.datas.weekData = [  new DailyExpensesTotals(formattedDate, dailyAmount),...state.datas.weekData]
-           
-        if (action.payload === 30)
-          state.datas.monthData.unshift(
-            new DailyExpensesTotals(formattedDate, dailyAmount)
-          );
+        if (action.payload === 7) {
+          
+          
+          state.datas.weekData = [  new DailyExpensesTotals(formattedDate, dailyAmount ,id),...state.datas.weekData]
+        }
+        if (action.payload === 30) {
+          state.datas.monthData= [(
+            new DailyExpensesTotals(formattedDate, dailyAmount ,id)),...state.datas.monthData
+          ];
+        }
       });
 
-      ( () => {
+      ( () => { // to delete outdated items
         if (action.payload == 7) {
           helperDataStorer.map((expense) => {
             const filteredArray =
@@ -104,6 +125,9 @@ export const chartSlice = createSlice({
           }
         }
       })();
+      
+      
+      state.datas.weekData.sort((a,b)=> a.id - b.id)
     },
   },
 });
