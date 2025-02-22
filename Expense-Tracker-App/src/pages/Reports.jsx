@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setBalance } from "../features/expenseSlice";
 import LineGraph from "../components/Expenses/LineGraph";
+import RadialChart from "../components/UI/RadialChart";
 const Reports = () => {
   const [isInputOn, setIsInputOn] = useState(false);
   const [submitBudget , setSubmitBudget] = useState(true)
@@ -18,7 +19,7 @@ const Reports = () => {
       <h1 className="text-3xl font-bold text-center mb-4">
         Your Expenses Analysis
       </h1>
-      <div className="w-[80vw] flex flex-col">
+      <div className="flex flex-col">
         <div className="flex justify-between px-2 my-2">
           <div className="flex flex-col">
             <Button variant="filled"
@@ -36,13 +37,23 @@ const Reports = () => {
           </div>
           <div>Spent $200 in 18 days </div>
         </div>
-        <div className="container">
-          <div className="w-full  flex items-end ">
-           <div className="basis-1/4 bg-red-400  "></div>
-           <div className="basis-1/2 " >
-           <LineGraph/>
+        <div className="grid grid-cols-4 gap-4">
+        <RadialChart size={100}/>
+        <RadialChart size={100}/>
+          <RadialChart size={100}/>
+           <RadialChart size={100}/>
+          <RadialChart size={100}/>
+          <div className="col-span-2 m-4">
+           <LineGraph />
            </div>
-           <div className="basis-1/4 bg-red-400 "></div>
+          
+           <RadialChart  size={100}/>
+           <RadialChart size={100}/>
+           <RadialChart size={100}/>
+           <RadialChart size={100}/>
+           <RadialChart size={100}/>
+           
+         
           </div>
           <h1 className="text-center text-xl font-semibold ">Message</h1>
           <div className="flex w-full justify-around">
@@ -51,7 +62,6 @@ const Reports = () => {
             <div className="basis-1/4 h-auto bg-amber-700"></div>
           </div>
         </div>
-      </div>
     </div>
   );
 };

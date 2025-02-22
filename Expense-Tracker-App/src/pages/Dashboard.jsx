@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@mantine/core";
 import { useSelector } from "react-redux";
 import AreaGraph from "../components/Expenses/AreaGarph";
+import RadialChart from "../components/UI/RadialChart"
 const Dashboard = () => {
   const monthlyExpense = useSelector(state => state.expense.totals.monthTotal)
+  const monthBudget = useSelector( state => state.expense.budget.monthlyBudget)
   return (
     <div
       id="container"
@@ -17,12 +19,18 @@ const Dashboard = () => {
         <span className="text-3xl font-bold ">Dashboard</span>
         <div className="font-semibold">Spent ${monthlyExpense} in last 30 days</div>
       </div>
-      <div
+     <div className="flex w-full justify-around items-end">
+     
+      <RadialChart expense={monthlyExpense} budget={monthBudget } />
+      
+     <div
         id="budjet-v-expense-graph"
         className="  mt-10 w-[45vw] self-center "
       >
         <AreaGraph />
       </div>
+      <RadialChart/>
+     </div>
       <div
         id="nav-area"
         className=" text-center mt-6 self-center flex flex-col items-center gap-y-4"

@@ -36,6 +36,7 @@ export const expenseSlice = createSlice({
     },
     budget: JSON.parse(localStorage.getItem("budget")) || {
       monthlyBudget: 0,
+      dailyBudget : 0,
     },
   },
 
