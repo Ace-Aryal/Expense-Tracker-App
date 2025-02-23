@@ -3,14 +3,20 @@ import { LineChart } from '@mantine/charts';
 import { useSelector , useDispatch } from 'react-redux';
 import { createDatasFromExpenseData } from '../../features/chartDataSlice';
 import { useEffect } from 'react';
+
 function LineGraph(props) {
   const dispatch = useDispatch()
 
+  const expense = useSelector(state=> state.expense.expenses)
+  
+  
+  
   useEffect(() => {
+    console.log("expense", expense);
     dispatch(createDatasFromExpenseData(7))
 
     
-  }, [dispatch])
+  }, [expense])
   
    
    const data = useSelector(state=> state.chartData.datas.weekData)

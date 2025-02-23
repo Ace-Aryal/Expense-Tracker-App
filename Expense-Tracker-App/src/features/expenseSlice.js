@@ -60,10 +60,14 @@ export const expenseSlice = createSlice({
       //expecting id as payload
       console.log(action.payload);
 
-      state.expenses = state.expenses.filter(
+      updatedExpense = state.expenses.filter(
         (item) => item.id !== action.payload
       );
       localStorage.setItem("expenses", JSON.stringify(state.expenses));
+      return {
+        ...state ,
+        expenses : updatedExpense
+      }
       // in reudux toolkit we can mutate the state directly but not in react with useState
     },
 

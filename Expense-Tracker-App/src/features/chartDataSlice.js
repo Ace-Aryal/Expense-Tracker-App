@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { parseISO, format } from "date-fns";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 export const chartSlice = createSlice({
   name: "chartData",
   initialState: {
@@ -21,7 +23,9 @@ export const chartSlice = createSlice({
 
       //action.payload is either 7 or 30
       const expensesData = JSON.parse(localStorage.getItem("expenses")) || [];
-
+      
+      console.log("expensedata",expensesData);
+      
       // this variale temporarily stores the data either of 7 days or 30 days ,
       const helperDataStorer = expensesData.map((expense) => {
         if ((Date.now() - expense.id) / 86400000 < action.payload) {
@@ -45,7 +49,7 @@ export const chartSlice = createSlice({
             
             state.datas.weekData.map((item, index) => {
               const formattedDate = format(parseISO(expense.date), "MMM-d");
-              console.log(item.date,formattedDate);
+             
 
               
               if (item.date === formattedDate) {
@@ -128,6 +132,7 @@ export const chartSlice = createSlice({
       
       
       state.datas.weekData.sort((a,b)=> a.id - b.id)
+      state.datas.monthData.sort((a,b)=> a.id - b.id)
     },
   },
 });

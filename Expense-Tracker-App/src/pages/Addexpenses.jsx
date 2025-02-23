@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '../features/expenseSlice';
 import { useSelector } from 'react-redux';
 import ExpenseItem from '../components/Expenses/ExpenseItem';
+
 import { calculateTotal } from '../features/expenseSlice';
 export const categoryList = ["food","transport","lodging" , "gadgets" , "fees" , "bills" ,"miscellenous" ,"others"]
 
@@ -19,7 +20,7 @@ const Addexpenses = () => {
   // dispatch function
   const dispatch = useDispatch()
   const fetchedData = useSelector((state) => state.expense.expenses)
-
+  
  
   function handlechange(e){
     const {name, value} = e.target
