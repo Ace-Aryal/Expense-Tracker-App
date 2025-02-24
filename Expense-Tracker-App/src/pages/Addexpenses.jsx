@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '../features/expenseSlice';
 import { useSelector } from 'react-redux';
 import ExpenseItem from '../components/Expenses/ExpenseItem';
-
+import { createDatasFromExpenseData } from '../features/chartDataSlice';
 import { calculateTotal } from '../features/expenseSlice';
 export const categoryList = ["food","transport","lodging" , "gadgets" , "fees" , "bills" ,"miscellenous" ,"others"]
 
@@ -20,7 +20,7 @@ const Addexpenses = () => {
   // dispatch function
   const dispatch = useDispatch()
   const fetchedData = useSelector((state) => state.expense.expenses)
-  
+
  
   function handlechange(e){
     const {name, value} = e.target
@@ -71,6 +71,7 @@ function handleSubmit(e){
 // upadate the redux store here using addExpense action
   dispatch(addItem(expenseObj))
    dispatch(calculateTotal())
+   
   setExpense('')
   setAmount('')
   setDate('')
@@ -82,7 +83,8 @@ function handleSubmit(e){
 
 useEffect(() => {
   localStorage.setItem("expenses", JSON.stringify(fetchedData));
-
+  dispatch(createDatasFromExpenseData(7))
+  dispatch(createDatasFromExpenseData(30))
 
  
 }, [fetchedData])

@@ -11,15 +11,25 @@ import Navbar from './components/Layouts/Navbar';
 import Footer from './components/Layouts/Footer';
 import { calculateTotal , setBalance} from './features/expenseSlice';
 import { useDispatch ,useSelector } from 'react-redux';
+import { createDatasFromExpenseData } from './features/chartDataSlice';
 function App() {
   const dispatch = useDispatch()
   const [isLoggedin , setIsLoggedin] = React.useState(false)
+  useEffect(()=>{
+    if(isLoggedin){
+      dispatch(calculateTotal())
+    dispatch(setBalance())
+    dispatch(createDatasFromExpenseData(7))
+      dispatch(createDatasFromExpenseData(30))
+    }
+     
+  },[])
+  
 
   if(!isLoggedin){
     return <Login setIsLoggedin={setIsLoggedin}/>
   }
-  dispatch(calculateTotal())
-  dispatch(setBalance())
+  
   
 
   

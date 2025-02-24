@@ -15,23 +15,27 @@ import React, { useState } from "react";
 import { setBalance, updateItems } from "../../features/expenseSlice";
 import { categoryList } from "../../pages/Addexpenses";
 import { deleteItem } from "../../features/expenseSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import { updateTotal } from "../../features/expenseSlice";
+import { handleDataDelete } from "../../features/chartDataSlice";
 function ExpenseList({ item, showAllData, index }) {
 
   const [isEditable, setIsEditable] = useState(false);
   const [updatedData, setUpdatedData] = useState(item);
   
-
+ const chartdata= useSelector(state => state.chartData.datas.monthData)
   const dispatch = useDispatch();
 
-  function handleDelete(e, id) {
+  function handleDelete(e) {
    const adjustAmount = 0 - item.amount
     e.preventDefault();
-    console.log(id);
-    dispatch(deleteItem(id)); // all the delete is handled by redux reducers
+    console.log(item.id);
+    dispatch(deleteItem(item.id)); // all the delete is handled by redux reducers
      dispatch(updateTotal({id :item.id , adjustAmount : adjustAmount }))
      dispatch(setBalance())
+     dispatch(handleDataDelete({id:item.id,deleteAmount:item.amount}))
+     console.log("after deln" , chartdata);
+     
   }
 
   function handleChange(e) {
@@ -127,7 +131,7 @@ function ExpenseList({ item, showAllData, index }) {
         className="bg-red-500 px-2 py-0.5"
         onClick={(e) => {
           e.preventDefault();
-          handleDelete(e, item.id);
+          handleDelete(e);
         }}
       >
         <i class="fa-solid fa-trash-can"></i>

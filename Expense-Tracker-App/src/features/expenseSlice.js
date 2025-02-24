@@ -60,7 +60,7 @@ export const expenseSlice = createSlice({
       //expecting id as payload
       console.log(action.payload);
 
-      updatedExpense = state.expenses.filter(
+      const updatedExpense = state.expenses.filter(
         (item) => item.id !== action.payload
       );
       localStorage.setItem("expenses", JSON.stringify(state.expenses));

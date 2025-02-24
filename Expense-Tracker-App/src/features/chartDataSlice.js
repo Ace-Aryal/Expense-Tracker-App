@@ -13,12 +13,15 @@ export const chartSlice = createSlice({
   reducers: {
     createDatasFromExpenseData: (state, action) => {
       class DailyExpensesTotals {
-        constructor(date, amount ,id) {
+        constructor(date, amount ,id , dataBuildingId = []) {
           (this.date = date), 
           (this.amount = Number(amount)), 
-          (this.id = id )
+          (this.id = id ),
+          (this.dataBuildingIds =  dataBuildingId)
           ;
         }
+
+        
       }
 
       //action.payload is either 7 or 30
@@ -27,13 +30,13 @@ export const chartSlice = createSlice({
       console.log("expensedata",expensesData);
       
       // this variale temporarily stores the data either of 7 days or 30 days ,
-      const helperDataStorer = expensesData.map((expense) => {
-        if ((Date.now() - expense.id) / 86400000 < action.payload) {
-          return expense;
-        }
-      });
+        const helperDataStorer = expensesData.map((expense) => {
+          if ((Date.now() - expense.id) / 86400000 < action.payload) {
+            return expense;
+          }
+        });
 
-      helperDataStorer.map((expense, index) => {
+      helperDataStorer.map((expense, index) => {  // 1st outer loop
         let dailyAmount = 0;
         let date = "";
         let isOnState = false;
@@ -58,6 +61,12 @@ export const chartSlice = createSlice({
                 console.log("im inside 2nd 7");
                 
                 state.datas.weekData[index].amount = Number(dailyAmount);
+                console.log("expense id", expense.id);
+                
+                if (!state.datas.weekData[index].dataBuildingIds.includes(expense.id)) {
+                  state.datas.weekData[index].dataBuildingIds.push(expense.id)
+                }
+               
                 isOnState = true
               }
             });
@@ -69,7 +78,11 @@ export const chartSlice = createSlice({
               state.datas.monthData.map((item, index) => {
               const formattedDate = format(parseISO(expense.date), "MMM-d");
               if (item.date === formattedDate) {
+
                 state.datas.monthData[index].amount = Number(dailyAmount);
+                if (!state.datas.monthData[index].dataBuildingIds) {
+                  state.datas.monthData[index].dataBuildingIds.push(expense.id)
+                }
                 isOnState = true
               }
             });
@@ -86,16 +99,16 @@ export const chartSlice = createSlice({
         if (action.payload === 7) {
           
           
-          state.datas.weekData = [  new DailyExpensesTotals(formattedDate, dailyAmount ,id),...state.datas.weekData]
+          state.datas.weekData = [  new DailyExpensesTotals(formattedDate, dailyAmount ,id , [expense.id]),...state.datas.weekData]
         }
         if (action.payload === 30) {
           state.datas.monthData= [(
-            new DailyExpensesTotals(formattedDate, dailyAmount ,id)),...state.datas.monthData
+            new DailyExpensesTotals(formattedDate, dailyAmount ,id , [expense.id])),...state.datas.monthData
           ];
         }
       });
 
-      ( () => { // to delete outdated items
+       // to delete outdated items
         if (action.payload == 7) {
           helperDataStorer.map((expense) => {
             const filteredArray =
@@ -128,13 +141,47 @@ export const chartSlice = createSlice({
             });
           }
         }
-      })();
+     
       
       
       state.datas.weekData.sort((a,b)=> a.id - b.id)
       state.datas.monthData.sort((a,b)=> a.id - b.id)
+      
     },
+    handleDataDelete : (state, action) =>{ // action.payload = {id,amt}
+        const {id , deleteAmount} = action.payload
+      console.log(state.datas.monthData);
+      
+          state.datas.monthData.map((data,index) => {
+            console.log("handling delete");
+            console.log(data.dataBuildingIds.includes(id));
+            
+            if(data.dataBuildingIds.includes(id)) {
+             
+              state.datas.monthData[index].amount -= deleteAmount
+              state.datas.monthData[index].dataBuildingIds = state.datas.monthData[index].dataBuildingIds.filter(data=> data !== id)
+            }
+            if(state.datas.monthData[index].amount===0) {
+              console.log("deleting");
+              
+              state.datas.monthData = state.datas.monthData.filter(data=> !data.id.includes(id))
+            }
+          })
+
+          state.datas.weekData.map((data,index) => {
+            if(data.dataBuildingIds.includes(id)) {
+              state.datas.weekData[index].amount -= deleteAmount
+              state.datas.monthData[index].dataBuildingIds = state.datas.monthData[index].dataBuildingIds.filter(data=> data !== id)
+            }
+            if(state.datas.weekData[index].amount===0) {
+              console.log("deleting state");
+              
+              state.datas.weekData = state.datas.weekData.filter(data=> !data.id.includes(id))
+            }
+          })
+    }
+
   },
 });
-export const { createDatasFromExpenseData } = chartSlice.actions;
+export const { createDatasFromExpenseData ,handleDataDelete } = chartSlice.actions;
 export default chartSlice.reducer;

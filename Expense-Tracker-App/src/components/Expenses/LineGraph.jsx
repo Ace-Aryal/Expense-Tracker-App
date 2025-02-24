@@ -11,13 +11,6 @@ function LineGraph(props) {
   
   
   
-  useEffect(() => {
-    console.log("expense", expense);
-    dispatch(createDatasFromExpenseData(7))
-
-    
-  }, [expense])
-  
    
    const data = useSelector(state=> state.chartData.datas.weekData)
   console.log(data);
