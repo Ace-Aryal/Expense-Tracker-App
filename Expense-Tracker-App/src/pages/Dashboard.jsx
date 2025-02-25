@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@mantine/core";
-import { useSelector } from "react-redux";
+import { useSelector , useDispatch } from "react-redux";
 import AreaGraph from "../components/Expenses/AreaGarph";
 import RadialChart from "../components/UI/RadialChart"
+import { createDatasFromExpenseData } from "../features/chartDataSlice";
 const Dashboard = () => {
+  const dispatch = useDispatch()
   const monthlyExpense = useSelector(state => state.expense.totals.monthTotal)
   const monthBudget = useSelector( state => state.expense.budget.monthlyBudget)
+
+     
+      useEffect(()=>{
+        dispatch(createDatasFromExpenseData(7))
+      
+      } , []
+      
+      )
   return (
     <div
       id="container"

@@ -80,7 +80,7 @@ export const chartSlice = createSlice({
               if (item.date === formattedDate) {
 
                 state.datas.monthData[index].amount = Number(dailyAmount);
-                if (!state.datas.monthData[index].dataBuildingIds) {
+                if (!state.datas.monthData[index].dataBuildingIds.includes(expense.id)) {
                   state.datas.monthData[index].dataBuildingIds.push(expense.id)
                 }
                 isOnState = true
@@ -150,33 +150,36 @@ export const chartSlice = createSlice({
     },
     handleDataDelete : (state, action) =>{ // action.payload = {id,amt}
         const {id , deleteAmount} = action.payload
-      console.log(state.datas.monthData);
+      
       
           state.datas.monthData.map((data,index) => {
-            console.log("handling delete");
-            console.log(data.dataBuildingIds.includes(id));
-            
+           
             if(data.dataBuildingIds.includes(id)) {
+             console.log("reached here");
              
-              state.datas.monthData[index].amount -= deleteAmount
-              state.datas.monthData[index].dataBuildingIds = state.datas.monthData[index].dataBuildingIds.filter(data=> data !== id)
+              data.amount -= deleteAmount
+              console.log("reduced amt");
+              
+              data.dataBuildingIds = data.dataBuildingIds.filter(data=> data !== id)
             }
-            if(state.datas.monthData[index].amount===0) {
+            if(state.datas.monthData[index].dataBuildingIds.length === 0) {
               console.log("deleting");
               
-              state.datas.monthData = state.datas.monthData.filter(data=> !data.id.includes(id))
+              state.datas.monthData = state.datas.monthData.filter(data=> state.datas.monthData.indexOf(data) !== index )
             }
           })
 
           state.datas.weekData.map((data,index) => {
             if(data.dataBuildingIds.includes(id)) {
-              state.datas.weekData[index].amount -= deleteAmount
-              state.datas.monthData[index].dataBuildingIds = state.datas.monthData[index].dataBuildingIds.filter(data=> data !== id)
+              data.amount -= deleteAmount
+              data.dataBuildingIds = data.dataBuildingIds.filter(data=> data !== id)
+            
+              
             }
-            if(state.datas.weekData[index].amount===0) {
+            if(state.datas.weekData[index].dataBuildingIds.length===0) {
               console.log("deleting state");
               
-              state.datas.weekData = state.datas.weekData.filter(data=> !data.id.includes(id))
+              state.datas.weekData = state.datas.weekData.filter(data=> state.datas.weekData.indexOf(data) !== index)
             }
           })
     }

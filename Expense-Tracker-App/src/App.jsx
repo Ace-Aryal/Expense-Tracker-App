@@ -18,7 +18,8 @@ function App() {
   useEffect(()=>{
     if(isLoggedin){
       dispatch(calculateTotal())
-    dispatch(setBalance())
+      dispatch(setBalance())
+      const chartData = useSelector(state=> state.chartData.datas)
     dispatch(createDatasFromExpenseData(7))
       dispatch(createDatasFromExpenseData(30))
     }

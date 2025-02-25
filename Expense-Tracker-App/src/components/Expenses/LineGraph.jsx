@@ -7,13 +7,15 @@ import { useEffect } from 'react';
 function LineGraph(props) {
   const dispatch = useDispatch()
 
-  const expense = useSelector(state=> state.expense.expenses)
+ 
   
-  
+  useEffect(()=> {
+    dispatch(createDatasFromExpenseData(30))
+  },[])
   
    
-   const data = useSelector(state=> state.chartData.datas.weekData)
-  console.log(data);
+   const data = useSelector(state=> state.chartData.datas.monthData)
+  console.log("week chart data" ,data);
   
   return (
     <LineChart

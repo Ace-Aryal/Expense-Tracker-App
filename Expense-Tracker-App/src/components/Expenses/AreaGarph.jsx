@@ -6,12 +6,14 @@ import {useEffect} from "react"
 function AreaGraph() {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(createDatasFromExpenseData(30))
+    dispatch(createDatasFromExpenseData(7))
 
     
   }, [dispatch])
 
-  const data = useSelector(state=> state.chartData.datas.monthData)
+  const data = useSelector(state=> state.chartData.datas.weekData)
+  console.log("month graph data", data);
+  
   return (
     <AreaChart
       h={300}

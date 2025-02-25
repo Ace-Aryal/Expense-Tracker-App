@@ -63,11 +63,10 @@ export const expenseSlice = createSlice({
       const updatedExpense = state.expenses.filter(
         (item) => item.id !== action.payload
       );
-      localStorage.setItem("expenses", JSON.stringify(state.expenses));
-      return {
-        ...state ,
-        expenses : updatedExpense
-      }
+      
+      state.expenses = updatedExpense
+        localStorage.setItem("expenses", JSON.stringify(state.expenses));
+      
       // in reudux toolkit we can mutate the state directly but not in react with useState
     },
 
@@ -96,7 +95,8 @@ export const expenseSlice = createSlice({
       
 
       state.expenses.map((expense) => {
-        const expenselife = Math.floor((Date.now() - expense.id) / 86400000);
+        const expenseDateMS = Date.parse(expense.date)
+        const expenselife = Math.floor((Date.now() - expenseDateMS) / 86400000);
        
         if (expense.isMapped){
           console.log(expense);
@@ -106,21 +106,21 @@ export const expenseSlice = createSlice({
           if(expenselife > 30 && expense.addedDateFrame.addedToMonth ) state.totals.monthTotal -= expense.amount
           if(expenselife > 120 && expense.addedDateFrame.addedToQuarter ) state.totals.threeMonthTotal -= expense.amount
           if(expenselife > 365 && expense.addedDateFrame.adedToYear ) state.totals.oneYearTotal -= expense.amount
-          if( expense.addedDateFrame.addedToCalenderWeek && expense.id < weekStartMS ) state.totals.thisWeekTotal -= expense.amount
-          if( expense.addedDateFrame.addedToCalenderMonth && expense.id < monthStartMS) state.totals.thisMonthTotal -= expense.amount
-          if( expense.addedDateFrame.addedToCalenderYear && expense.id < yearStartMS) state.totals.thisYearTotal -= expense.amount
+          if( expense.addedDateFrame.addedToCalenderWeek && expenseDateMS < weekStartMS ) state.totals.thisWeekTotal -= expense.amount
+          if( expense.addedDateFrame.addedToCalenderMonth && expenseDateMS < monthStartMS) state.totals.thisMonthTotal -= expense.amount
+          if( expense.addedDateFrame.addedToCalenderYear && expenseDateMS < yearStartMS) state.totals.thisYearTotal -= expense.amount
           localStorage.setItem("totals", JSON.stringify(state.totals));
 
 
           return;
         } 
-        if(expense.id > weekStartMS) {
+        if(expenseDateMS > weekStartMS) {
           expense.addedDateFrame.addedToCalenderWeek = true
           state.totals.thisWeekTotal += Number(expense.amount)}
-        if (expense.id > monthStartMS) {
+        if (expenseDateMS > monthStartMS) {
           expense.addedDateFrame.addedToCalenderMonth = true
           state.totals.thisMonthTotal += Number(expense.amount)}
-        if(expense.id > yearStartMS){
+        if(expenseDateMS > yearStartMS){
           expense.addedDateFrame.addedToCalenderYear = true
           state.totals.thisYearTotal += Number(expense.amount)}
         if (expenselife < 1) {
@@ -138,7 +138,7 @@ export const expenseSlice = createSlice({
         if (expenselife < 365)  {
           expense.addedDateFrame.adedToYear = true
           state.totals.oneYearTotal += Number(expense.amount)}
-        if (expenselife > 365)  state.totals.allTimeTotal += Number(expense.amount)
+         state.totals.allTimeTotal += Number(expense.amount)
 
 
           expense.isMapped = true
@@ -149,13 +149,22 @@ export const expenseSlice = createSlice({
   } ,
 
     updateTotal: (state, action) => {
+      const now = new Date();
+      const weekStart = startOfWeek(now); //
+      const weekStartMS = new Date(weekStart).getTime();
+      const monthStart = startOfMonth(now);
+      const monthStartMS = new Date(monthStart).getTime()
+      const yearStart = startOfYear(now)
+      const yearStartMS = new Date(yearStart).getTime()
       //expecting object containing id of expense an adjust amount
       console.log("updating", state.totals);
 
 
-
-      const expenseLife = (Date.now() - action.payload.id) / 86_400_000;
-
+      const expenseDateMS = Date.parse(action.payload.date)
+      const expenseLife = (Date.now() - expenseDateMS) / 86_400_000; // in days
+      
+      console.log("expense life", expenseLife);
+      
       state.totals.allTimeTotal += action.payload.adjustAmount;
       if (expenseLife < 365) {
         state.totals.oneYearTotal += action.payload.adjustAmount;
@@ -172,6 +181,19 @@ export const expenseSlice = createSlice({
       if (expenseLife < 1) {
         state.totals.todaytotal += action.payload.adjustAmount;
       }
+      if(expenseDateMS > weekStartMS) {
+        state.totals.thisWeekTotal += action.payload.adjustAmount
+      }
+      if(expenseDateMS > monthStartMS){
+        state.totals.thisMonthTotal += action.payload.adjustAmount
+
+      }
+      if(expenseDateMS > yearStartMS){
+        state.totals.thisYearTotal += action.payload.adjustAmount
+
+      }
+
+      localStorage.setItem("totals", JSON.stringify(state.totals))
 
       
     },
