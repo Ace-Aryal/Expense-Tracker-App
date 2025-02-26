@@ -30,12 +30,22 @@ export const chartSlice = createSlice({
       console.log("expensedata",expensesData);
       
       // this variale temporarily stores the data either of 7 days or 30 days ,
-        const helperDataStorer = expensesData.map((expense) => {
-          if ((Date.now() - expense.id) / 86400000 < action.payload) {
+        const helperDataStorer = expensesData.filter((expense) => { // filter only returns if condn is true but mp always returns sth
+          console.log("expense", expense.date);
+          const expenseDateMS = Date.parse(expense.date)
+        
+         
+         
+          
+          if ((Date.now() - expenseDateMS) / 86400000< action.payload) {
+            console.log(expense);
+            
             return expense;
           }
+          
         });
-
+  console.log("helper data storer", helperDataStorer);
+  
       helperDataStorer.map((expense, index) => {  // 1st outer loop
         let dailyAmount = 0;
         let date = "";

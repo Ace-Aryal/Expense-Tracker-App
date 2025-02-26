@@ -18,7 +18,8 @@ function LineGraph(props) {
   console.log("week chart data" ,data);
   
   return (
-    <LineChart
+   <div className="flex flex-col items-center">
+     <LineChart
       h={props.height  || 300}
       data={data}
       dataKey="date"
@@ -27,6 +28,9 @@ function LineGraph(props) {
       ]}
       curveType="linear"
     />
+        <span className='mt-4 text-indigo-400 font-semibold'>Your Last 30 Days Expense Trend</span>
+
+   </div>
   );
 }
 

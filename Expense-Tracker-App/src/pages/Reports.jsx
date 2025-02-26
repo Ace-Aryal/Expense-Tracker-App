@@ -4,7 +4,7 @@ import { MantineProvider } from "@mantine/core";
 import { Button } from "@mantine/core";
 import InputField from "../components/UI/InputField";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch ,useSelector } from "react-redux";
 import { setBalance } from "../features/expenseSlice";
 import LineGraph from "../components/Expenses/LineGraph";
 import RadialChart from "../components/UI/RadialChart";
@@ -12,7 +12,7 @@ const Reports = () => {
   const [isInputOn, setIsInputOn] = useState(false);
   const [submitBudget , setSubmitBudget] = useState(true)
   const dispatch = useDispatch()
- 
+ const monthlyBudget = useSelector(state => state.expense.budget.monthlyBudget)
 
   return (
     <div id="container" className="flex flex-col mt-8 items-center ">
@@ -35,7 +35,9 @@ const Reports = () => {
             {/* if bujdet is 0 setBudjet else Update Budjet*/}
              <InputField  submitBudget = { submitBudget} isInputOn= {isInputOn}/> 
           </div>
-          <div>Spent $200 in 18 days </div>
+          <div>
+          <span className=" inline  border-1 border-indigo-500 p-1 rounded text-indigo-500">Monthly Budget : $ {monthlyBudget}</span>
+          </div>  
         </div>
         <div className="grid grid-cols-4 gap-4">
         <RadialChart size={100}/>

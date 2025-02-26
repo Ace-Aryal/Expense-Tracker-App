@@ -15,6 +15,7 @@ function AreaGraph() {
   console.log("month graph data", data);
   
   return (
+    <div className='flex flex-col justify-center items-center'>
     <AreaChart
       h={300}
       data={data}
@@ -26,6 +27,9 @@ function AreaGraph() {
       curveType="linear"
       withDots={false}
     />
+        <span className='mt-4 text-indigo-400 font-semibold'>Your Last 7 Days Expense Trend</span>
+   
+    </div>
   );
 }
 
