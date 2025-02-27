@@ -82,7 +82,7 @@ const monthlyBalance = useSelector(state =>state.expense.balance.monthlyBalance)
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"></div>
           {/* Profile dropdown */}
-          <div className="bg-indigo-400 p-2 rounded-xl text-white shadow-gray-500 ">
+          <div className="bg-indigo-500 p-2 rounded-xl text-white shadow-gray-500 ">
             Balance: $ {monthlyBalance }
           </div>
 

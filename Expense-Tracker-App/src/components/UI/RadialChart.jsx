@@ -2,15 +2,17 @@
 import { DonutChart } from '@mantine/charts';
 import { useState } from 'react';
 
-function RadialChart({expense , budget}) { //
+function RadialChart({expense , budget ,size , message}) { //
   const [percentage , setPercentage ] =  useState(expense/budget*100 || 0) //for optimization
+  console.log("percentage" ,percentage);
+  
   const  data = [
     { name: 'Expended',
        value: 0,
        color: percentage <= 50 ? 
       'limegreen' : (percentage <= 75 && percentage > 50) ?
        "yellow" : (percentage <=90 && percentage > 75) ?
-        "orange" : (percentage > 90 ) ? "red" : "white" },
+        "orange" :  "red"  },
     {name : 'Available', value :100 , color : 'rgb(250, 250, 250)' }
    
   ];
@@ -18,14 +20,14 @@ function RadialChart({expense , budget}) { //
 
 
 data[0].value = expense
-data[1].value = budget
+data[1].value = (budget - expense) > 0 ? budget-expense : 0
 
 
 
   return ( 
-  <div className="flex flex-col items-center">
+  <div className="flex flex-col items-center text-indigo-600 font-semibold">
   <DonutChart withLabelsLine={false} labelsType="percent" withLabels data={data} chartLabel= {`$ ${expense}/${budget} `}/>
-  <span>Expended Of Monthly Budget</span>
+  <span>{message}</span>
   </div>
   )
 }

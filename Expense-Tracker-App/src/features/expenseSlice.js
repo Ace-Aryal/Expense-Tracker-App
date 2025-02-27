@@ -104,7 +104,7 @@ export const expenseSlice = createSlice({
           if(expenselife > 1 && expense.addedDateFrame.addedToDay ) state.totals.todaytotal -= expense.amount
           if(expenselife > 7 && expense.addedDateFrame.addedToWeek ) state.totals.weekTotal -= expense.amount
           if(expenselife > 30 && expense.addedDateFrame.addedToMonth ) state.totals.monthTotal -= expense.amount
-          if(expenselife > 120 && expense.addedDateFrame.addedToQuarter ) state.totals.threeMonthTotal -= expense.amount
+          if(expenselife > 90 && expense.addedDateFrame.addedToQuarter ) state.totals.threeMonthTotal -= expense.amount
           if(expenselife > 365 && expense.addedDateFrame.adedToYear ) state.totals.oneYearTotal -= expense.amount
           if( expense.addedDateFrame.addedToCalenderWeek && expenseDateMS < weekStartMS ) state.totals.thisWeekTotal -= expense.amount
           if( expense.addedDateFrame.addedToCalenderMonth && expenseDateMS < monthStartMS) state.totals.thisMonthTotal -= expense.amount
@@ -132,7 +132,7 @@ export const expenseSlice = createSlice({
         if (expenselife < 30)  {
           expense.addedDateFrame.addedToMonth = true
           state.totals.monthTotal += Number(expense.amount)}
-        if (expenselife < 120) {
+        if (expenselife < 90) {
           expense.addedDateFrame.addedToQuarter = true
           state.totals.threeMonthTotal += Number(expense.amount)}
         if (expenselife < 365)  {
@@ -169,7 +169,7 @@ export const expenseSlice = createSlice({
       if (expenseLife < 365) {
         state.totals.oneYearTotal += action.payload.adjustAmount;
       }
-      if (expenseLife < 120) {
+      if (expenseLife < 90) {
         state.totals.threeMonthTotal += action.payload.adjustAmount;
       }
       if (expenseLife < 30) {
@@ -178,6 +178,7 @@ export const expenseSlice = createSlice({
       if (expenseLife < 7) {
         state.totals.weekTotal += action.payload.adjustAmount;
       }
+    
       if (expenseLife < 1) {
         state.totals.todaytotal += action.payload.adjustAmount;
       }
@@ -224,6 +225,10 @@ export const expenseSlice = createSlice({
 
     setBudget: (state, action) => {
       state.budget.monthlyBudget = action.payload;
+      state.budget.dailyBudget = Math.floor(action.payload/30);
+      state.budget.weeklyBudget = Math.floor(action.payload/30*7);
+      state.budget.quaterBudget = Math.floor(action.payload*3);
+      state.budget.yearBudget = Math.floor(action.payload*365/30);
       localStorage.setItem("budget", JSON.stringify(state.budget));
     },
   },
