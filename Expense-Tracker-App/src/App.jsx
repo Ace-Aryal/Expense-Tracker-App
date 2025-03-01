@@ -15,16 +15,20 @@ import { createDatasFromExpenseData } from './features/chartDataSlice';
 function App() {
   const dispatch = useDispatch()
   const [isLoggedin , setIsLoggedin] = React.useState(false)
-  useEffect(()=>{
-    if(isLoggedin){
+  const chartData = useSelector(state=> state.chartData.datas)
+    useEffect( ()=> {
       dispatch(calculateTotal())
       dispatch(setBalance())
-      const chartData = useSelector(state=> state.chartData.datas)
-    dispatch(createDatasFromExpenseData(7))
-      dispatch(createDatasFromExpenseData(30))
-    }
      
-  },[])
+      dispatch(createDatasFromExpenseData(7))
+      dispatch(createDatasFromExpenseData(30))
+    } , [ ]
+    )
+
+
+  
+  
+    
   
 
   if(!isLoggedin){
