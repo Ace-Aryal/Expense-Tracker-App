@@ -96,7 +96,7 @@ useEffect(() => {
 
   return (
     <div className='flex flex-col  items-center w-[100vw] min-h-[85vh]' id='container'>
-      <h1 className='text-center text-3xl mb-6 font-bold mt-[10vh]'>Add Expenses</h1>
+      <h1 className='text-center text-5xl mb-6 font-bold mt-[10vh]'>Add Expenses</h1>
       <form className='flex flex-col items-center bg-[#a7c6ed] 
       text-xl p-6 rounded-md px-10 shadow-gray shadow-xl text-center mb-14'
       onSubmit={handleSubmit}

@@ -8,6 +8,7 @@ import { useDispatch ,useSelector } from "react-redux";
 import { setBalance } from "../features/expenseSlice";
 import LineGraph from "../components/Expenses/LineGraph";
 import RadialChart from "../components/UI/RadialChart";
+import DonutChartComponent from "../components/UI/DonutChartComponent";
 const Reports = () => {
   const [isInputOn, setIsInputOn] = useState(false);
   const [submitBudget , setSubmitBudget] = useState(true)
@@ -15,7 +16,9 @@ const Reports = () => {
   const {monthlyBudget , weeklyBudget , quaterBudget , yearBudget} = useSelector(state => state.expense.budget)
   const {todayTotal , weekTotal , monthTotal , threeMonthTotal ,  oneYearTotal ,thisMonthTotal , thisYearTotal } = useSelector(state => state.expense.totals)
   const [expentitureHealth , setExpenditureHealth ]= useState(monthTotal/monthlyBudget*100)
-  let message =  expentitureHealth <= 50 ? "You're doing great! Your wallet is still smiling. Keep this up, and maybe treat yourself... responsibly!" : (expentitureHealth < 80 && expentitureHealth > 50) ? "You're walking the fine line between 'responsible adult' and 'oops.' Proceed with caution!" : "Mission failed successfully! You've officially entered 'survival mode.' May your fridge be full and your wallet... well, just your fridge."
+  
+  
+  let message = isNaN(expentitureHealth) ? "" : expentitureHealth  <= 50 ? "You're doing great! Your wallet is still smiling. Keep this up, and maybe treat yourself... responsibly!" : (expentitureHealth < 80 && expentitureHealth > 50) ? "You're walking the fine line between 'responsible adult' and 'oops.' Proceed with caution!" : "Mission failed successfully! You've officially entered 'survival mode.' May your fridge be full and your wallet... well, just your fridge."
 
   return (
     <div id="container" className="flex flex-col mt-8 items-center ">
@@ -49,7 +52,7 @@ const Reports = () => {
            <LineGraph />
            </div>
           
-           <RadialChart  size={100} />
+           <DonutChartComponent/>
            <RadialChart size={100} expense={thisMonthTotal} budget={monthlyBudget} message={`Expended  This Month`}/>
            <RadialChart size={100} expense={threeMonthTotal} budget={quaterBudget} message={`Expended  In Last 90 Days`}/>
            <RadialChart size={100} expense={oneYearTotal} budget={yearBudget} message={`Expended In Last 365 Days`}/>
@@ -57,7 +60,8 @@ const Reports = () => {
            
          
           </div>
-          <h1 className={`text-center text-xl font-semibold mt-4 mb-10 ${expentitureHealth <= 50 ? "text-green-500" : (expentitureHealth <= 80 && expentitureHealth > 50)  ? "text-amber-500" : "text-red-400"}`}>{message}</h1>
+          <h1 className={`text-center text-xl font-semibold mt-4 mb-10 ${expentitureHealth <= 50 ? "text-green-500" : (expentitureHealth <= 80 && expentitureHealth > 50)  ? "text-amber-500" : "text-red-400"}`}>
+            {message}</h1>
           <div className="flex w-full justify-around">
             <div className="basis-1/4 h-auto bg-amber-700"></div>
             <div className="basis-1/4 h-auto bg-amber-700"></div>

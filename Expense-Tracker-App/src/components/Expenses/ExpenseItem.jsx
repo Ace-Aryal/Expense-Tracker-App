@@ -4,8 +4,8 @@ import { calculateTotal , setBalance } from '../../features/expenseSlice'
 import { useDispatch  } from 'react-redux'
 function ExpenseItem({expenseArray, showAllData}) {
 const dispatch = useDispatch()
-dispatch(calculateTotal())
-dispatch(setBalance())
+//dispatch(calculateTotal())
+//dispatch(setBalance())
 
 
   return (

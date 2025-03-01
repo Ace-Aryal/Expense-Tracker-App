@@ -5,10 +5,11 @@ import { useSelector , useDispatch } from "react-redux";
 import AreaGraph from "../components/Expenses/AreaGarph";
 import RadialChart from "../components/UI/RadialChart"
 import { createDatasFromExpenseData } from "../features/chartDataSlice";
+import DonutChartComponent from "../components/UI/DonutChartComponent";
 const Dashboard = () => {
   const dispatch = useDispatch()
-  const{monthTotal ,todaytotal , weekTotal } = useSelector(state => state.expense.totals)
-  const weeklyBudget = useSelector( state => state.expense.budget.weeklyBudget)
+  const{monthTotal ,todaytotal , weekTotal } = useSelector(state => state.expense.totals) 
+  const weeklyBudget = useSelector( state => state.expense.budget.weeklyBudget) || 0
 
 
      
@@ -40,7 +41,8 @@ const Dashboard = () => {
       >
         <AreaGraph />
       </div>
-      <RadialChart/>
+      
+      <DonutChartComponent/>
      </div>
       <div
         id="nav-area"

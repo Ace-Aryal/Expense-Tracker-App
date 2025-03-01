@@ -64,14 +64,18 @@ function ExpenseList({ item, showAllData, index }) {
 
     if (isEditable) {
         const adjustAmount =  updatedData.amount  - item.amount
-        console.log(adjustAmount);
+      
         
         
       dispatch(updateItems(updatedData));
-      dispatch(updateTotal({id : item.id , adjustAmount : adjustAmount}))
+      dispatch(updateTotal({id : item.id , adjustAmount : adjustAmount , date : item.date}))
       dispatch(setBalance())
        
   }
+ // updating chart after the amount is updated
+     dispatch(createDatasFromExpenseData(7))
+     dispatch(createDatasFromExpenseData(30))
+
 }
 
   if (!showAllData && index > 2) {

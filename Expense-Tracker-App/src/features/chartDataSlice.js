@@ -46,26 +46,27 @@ export const chartSlice = createSlice({
         });
   console.log("helper data storer", helperDataStorer);
   
-      helperDataStorer.map((expense, index) => {  // 1st outer loop
+      helperDataStorer.map((expense, index) => {  // 1st outer loop 
         let dailyAmount = 0;
         let date = "";
         let isOnState = false;
 
-        helperDataStorer.map((item, index) => {
+        helperDataStorer.map((item, index) => { // 2nd outer loop
+          // these two loops calculate daily amount for a day 
           if (item.date === expense.date) {
             date = item.date;
             dailyAmount += Number(item.amount);
           }
         });
 
-          if (action.payload === 7) {
+          if (action.payload === 7) { // for 7 day graoh
             
             state.datas.weekData.map((item, index) => {
-              const formattedDate = format(parseISO(expense.date), "MMM-d");
+              const formattedDate = format(parseISO(expense.date), "MMM-d"); // date format like Apr-9
              
 
               
-              if (item.date === formattedDate) {
+              if (item.date === formattedDate) { // if datas  have same date seting to state,
               
                 
                 console.log("im inside 2nd 7");
@@ -84,22 +85,22 @@ export const chartSlice = createSlice({
             
           }
 
-          if (action.payload === 30) {
+          if (action.payload === 30) {// same but for 30 day
               state.datas.monthData.map((item, index) => {
               const formattedDate = format(parseISO(expense.date), "MMM-d");
               if (item.date === formattedDate) {
 
                 state.datas.monthData[index].amount = Number(dailyAmount);
                 if (!state.datas.monthData[index].dataBuildingIds.includes(expense.id)) {
-                  state.datas.monthData[index].dataBuildingIds.push(expense.id)
+                  state.datas.monthData[index].dataBuildingIds.push(expense.id) // not pushing the existing expenses for unique
                 }
-                isOnState = true
+                isOnState = true 
               }
             });
           }
 
-          if(isOnState) return
-          
+          if(isOnState) return  // if is on state not adding new date just updating as above
+                // proceeding for unique date
 
         // YY-MM-DD format
           const id = Date.parse(date)
@@ -107,8 +108,7 @@ export const chartSlice = createSlice({
         const formattedDate = format(parseISO(date), "MMM-d"); // Outputs: Feb-16
 
         if (action.payload === 7) {
-          
-          
+        
           state.datas.weekData = [  new DailyExpensesTotals(formattedDate, dailyAmount ,id , [expense.id]),...state.datas.weekData]
         }
         if (action.payload === 30) {
@@ -154,7 +154,7 @@ export const chartSlice = createSlice({
      
       
       
-      state.datas.weekData.sort((a,b)=> a.id - b.id)
+      state.datas.weekData.sort((a,b)=> a.id - b.id) // sorting acc to date
       state.datas.monthData.sort((a,b)=> a.id - b.id)
       
     },
