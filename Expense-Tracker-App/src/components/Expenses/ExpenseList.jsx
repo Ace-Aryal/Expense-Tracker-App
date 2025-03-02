@@ -18,9 +18,8 @@ import { deleteItem } from "../../features/expenseSlice";
 import { useDispatch , useSelector } from "react-redux";
 import { updateTotal } from "../../features/expenseSlice";
 import { handleDataDelete } from "../../features/chartDataSlice";
-import { createDatasFromExpenseData } from "../../features/chartDataSlice";
+import { createDatasFromExpenseData } from "../../features/chartDataSlice"; 
 function ExpenseList({ item, showAllData, index }) {
-
   const [isEditable, setIsEditable] = useState(false);
   const [updatedData, setUpdatedData] = useState(item);
   
@@ -59,12 +58,14 @@ function ExpenseList({ item, showAllData, index }) {
   }
 
   function handleUpdate() {
-    console.log("isEditable", isEditable);
+    console.log("isEditable", isEditable)
     setIsEditable(!isEditable);
+  
+
 
     if (isEditable) {
         const adjustAmount =  updatedData.amount  - item.amount
-      
+        
         
         
       dispatch(updateItems(updatedData));
@@ -89,7 +90,7 @@ function ExpenseList({ item, showAllData, index }) {
         name="expense"
         readOnly={!isEditable}
         onChange={handleChange}
-        className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} `}
+        className={`input bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ${isEditable?"outline-[1.5px] outline-indigo-950 rounded" : ""} `}
         value={updatedData.expense}
       />
       <input
@@ -98,7 +99,8 @@ function ExpenseList({ item, showAllData, index }) {
         name="amount"
         readOnly={!isEditable}
         onChange={handleChange}
-        className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} `}
+        className={`input bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ${isEditable?"outline-[1.5px] outline-indigo-950 rounded" : ""} 
+        value={updatedData.expense}  `}
         value={updatedData.amount}
       />
       <select
@@ -106,7 +108,7 @@ function ExpenseList({ item, showAllData, index }) {
         name="category"
         onChange={handleChange}
         disabled={!isEditable}
-        className={` ${item.id} ${isEditable ? "" : "appearance-none"} bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5`}
+        className={`input ${item.id} ${isEditable ? "outline-[1.5px] outline-indigo-950 rounded" : "appearance-none"} bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5`}
       >
         {categoryList.map((category,index) => (
           <option key={index} value={category} selected={item.category === category}>
@@ -115,12 +117,14 @@ function ExpenseList({ item, showAllData, index }) {
         ))}
       </select>
       <input
+
         type="date"
         id="date"
         name="date"
         readOnly={!isEditable}
         onChange={handleChange}
-        className={`bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} `}
+        className={`input bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ${isEditable?"outline-[1.5px] outline-indigo-950 rounded" : ""} 
+        value={updatedData.expense} `}
         value={updatedData.date}
       />
       <button

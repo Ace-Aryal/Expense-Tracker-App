@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { categoryList } from './Addexpenses'
 const updateExpenses = () => {
+
   const fetchedData = useSelector((state) => state.expense.expenses)
   const [filterStateFLag , setFilterStateFlag] = useState({
     isCatagoryFilterOn : false,
@@ -12,7 +13,7 @@ const updateExpenses = () => {
   }) 
   const [filterValues , setFilterValues] = useState({
     search_value : "",
-    catagory :"",
+    catagory :"all",
     date : ""
   })
 
@@ -23,7 +24,7 @@ const [filteredData , setFilteredData ] = useState (fetchedData)
 function handleFilter () {
 const {isCatagoryFilterOn, isDateFilterOn ,isSearchboxOn} = filterStateFLag
 console.log("cat" , isCatagoryFilterOn , "date" , isCatagoryFilterOn ,"search" ,isSearchboxOn);
-
+console.log("cat" , filterValues.catagory , "date" , filterValues.date , "search" , filterValues.search_value)
 const {search_value , catagory , date} = filterValues
 if (isCatagoryFilterOn && isDateFilterOn && isSearchboxOn) {
  const filteredData = fetchedData.filter(expense => {
@@ -143,6 +144,8 @@ function handleInputChange (e) {
   function handleCatagoryChange(e) {
     const {value} = e.target
     console.log("cat" ,value);
+    console.log("here ");
+    
     
     
     setFilterValues(prevValue => {
@@ -151,12 +154,12 @@ function handleInputChange (e) {
         catagory : value
       }
     })
-    setFilterStateFlag (prevValue => {
-      if (value=== "all") {
+   
+      if (value === "all") {
         setFilterStateFlag(prevValue => {
           return {
             ...prevValue,
-            isCatagoryFilterOn : false,
+            isCatagoryFilterOn : false
           }
         })
         return
@@ -167,7 +170,7 @@ function handleInputChange (e) {
           isCatagoryFilterOn : true,
         }
       })
-    })
+   
   }
 
   function handleDateChange (e) {
@@ -197,16 +200,19 @@ function handleInputChange (e) {
   
   useEffect(()=> {
     handleFilter()
-  },[filterValues])
+  },[filterStateFLag])
 
-
+ useEffect(()=> { // if any data is modified on state , syncing it with ui 
+  setFilteredData(fetchedData)
+  handleFilter()
+ },[fetchedData])
   
   return (
     
     <div className='flex flex-col mt-[15vh] mb-2 items-center  min-h-[70vh]'>
       <h1 className='font-bold text-5xl text-center my-4 '>Track And Update Expenses</h1>
       <div id="update-container" className='sm:w-[60vw] w-[50%]'>
-        <div id="update-options-container" className='flex justify-around '>
+        <div id="update-options-container" className='flex justify-between gap-1'>
           <div className='flex flex-col justify-between w-1/3 items-center'>
           <label htmlFor="search-box">Search Items</label>
           <input type="text"
@@ -223,7 +229,7 @@ function handleInputChange (e) {
           <select name="catagory-search" 
           value={filterValues.catagory}
           onChange={ e=> {
-        
+            e.preventDefault()
             handleCatagoryChange(e)
                    
                   }

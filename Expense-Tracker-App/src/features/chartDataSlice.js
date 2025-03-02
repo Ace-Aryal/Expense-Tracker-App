@@ -21,6 +21,15 @@ export const chartSlice = createSlice({
           ;
         }
 
+        toPlainObject(){ // to make classes serializable
+          return {
+            date : this.date ,
+            amount : this.amount,
+            id : this.id,
+            dataBuildingIds : this.dataBuildingIds
+          }
+        }
+
         
       }
 
@@ -108,12 +117,13 @@ export const chartSlice = createSlice({
         const formattedDate = format(parseISO(date), "MMM-d"); // Outputs: Feb-16
 
         if (action.payload === 7) {
-        
-          state.datas.weekData = [  new DailyExpensesTotals(formattedDate, dailyAmount ,id , [expense.id]),...state.datas.weekData]
+          const DailyExpensesTotal = new DailyExpensesTotals(formattedDate, dailyAmount ,id , [expense.id])
+          state.datas.weekData = [ DailyExpensesTotal.toPlainObject(),...state.datas.weekData]
         }
         if (action.payload === 30) {
-          state.datas.monthData= [(
-            new DailyExpensesTotals(formattedDate, dailyAmount ,id , [expense.id])),...state.datas.monthData
+          const DailyExpensesTotal = new DailyExpensesTotals(formattedDate, dailyAmount ,id , [expense.id])
+          state.datas.monthData= [
+            DailyExpensesTotal.toPlainObject(),...state.datas.monthData
           ];
         }
       });
