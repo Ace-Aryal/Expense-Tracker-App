@@ -36,24 +36,32 @@ export const expenseSlice = createSlice({
     },
     budget: JSON.parse(localStorage.getItem("budget")) || {
       monthlyBudget: 0,
-      dailyBudget : 0,
+      dailyBudget: 0,
     },
+    catagoryExpenseData: [
+      { name: "Food", value: 0, color: "indigo" },
+      { name: "Transport", value: 0, color: "indigo" },
+      { name: "Lodging", value: 0, color: "indigo" },
+      { name: "Gadgets", value: 0, color: "indigo" },
+      { name: "Fees", value: 0, color: "indigo" },
+      { name: "Bills", value: 0, color: "indigo" },
+      { name: "Miscellanous", value: 0, color: "indigo" },
+      { name: "Others", value: 0, color: "indigo" },
+    ],
   },
 
   reducers: {
     addItem: (state = initialState, action) => {
       //expecting object as payload
-      
-      
-      
-    
-        return {
-          ...state,
-          expenses: [...state.expenses, action.payload].sort((a, b) => Number(b.date.split("-").join("")) - Number(a.date.split("-").join(""))),
-        };
-      
-      
 
+      return {
+        ...state,
+        expenses: [...state.expenses, action.payload].sort(
+          (a, b) =>
+            Number(b.date.split("-").join("")) -
+            Number(a.date.split("-").join(""))
+        ),
+      };
     },
 
     deleteItem: (state = initialState, action) => {
@@ -63,10 +71,10 @@ export const expenseSlice = createSlice({
       const updatedExpense = state.expenses.filter(
         (item) => item.id !== action.payload
       );
-      
-      state.expenses = updatedExpense
-        localStorage.setItem("expenses", JSON.stringify(state.expenses));
-      
+
+      state.expenses = updatedExpense;
+      localStorage.setItem("expenses", JSON.stringify(state.expenses));
+
       // in reudux toolkit we can mutate the state directly but not in react with useState
     },
 
@@ -82,89 +90,108 @@ export const expenseSlice = createSlice({
     },
 
     calculateTotal: (state, action) => {
-      
       const now = new Date();
       const weekStart = startOfWeek(now); //
       const weekStartMS = new Date(weekStart).getTime();
       const monthStart = startOfMonth(now);
-      const monthStartMS = new Date(monthStart).getTime()
-      const yearStart = startOfYear(now)
-      const yearStartMS = new Date(yearStart).getTime()
+      const monthStartMS = new Date(monthStart).getTime();
+      const yearStart = startOfYear(now);
+      const yearStartMS = new Date(yearStart).getTime();
 
       // total: state. total :)
-      
 
       state.expenses.map((expense) => {
-        const expenseDateMS = Date.parse(expense.date)
+        const expenseDateMS = Date.parse(expense.date);
         const expenselife = Math.floor((Date.now() - expenseDateMS) / 86400000);
-       
-        if (expense.isMapped){
+
+        if (expense.isMapped) {
           console.log(expense);
-           // updates the total if the totals are outdated
-          if(expenselife > 1 && expense.addedDateFrame.addedToDay ) state.totals.todaytotal -= expense.amount
-          if(expenselife > 7 && expense.addedDateFrame.addedToWeek ) state.totals.weekTotal -= expense.amount
-          if(expenselife > 30 && expense.addedDateFrame.addedToMonth ) state.totals.monthTotal -= expense.amount
-          if(expenselife > 90 && expense.addedDateFrame.addedToQuarter ) state.totals.threeMonthTotal -= expense.amount
-          if(expenselife > 365 && expense.addedDateFrame.adedToYear ) state.totals.oneYearTotal -= expense.amount
-          if( expense.addedDateFrame.addedToCalenderWeek && expenseDateMS < weekStartMS ) state.totals.thisWeekTotal -= expense.amount
-          if( expense.addedDateFrame.addedToCalenderMonth && expenseDateMS < monthStartMS) state.totals.thisMonthTotal -= expense.amount
-          if( expense.addedDateFrame.addedToCalenderYear && expenseDateMS < yearStartMS) state.totals.thisYearTotal -= expense.amount
+          // updates the total if the totals are outdated
+          if (expenselife > 1 && expense.addedDateFrame.addedToDay)
+            state.totals.todaytotal -= expense.amount;
+          if (expenselife > 7 && expense.addedDateFrame.addedToWeek)
+            state.totals.weekTotal -= expense.amount;
+          if (expenselife > 30 && expense.addedDateFrame.addedToMonth)
+            state.totals.monthTotal -= expense.amount;
+          if (expenselife > 90 && expense.addedDateFrame.addedToQuarter)
+            state.totals.threeMonthTotal -= expense.amount;
+          if (expenselife > 365 && expense.addedDateFrame.adedToYear)
+            state.totals.oneYearTotal -= expense.amount;
+          if (
+            expense.addedDateFrame.addedToCalenderWeek &&
+            expenseDateMS < weekStartMS
+          )
+            state.totals.thisWeekTotal -= expense.amount;
+          if (
+            expense.addedDateFrame.addedToCalenderMonth &&
+            expenseDateMS < monthStartMS
+          )
+            state.totals.thisMonthTotal -= expense.amount;
+          if (
+            expense.addedDateFrame.addedToCalenderYear &&
+            expenseDateMS < yearStartMS
+          )
+            state.totals.thisYearTotal -= expense.amount;
           localStorage.setItem("totals", JSON.stringify(state.totals));
 
-
           return;
-        } 
-        if(expenseDateMS > weekStartMS) {
-          expense.addedDateFrame.addedToCalenderWeek = true
-          state.totals.thisWeekTotal += Number(expense.amount)}
+        }
+        if (expenseDateMS > weekStartMS) {
+          expense.addedDateFrame.addedToCalenderWeek = true;
+          state.totals.thisWeekTotal += Number(expense.amount);
+        }
         if (expenseDateMS > monthStartMS) {
-          expense.addedDateFrame.addedToCalenderMonth = true
-          state.totals.thisMonthTotal += Number(expense.amount)}
-        if(expenseDateMS > yearStartMS){
-          expense.addedDateFrame.addedToCalenderYear = true
-          state.totals.thisYearTotal += Number(expense.amount)}
+          expense.addedDateFrame.addedToCalenderMonth = true;
+          state.totals.thisMonthTotal += Number(expense.amount);
+        }
+        if (expenseDateMS > yearStartMS) {
+          expense.addedDateFrame.addedToCalenderYear = true;
+          state.totals.thisYearTotal += Number(expense.amount);
+        }
         if (expenselife < 1) {
-          expense.addedDateFrame.addedToDay = true
-          state.totals.todaytotal += Number(expense.amount)}
-        if (expenselife < 7)  {
-          expense.addedDateFrame.addedToWeek = true
-          state.totals.weekTotal += Number(expense.amount)}
-        if (expenselife < 30)  {
-          expense.addedDateFrame.addedToMonth = true
-          state.totals.monthTotal += Number(expense.amount)}
+          expense.addedDateFrame.addedToDay = true;
+          state.totals.todaytotal += Number(expense.amount);
+        }
+        if (expenselife < 7) {
+          expense.addedDateFrame.addedToWeek = true;
+          state.totals.weekTotal += Number(expense.amount);
+        }
+        if (expenselife < 30) {
+          expense.addedDateFrame.addedToMonth = true;
+          state.totals.monthTotal += Number(expense.amount);
+        }
         if (expenselife < 90) {
-          expense.addedDateFrame.addedToQuarter = true
-          state.totals.threeMonthTotal += Number(expense.amount)}
-        if (expenselife < 365)  {
-          expense.addedDateFrame.adedToYear = true
-          state.totals.oneYearTotal += Number(expense.amount)}
-         state.totals.allTimeTotal += Number(expense.amount)
+          expense.addedDateFrame.addedToQuarter = true;
+          state.totals.threeMonthTotal += Number(expense.amount);
+        }
+        if (expenselife < 365) {
+          expense.addedDateFrame.adedToYear = true;
+          state.totals.oneYearTotal += Number(expense.amount);
+        }
+        state.totals.allTimeTotal += Number(expense.amount);
 
+        expense.isMapped = true;
 
-          expense.isMapped = true
-        
-
-      localStorage.setItem("totals", JSON.stringify(state.totals));
-    })
-  } ,
+        localStorage.setItem("totals", JSON.stringify(state.totals));
+      });
+    },
 
     updateTotal: (state, action) => {
       const now = new Date();
       const weekStart = startOfWeek(now); //
       const weekStartMS = new Date(weekStart).getTime();
       const monthStart = startOfMonth(now);
-      const monthStartMS = new Date(monthStart).getTime()
-      const yearStart = startOfYear(now)
-      const yearStartMS = new Date(yearStart).getTime()
+      const monthStartMS = new Date(monthStart).getTime();
+      const yearStart = startOfYear(now);
+      const yearStartMS = new Date(yearStart).getTime();
       //expecting object containing id of expense an adjust amount
       console.log("updating", state.totals);
 
-
-      const expenseDateMS = Date.parse(action.payload.date)
+      const expenseDateMS = Date.parse(action.payload.date);
       const expenseLife = (Date.now() - expenseDateMS) / 86_400_000; // in days
-      
+
       console.log("expense life", expenseLife);
-      
+
       state.totals.allTimeTotal += action.payload.adjustAmount;
       if (expenseLife < 365) {
         state.totals.oneYearTotal += action.payload.adjustAmount;
@@ -178,25 +205,21 @@ export const expenseSlice = createSlice({
       if (expenseLife < 7) {
         state.totals.weekTotal += action.payload.adjustAmount;
       }
-    
+
       if (expenseLife < 1) {
         state.totals.todaytotal += action.payload.adjustAmount;
       }
-      if(expenseDateMS > weekStartMS) {
-        state.totals.thisWeekTotal += action.payload.adjustAmount
+      if (expenseDateMS > weekStartMS) {
+        state.totals.thisWeekTotal += action.payload.adjustAmount;
       }
-      if(expenseDateMS > monthStartMS){
-        state.totals.thisMonthTotal += action.payload.adjustAmount
-
+      if (expenseDateMS > monthStartMS) {
+        state.totals.thisMonthTotal += action.payload.adjustAmount;
       }
-      if(expenseDateMS > yearStartMS){
-        state.totals.thisYearTotal += action.payload.adjustAmount
-
+      if (expenseDateMS > yearStartMS) {
+        state.totals.thisYearTotal += action.payload.adjustAmount;
       }
 
-      localStorage.setItem("totals", JSON.stringify(state.totals))
-
-      
+      localStorage.setItem("totals", JSON.stringify(state.totals));
     },
 
     setBalance: (state, action) => {
@@ -225,11 +248,53 @@ export const expenseSlice = createSlice({
 
     setBudget: (state, action) => {
       state.budget.monthlyBudget = action.payload;
-      state.budget.dailyBudget = Math.floor(action.payload/30);
-      state.budget.weeklyBudget = Math.floor(action.payload/30*7);
-      state.budget.quaterBudget = Math.floor(action.payload*3);
-      state.budget.yearBudget = Math.floor(action.payload*365/30);
+      state.budget.dailyBudget = Math.floor(action.payload / 30);
+      state.budget.weeklyBudget = Math.floor((action.payload / 30) * 7);
+      state.budget.quaterBudget = Math.floor(action.payload * 3);
+      state.budget.yearBudget = Math.floor((action.payload * 365) / 30);
       localStorage.setItem("budget", JSON.stringify(state.budget));
+    },
+
+    createExpensesAccToCatagory: (state, action) => {
+
+        state.catagoryExpenseData = [
+         { name: "Food", value: 0, color: "indigo" },
+          { name: "Transport", value: 0, color: "gray" },
+          { name: "Lodging", value: 0, color: "red" },
+          { name: "Gadgets", value: 0, color: "grape" },
+          { name: "Fees", value: 0, color: "cyan" },
+          { name: "Bills", value: 0, color: "teal" },
+          { name: "Miscellanous", value: 0, color: "limw" },
+          { name: "Others", value: 0, color: "orange" },
+        ]
+
+      const helperDataStorer = state.expenses.filter(
+        (expense) => {
+          const expenseDateMS = Date.parse(expense.date)
+          
+          
+        if ((Date.now() - expenseDateMS) / 86400000 < action.payload) {
+        
+          
+          
+          return expense
+        }
+        }
+      );
+     ;
+      
+      helperDataStorer.forEach((expense) => {
+        state.catagoryExpenseData.forEach((item) => {
+          console.log(expense.category);
+          
+          console.log(item.name);
+          if (expense.category.toLowerCase() === item.name.toLowerCase()) {
+            
+            
+            item.value += Number(expense.amount)
+          }
+        });
+      });
     },
   },
 });
@@ -242,5 +307,6 @@ export const {
   setBalance,
   setBudget,
   updateTotal,
+  createExpensesAccToCatagory
 } = expenseSlice.actions; // to use the reducers from components
 export default expenseSlice.reducer; // for store

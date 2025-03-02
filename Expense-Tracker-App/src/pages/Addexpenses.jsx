@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import ExpenseItem from '../components/Expenses/ExpenseItem';
 import { createDatasFromExpenseData } from '../features/chartDataSlice';
 import { calculateTotal } from '../features/expenseSlice';
-export const categoryList = ["food","transport","lodging" , "gadgets" , "fees" , "bills" ,"miscellenous" ,"others"]
+export const categoryList = ["Food","Transport","Lodging" , "Gadgets" , "Fees" , "Bills" ,"Miscellenous" ,"Others"]
 
 const Addexpenses = () => {
 // constant variables 

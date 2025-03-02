@@ -42,7 +42,7 @@ const Dashboard = () => {
         <AreaGraph />
       </div>
       
-      <DonutChartComponent/>
+      <DonutChartComponent timeframe={7}/>
      </div>
       <div
         id="nav-area"

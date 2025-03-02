@@ -211,8 +211,8 @@ function handleInputChange (e) {
     
     <div className='flex flex-col mt-[15vh] mb-2 items-center  min-h-[70vh]'>
       <h1 className='font-bold text-5xl text-center my-4 '>Track And Update Expenses</h1>
-      <div id="update-container" className='sm:w-[60vw] w-[50%]'>
-        <div id="update-options-container" className='flex justify-between gap-1'>
+      <div id="update-container" className='sm:w-[60vw] w-[50%] mt-4 font-semibold'>
+        <div id="update-options-container" className='flex justify-around gap-1'>
           <div className='flex flex-col justify-between w-1/3 items-center'>
           <label htmlFor="search-box">Search Items</label>
           <input type="text"
@@ -223,7 +223,7 @@ function handleInputChange (e) {
           }
           value={filterValues.search_value}
           name="search-box" id="search-box" placeholder='Search By Name, Amount ,Catagory Or Date'
-           className='outline-2 outline-indigo-900 px-2 py-1 rounded ' />
+           className='outline-[1.35px] outline-indigo-900 px-2 py-1 rounded ' />
            </div>
            <div className='flex flex-col items-center gap-1 justify-between '><label htmlFor='catagory-search' >Filter By Catagory</label>
           <select name="catagory-search" 
@@ -234,7 +234,7 @@ function handleInputChange (e) {
                    
                   }
           }
-          id="catagory-search" className='outline-2 w-full outline-indigo-900 px-2 py-1 rounded '>
+          id="catagory-search" className='outline-[1.35px] w-full outline-indigo-900 px-2 py-1 rounded '>
           <option value="all">All</option>
           {categoryList.map(catagory => {
             return <option value={catagory}>{catagory}</option>
@@ -249,7 +249,7 @@ function handleInputChange (e) {
                   
                   }
           }
-          name="search-date" id="search-date" className='outline-2 outline-indigo-900 px-2 py-1 rounded ' />
+          name="search-date" id="search-date" className='outline-[1.35px] outline-indigo-900 px-2 py-1 rounded ' />
         </div>
         </div>
      < ExpenseItem expenseArray={filteredData} showAllData={true} />

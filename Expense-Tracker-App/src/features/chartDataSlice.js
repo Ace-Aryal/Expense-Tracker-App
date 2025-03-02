@@ -202,7 +202,9 @@ export const chartSlice = createSlice({
               state.datas.weekData = state.datas.weekData.filter(data=> state.datas.weekData.indexOf(data) !== index)
             }
           })
-    }
+    } ,
+
+  
 
   },
 });

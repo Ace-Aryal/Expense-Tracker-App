@@ -52,7 +52,7 @@ const Reports = () => {
            <LineGraph />
            </div>
           
-           <DonutChartComponent/>
+           <DonutChartComponent timeframe={30}/>
            <RadialChart size={100} expense={thisMonthTotal} budget={monthlyBudget} message={`Expended  This Month`}/>
            <RadialChart size={100} expense={threeMonthTotal} budget={quaterBudget} message={`Expended  In Last 90 Days`}/>
            <RadialChart size={100} expense={oneYearTotal} budget={yearBudget} message={`Expended In Last 365 Days`}/>

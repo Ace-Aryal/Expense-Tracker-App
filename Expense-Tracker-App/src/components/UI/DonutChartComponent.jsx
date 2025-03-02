@@ -1,18 +1,24 @@
 // chart to compare different expenses acc to catagories\
 import { DonutChart } from '@mantine/charts';
- const data = [
-    { name: 'USA', value: 400, color: 'indigo.6' },
-    { name: 'India', value: 300, color: 'yellow.6' },
-    { name: 'Japan', value: 100, color: 'teal.6' },
-    { name: 'Other', value: 200, color: 'gray.6' },
-  ];
+import { useSelector , useDispatch } from 'react-redux';  
+import { createExpensesAccToCatagory } from '../../features/expenseSlice';
+import { useEffect } from 'react';
 
 
-function DonutChartComponent() {
+function DonutChartComponent({timeframe}) {
+  const dispatch = useDispatch()
+  const expenseData = useSelector (state => state.expense.expenses)
+ const data = useSelector(state=> state.expense.catagoryExpenseData)
+ console.log("catagory data" ,data);
+ 
+ useEffect(()=>{
+   dispatch(createExpensesAccToCatagory(timeframe))
+ },[expenseData])
+
   return (
   <div className="flex flex-col items-center text-indigo-600 font-semibold">
   <DonutChart data={data}  withLabelsLine={false} labelsType="percent" withLabels/>
-  <span>Last 7 Days Expense Breakdown</span>
+  <span>Last {timeframe} Days Expense Breakdown</span>
   </div>
   )
 }
