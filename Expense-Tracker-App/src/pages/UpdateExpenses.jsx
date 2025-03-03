@@ -3,6 +3,7 @@ import ExpenseItem from '../components/Expenses/ExpenseItem'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { categoryList } from './Addexpenses'
+import PainationButton from '../components/UI/painationButton'
 const updateExpenses = () => {
 
   const fetchedData = useSelector((state) => state.expense.expenses)
@@ -21,6 +22,9 @@ const updateExpenses = () => {
 
   // returning expenseData based on filters
 const [filteredData , setFilteredData ] = useState (fetchedData)
+const [pageNumber , setPageNumber] = useState(1)
+const [finalDisplayData , setFinalDisplayData] = useState(filteredData)
+const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredData.length/8))
 function handleFilter () {
 const {isCatagoryFilterOn, isDateFilterOn ,isSearchboxOn} = filterStateFLag
 console.log("cat" , isCatagoryFilterOn , "date" , isCatagoryFilterOn ,"search" ,isSearchboxOn);
@@ -197,21 +201,45 @@ function handleInputChange (e) {
     
 
   }
+
+  function handlePagination() {
+      const itemsPerPage = 8
+      setNumberOfPages(Math.ceil(filteredData.length/8))
+      
+      
+      const startIndex = (pageNumber-1)*itemsPerPage
+      const lastIndex = startIndex + itemsPerPage
+      const finalData = filteredData.slice(startIndex , lastIndex)
+      setFinalDisplayData(finalData)
+    
+  }
   
-  useEffect(()=> {
+  useEffect(()=> { 
     handleFilter()
+
+   
   },[filterStateFLag])
+
+  useEffect(()=> { // if the filtered values change paination is called 
+    handlePagination()
+  },[filteredData , pageNumber])
 
  useEffect(()=> { // if any data is modified on state , syncing it with ui 
   setFilteredData(fetchedData)
   handleFilter()
+  
  },[fetchedData])
   
+useEffect(()=> {
+  console.log("pageNum" , pageNumber);
+  
+},[pageNumber])
+
   return (
     
-    <div className='flex flex-col mt-[15vh] mb-2 items-center  min-h-[70vh]'>
+    <div className='flex flex-col mt-12 mb-2 items-center  min-h-[70vh]'>
       <h1 className='font-bold text-5xl text-center my-4 '>Track And Update Expenses</h1>
-      <div id="update-container" className='sm:w-[60vw] w-[50%] mt-4 font-semibold'>
+      <div id="update-container" className='sm:w-[60vw] w-[50%] mt-4 font-semibold mb-12'>
         <div id="update-options-container" className='flex justify-around gap-1'>
           <div className='flex flex-col justify-between w-1/3 items-center'>
           <label htmlFor="search-box">Search Items</label>
@@ -252,7 +280,15 @@ function handleInputChange (e) {
           name="search-date" id="search-date" className='outline-[1.35px] outline-indigo-900 px-2 py-1 rounded ' />
         </div>
         </div>
-     < ExpenseItem expenseArray={filteredData} showAllData={true} />
+     < ExpenseItem expenseArray={finalDisplayData} showAllData={true} />
+     <div className='flex justify-between '>
+      <span>Showing {pageNumber} of {numberOfPages} entries</span>
+      <div>
+      <PainationButton action="prev" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>    
+      <PainationButton action="next" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>
+      </div>
+      
+     </div>
     </div>
     </div>
   )

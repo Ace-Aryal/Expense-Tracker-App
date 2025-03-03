@@ -9,7 +9,7 @@ import DonutChartComponent from "../components/UI/DonutChartComponent";
 const Dashboard = () => {
   const dispatch = useDispatch()
   const{monthTotal ,todaytotal , weekTotal } = useSelector(state => state.expense.totals) 
-  const weeklyBudget = useSelector( state => state.expense.budget.weeklyBudget) || 0
+  const{ weeklyBudget , dailyBudget} = useSelector( state => state.expense.budget) || 0
 
 
      
@@ -29,7 +29,7 @@ const Dashboard = () => {
         className="flex justify-between mx-4 my-4 text-xl "
       >
         <span className="text-5xl font-bold ">Dashboard</span>
-        <div className="font-semibold">Spent ${todaytotal || 0} Today </div>
+        <div className={`font-semibold  ${todaytotal/ dailyBudget *100 <= 50 ? "text-green-600" : todaytotal/ dailyBudget *100 <80 && todaytotal/ dailyBudget *100 >50 ? "text-orange-400" : "text-red-500"}`}>Spent ${todaytotal || 0} Today </div>
       </div>
      <div className="flex w-full justify-around items-end">
      

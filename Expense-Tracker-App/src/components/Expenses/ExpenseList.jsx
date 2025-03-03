@@ -90,7 +90,7 @@ function ExpenseList({ item, showAllData, index }) {
         name="expense"
         readOnly={!isEditable}
         onChange={handleChange}
-        className={`input bg-[#5763ab] text-[#fbe6e4] px-2 py-0.5 ${item.id} ${isEditable?"outline-[1.5px] outline-indigo-950 rounded" : ""} `}
+        className={`input bg-[#5763ab]  text-[#fbe6e4] px-2 py-0.5 ${item.id} ${isEditable?"outline-[1.5px] outline-indigo-950 rounded" : ""} `}
         value={updatedData.expense}
       />
       <input
@@ -128,7 +128,7 @@ function ExpenseList({ item, showAllData, index }) {
         value={updatedData.date}
       />
       <button
-        className="bg-cyan-500 px-2 py-0.5"
+        className="bg-cyan-500 px-2 py-0.5 hover:bg-indigo-300"
         onClick={(e) => {
           e.preventDefault();
           handleUpdate();
@@ -142,7 +142,7 @@ function ExpenseList({ item, showAllData, index }) {
       </button>
       <button
         type="submit"
-        className="bg-red-500 px-2 py-0.5"
+        className="bg-red-500 px-2 py-0.5 hover:bg-orange-500"
         onClick={(e) => {
           e.preventDefault();
           handleDelete(e);

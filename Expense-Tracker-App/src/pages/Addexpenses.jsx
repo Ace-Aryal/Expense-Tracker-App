@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect , useState} from 'react'
 import { useDispatch } from 'react-redux';
 import { addItem } from '../features/expenseSlice';
 import { useSelector } from 'react-redux';
@@ -8,8 +8,8 @@ import { calculateTotal } from '../features/expenseSlice';
 export const categoryList = ["Food","Transport","Lodging" , "Gadgets" , "Fees" , "Bills" ,"Miscellenous" ,"Others"]
 
 const Addexpenses = () => {
-// constant variables 
-  
+
+const [today] = useState(new Date().toISOString().split("T")[0]);
   
 // state variables  // need to fix this for optimization use a object instead
  const [expense, setExpense] = React.useState('')
@@ -115,7 +115,7 @@ useEffect(() => {
         <div className='flex gap-2'>
           <label className='' htmlFor="date">Date</label>
           <input className='focus:outline-none focus:ring-indigo-600 
-        focus:ring-2 rounded' type="date" name="date" id="date" required value={date} onChange={(e) => { handlechange(e)}}/>
+        focus:ring-2 rounded' type="date" name="date" id="date" max={today} required value={date} onChange={(e) => { handlechange(e)}}/>
         </div>
         <div className='flex gap-4'>
           <label className='' htmlFor="category">Category</label>
@@ -127,7 +127,7 @@ useEffect(() => {
           </select>
           </div>
           </div>
-        <button className='mt-10 rounded bg-indigo-400 p-1 px-2 text-white ' type="submit">Add Expense</button>
+        <button className='mt-10 rounded bg-[#7950f2] hover:bg-indigo-400 p-1 px-2 text-white ' type="submit">Add Expense</button>
       </form>
       <h2 className='text-center text-xl font-semibold'>Recent Expenses</h2>
     <ExpenseItem expenseArray={fetchedData} showAllData={false} />
