@@ -20,13 +20,13 @@ function RadialChart({expense , budget ,size , message}) { //
 
 
 data[0].value = expense
-data[1].value = (budget - expense) > 0 ? budget-expense : 0
+data[1].value = (budget - expense) > 0 ? budget-expense : 0.00001 
 
 
 
   return ( 
   <div className="flex flex-col items-center text-indigo-600 font-semibold">
-  <DonutChart withLabelsLine={false} labelsType="percent" thickness={10} withLabels data={data} chartLabel= {`$ ${expense}/${budget} `}/>
+  <DonutChart withLabelsLine={false} labelsType="percent" thickness={10} withLabels data={data} chartLabel= {`$ ${expense}/${budget || 0} `}/>
   <span>{message}</span>
   </div>
   )

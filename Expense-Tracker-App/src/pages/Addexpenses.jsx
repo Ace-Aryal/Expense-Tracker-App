@@ -12,10 +12,24 @@ const Addexpenses = () => {
 const [today] = useState(new Date().toISOString().split("T")[0]);
   
 // state variables  // need to fix this for optimization use a object instead
- const [expense, setExpense] = React.useState('')
- const [amount, setAmount] = React.useState('')
-  const [date, setDate] = React.useState()
-  const [category, setCategory] = React.useState('food')
+ const [expenseItem, setExpenseItem] =useState({
+  id : new Date().getTime(),
+  expense: "",
+  amount : "",
+  category : "Food",
+  date : new Date().toISOString().split('T')[0],
+  isMapped : false,
+  addedDateFrame : {
+    addedToDay : false ,
+    addedToWeek : false ,
+    addedToMonth : false ,
+    addedToQuarter : false,
+    addedToYear : false,
+    addedToCalenderWeek : false ,
+    addedToCalenderMonth : false, 
+    addedToCalenderYear : false
+   }
+ })
  
   // dispatch function
   const dispatch = useDispatch()
@@ -25,23 +39,44 @@ const [today] = useState(new Date().toISOString().split("T")[0]);
   function handlechange(e){
     const {name, value} = e.target
     console.log(name, value);
+    console.log("item",expenseItem);
     
     if(name === 'expense'){
-      setExpense(value)
+      setExpenseItem(prevVal => {
+        return {
+          ...prevVal,
+          expense : value
+        }
+      })
       return
     }
     if(name === 'amount'){
-      setAmount(value)
+      setExpenseItem((prevVal => {
+        return {
+          ...prevVal,
+          amount : value
+        }
+      }))
       return
     }
     if(name === 'date') {
       
       
-      setDate(value)
+      setExpenseItem((prevVal => {
+        return {
+          ...prevVal,
+          date : value
+        }
+      }))
       return
     }
     if(name === 'category'){
-      setCategory(value)
+      setExpenseItem((prevVal => {
+        return {
+          ...prevVal,
+          category : value
+        }
+      }))
       return
   }
 }
@@ -49,34 +84,46 @@ const [today] = useState(new Date().toISOString().split("T")[0]);
 
 function handleSubmit(e){
   e.preventDefault()
-  const id = Date.now()
-  const expenseObj = {
-    id ,
-    expense,
-    amount,
-    date,
-    category ,
-    isMapped : false,
-    addedDateFrame : {
-      addedToDay : false ,
-      addedToWeek : false ,
-      addedToMonth : false ,
-      addedToQuarter : false,
-      addedToYear : false,
-      addedToCalenderWeek : false ,
-      addedToCalenderMonth : false, 
-      addedToCalenderYear : false
+  
+  
+  
+  
+   setExpenseItem(prevVal => {
+    const id = Date.now()
+    return {
+      id,
+      ...prevVal,
+      
     }
-    }
+   })
+    
+   console.log("item", expenseItem);
+   
+   
+    
 // upadate the redux store here using addExpense action
-  dispatch(addItem(expenseObj))
+  dispatch(addItem(expenseItem))
    dispatch(calculateTotal())
    
-  setExpense('')
-  setAmount('')
-  setDate('')
-  setCategory('')
-  
+  setExpenseItem({
+    id : new Date().getTime(),
+  expense: "",
+  amount : "",
+  category : "Food",
+  date : new Date().toISOString().split('T')[0],
+  isMapped : false,
+  addedDateFrame : {
+    addedToDay : false ,
+    addedToWeek : false ,
+    addedToMonth : false ,
+    addedToQuarter : false,
+    addedToYear : false,
+    addedToCalenderWeek : false ,
+    addedToCalenderMonth : false, 
+    addedToCalenderYear : false
+   }
+  })
+
   
 
 }
@@ -105,22 +152,22 @@ useEffect(() => {
         <div className='flex gap-2'>
           <label className='' htmlFor="expense">Expense</label>
           <input className='focus:outline-none  focus:ring-indigo-600 
-        focus:ring-2 rounded' type="text" name="expense" id="expense" placeholder="Enter expense" required value={expense} onChange={(e) => { handlechange(e)}}/>
+        focus:ring-2 rounded' type="text" name="expense" id="expense" placeholder="Enter expense" required value={expenseItem.expense} onChange={(e) => { handlechange(e)}}/>
         </div>
         <div className='flex gap-2'>
           <label className='' htmlFor="amount" >Amount</label>
           <input className='focus:outline-none focus:ring-indigo-600 
-        focus:ring-2 rounded' type="number" name="amount" id="amount" min={1} placeholder="Enter amount" required value={amount} onChange={(e) => { handlechange(e)}}/>
+        focus:ring-2 rounded' type="number" name="amount" id="amount" min={1} placeholder="Enter amount" required value={expenseItem.amount} onChange={(e) => { handlechange(e)}}/>
         </div>
         <div className='flex gap-2'>
           <label className='' htmlFor="date">Date</label>
           <input className='focus:outline-none focus:ring-indigo-600 
-        focus:ring-2 rounded' type="date" name="date" id="date" max={today} required value={date} onChange={(e) => { handlechange(e)}}/>
+        focus:ring-2 rounded' type="date" name="date" id="date" max={today} required value={ExpenseItem.date || new Date().toISOString().split('T')[0]} onChange={(e) => { handlechange(e)}}/>
         </div>
         <div className='flex gap-4'>
           <label className='' htmlFor="category">Category</label>
           <select className='focus:outline-none focus:ring-indigo-600 
-          focus:ring-2 rounded' name="category" id="category" required value={category} onChange={(e) => { handlechange(e)}}> { /*do it dynamically using array of catgories */}
+          focus:ring-2 rounded' name="category" id="category" required value={ExpenseItem.category} onChange={(e) => { handlechange(e)}}> { /*do it dynamically using array of catgories */}
            {categoryList.map(item => (
               <option value={item}>{item}</option>
            ))}

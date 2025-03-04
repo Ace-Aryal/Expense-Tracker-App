@@ -282,7 +282,7 @@ useEffect(()=> {
         </div>
      < ExpenseItem expenseArray={finalDisplayData} showAllData={true} />
      <div className='flex justify-between '>
-      <span>Showing {pageNumber} of {numberOfPages} entries</span>
+      <span>Showing {numberOfPages < 1 ? 0 : pageNumber} of {numberOfPages} entries</span>
       <div>
       <PaginationButton action="prev" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>    
       <PaginationButton action="next" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>

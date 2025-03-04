@@ -29,7 +29,7 @@ const Dashboard = () => {
         className="flex justify-between mx-4 my-4 text-xl "
       >
         <span className="text-5xl font-bold ">Dashboard</span>
-        <div className={`font-semibold  ${todaytotal/ dailyBudget *100 <= 50 ? "text-green-600" : todaytotal/ dailyBudget *100 <80 && todaytotal/ dailyBudget *100 >50 ? "text-orange-400" : "text-red-500"}`}>Spent ${todaytotal || 0} Today </div>
+        <div className={`font-semibold  ${(todaytotal === 0 ||todaytotal/ dailyBudget *100 <= 50) ? "text-green-600" : todaytotal/ dailyBudget *100 <80 && todaytotal/ dailyBudget *100 >50 ? "text-orange-400" : "text-red-500"}`}>Spent ${todaytotal || 0} Today </div>
       </div>
      <div className="flex w-full justify-around items-end">
      
