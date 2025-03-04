@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-function PainationButton({action , pageNumber , setPageNumber , numberOfPages}) {
+function PaginationButton({action , pageNumber , setPageNumber , numberOfPages}) {
 
     
 function handlePageChange(){
@@ -35,4 +35,4 @@ function handlePageChange(){
   )
 }
 
-export default PainationButton
+export default PaginationButton

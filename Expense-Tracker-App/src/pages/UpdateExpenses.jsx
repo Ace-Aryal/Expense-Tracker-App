@@ -3,7 +3,7 @@ import ExpenseItem from '../components/Expenses/ExpenseItem'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { categoryList } from './Addexpenses'
-import PainationButton from '../components/UI/painationButton'
+import PaginationButton from '../components/UI/PaginationButton'
 const updateExpenses = () => {
 
   const fetchedData = useSelector((state) => state.expense.expenses)
@@ -284,8 +284,8 @@ useEffect(()=> {
      <div className='flex justify-between '>
       <span>Showing {pageNumber} of {numberOfPages} entries</span>
       <div>
-      <PainationButton action="prev" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>    
-      <PainationButton action="next" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>
+      <PaginationButton action="prev" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>    
+      <PaginationButton action="next" pageNumber={pageNumber} numberOfPages={numberOfPages} setPageNumber={setPageNumber} handlePagination={handlePagination}/>
       </div>
       
      </div>
