@@ -171,7 +171,7 @@ export const chartSlice = createSlice({
     handleDataDelete : (state, action) =>{ // action.payload = {id,amt}
         const {id , deleteAmount} = action.payload
       
-      
+
           state.datas.monthData.map((data,index) => {
            
             if(data.dataBuildingIds.includes(id)) {
@@ -182,6 +182,9 @@ export const chartSlice = createSlice({
               
               data.dataBuildingIds = data.dataBuildingIds.filter(data=> data !== id)
             }
+
+            console.log("length m",state.datas.monthData[index].dataBuildingIds.length);
+            
             if(state.datas.monthData[index].dataBuildingIds.length === 0) {
               console.log("deleting");
               

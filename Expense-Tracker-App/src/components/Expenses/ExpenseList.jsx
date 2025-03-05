@@ -36,8 +36,8 @@ function ExpenseList({ item, showAllData, index }) {
      dispatch(updateTotal({id :item.id , adjustAmount : adjustAmount , date: item.date }))
      dispatch(setBalance())
      dispatch(handleDataDelete({id:item.id,deleteAmount:item.amount}))
-     dispatch(createDatasFromExpenseData(7))
-     dispatch(createDatasFromExpenseData(30))
+     //dispatch(createDatasFromExpenseData(7))
+     //dispatch(createDatasFromExpenseData(30))
 
      console.log("after deln" , chartdata);
      

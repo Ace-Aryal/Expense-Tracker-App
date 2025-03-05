@@ -67,7 +67,10 @@ const [today] = useState(new Date().toISOString().split("T")[0]);
           ...prevVal,
           date : value
         }
+        
       }))
+      console.log("date", expenseItem);
+
       return
     }
     if(name === 'category'){
@@ -162,7 +165,7 @@ useEffect(() => {
         <div className='flex gap-2'>
           <label className='' htmlFor="date">Date</label>
           <input className='focus:outline-none focus:ring-indigo-600 
-        focus:ring-2 rounded' type="date" name="date" id="date" max={today} required value={ExpenseItem.date || new Date().toISOString().split('T')[0]} onChange={(e) => { handlechange(e)}}/>
+        focus:ring-2 rounded' type="date" name="date" id="date" max={today} required value={ExpenseItem.date} onChange={(e) => { handlechange(e)}}/>
         </div>
         <div className='flex gap-4'>
           <label className='' htmlFor="category">Category</label>
