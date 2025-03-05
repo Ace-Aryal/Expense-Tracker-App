@@ -7,7 +7,6 @@ function InputField({submitBudget , isInputOn }) {
    const dispatch = useDispatch() 
    const monthlyBudget = useSelector(state=> state.expense.budget.monthlyBudget)
    const [value, setValue] = useState(monthlyBudget || 0);
-  console.log(submitBudget)
    if(submitBudget){
     dispatch(setBudget(value))
     dispatch(setBalance())

@@ -12,7 +12,6 @@ function AreaGraph() {
   }, [dispatch])
 
   const data = useSelector(state=> state.chartData.datas.weekData)
-  console.log("month graph data", data);
   
   return (
     <div className='flex flex-col justify-center items-center'>

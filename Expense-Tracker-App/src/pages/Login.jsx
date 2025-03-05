@@ -7,7 +7,6 @@ function Login(props) {
   );
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  console.log(credentialsListArr);
 
   function handleCreditianlsChange(e) {
     if (e.target.name === "email") {

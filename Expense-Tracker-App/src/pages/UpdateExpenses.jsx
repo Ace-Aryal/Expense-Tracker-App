@@ -27,8 +27,6 @@ const [finalDisplayData , setFinalDisplayData] = useState(filteredData)
 const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredData.length/8))
 function handleFilter () {
 const {isCatagoryFilterOn, isDateFilterOn ,isSearchboxOn} = filterStateFLag
-console.log("cat" , isCatagoryFilterOn , "date" , isCatagoryFilterOn ,"search" ,isSearchboxOn);
-console.log("cat" , filterValues.catagory , "date" , filterValues.date , "search" , filterValues.search_value)
 const {search_value , catagory , date} = filterValues
 if (isCatagoryFilterOn && isDateFilterOn && isSearchboxOn) {
  const filteredData = fetchedData.filter(expense => {
@@ -147,8 +145,6 @@ function handleInputChange (e) {
 
   function handleCatagoryChange(e) {
     const {value} = e.target
-    console.log("cat" ,value);
-    console.log("here ");
     
     
     
@@ -231,7 +227,6 @@ function handleInputChange (e) {
  },[fetchedData])
   
 useEffect(()=> {
-  console.log("pageNum" , pageNumber);
   
 },[pageNumber])
 

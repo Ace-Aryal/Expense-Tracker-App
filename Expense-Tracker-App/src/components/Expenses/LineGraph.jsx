@@ -15,7 +15,6 @@ function LineGraph(props) {
   
    
    const data = useSelector(state=> state.chartData.datas.monthData)
-  console.log("week chart data" ,data);
   
   return (
    <div className="flex flex-col items-center">

@@ -38,8 +38,6 @@ const [today] = useState(new Date().toISOString().split("T")[0]);
  
   function handlechange(e){
     const {name, value} = e.target
-    console.log(name, value);
-    console.log("item",expenseItem);
     
     if(name === 'expense'){
       setExpenseItem(prevVal => {
@@ -69,7 +67,6 @@ const [today] = useState(new Date().toISOString().split("T")[0]);
         }
         
       }))
-      console.log("date", expenseItem);
 
       return
     }
@@ -100,7 +97,6 @@ function handleSubmit(e){
     }
    })
     
-   console.log("item", expenseItem);
    
    
     

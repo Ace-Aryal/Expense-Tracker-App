@@ -36,24 +36,20 @@ export const chartSlice = createSlice({
       //action.payload is either 7 or 30
       const expensesData = JSON.parse(localStorage.getItem("expenses")) || [];
       
-      console.log("expensedata",expensesData);
-      
+
       // this variale temporarily stores the data either of 7 days or 30 days ,
         const helperDataStorer = expensesData.filter((expense) => { // filter only returns if condn is true but mp always returns sth
-          console.log("expense", expense.date);
           const expenseDateMS = Date.parse(expense.date)
         
          
          
           
           if ((Date.now() - expenseDateMS) / 86400000< action.payload) {
-            console.log(expense);
             
             return expense;
           }
           
         });
-  console.log("helper data storer", helperDataStorer);
   
       helperDataStorer.map((expense, index) => {  // 1st outer loop 
         let dailyAmount = 0;
@@ -78,10 +74,8 @@ export const chartSlice = createSlice({
               if (item.date === formattedDate) { // if datas  have same date seting to state,
               
                 
-                console.log("im inside 2nd 7");
                 
                 state.datas.weekData[index].amount = Number(dailyAmount);
-                console.log("expense id", expense.id);
                 
                 if (!state.datas.weekData[index].dataBuildingIds.includes(expense.id)) {
                   state.datas.weekData[index].dataBuildingIds.push(expense.id)
@@ -175,18 +169,14 @@ export const chartSlice = createSlice({
           state.datas.monthData.map((data,index) => {
            
             if(data.dataBuildingIds.includes(id)) {
-             console.log("reached here");
              
               data.amount -= deleteAmount
-              console.log("reduced amt");
               
               data.dataBuildingIds = data.dataBuildingIds.filter(data=> data !== id)
             }
 
-            console.log("length m",state.datas.monthData[index].dataBuildingIds.length);
             
             if(state.datas.monthData[index].dataBuildingIds.length === 0) {
-              console.log("deleting");
               
               state.datas.monthData = state.datas.monthData.filter(data=> state.datas.monthData.indexOf(data) !== index )
             }
@@ -200,7 +190,6 @@ export const chartSlice = createSlice({
               
             }
             if(state.datas.weekData[index].dataBuildingIds.length===0) {
-              console.log("deleting state");
               
               state.datas.weekData = state.datas.weekData.filter(data=> state.datas.weekData.indexOf(data) !== index)
             }

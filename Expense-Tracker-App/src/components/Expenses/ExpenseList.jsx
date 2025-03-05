@@ -28,10 +28,8 @@ function ExpenseList({ item, showAllData, index }) {
 
   function handleDelete(e) {
    const adjustAmount = 0 - item.amount
-   console.log("delete adjust amt" , adjustAmount);
    
     e.preventDefault();
-    console.log(item.id);
     dispatch(deleteItem(item.id)); // all the delete is handled by redux reducers
      dispatch(updateTotal({id :item.id , adjustAmount : adjustAmount , date: item.date }))
      dispatch(setBalance())
@@ -39,13 +37,11 @@ function ExpenseList({ item, showAllData, index }) {
      //dispatch(createDatasFromExpenseData(7))
      //dispatch(createDatasFromExpenseData(30))
 
-     console.log("after deln" , chartdata);
      
   }
 
   function handleChange(e) {
     const attributeKey = e.target.name;
-    console.log(attributeKey);
     
     setUpdatedData((prevdata) => {
       return {
@@ -53,12 +49,10 @@ function ExpenseList({ item, showAllData, index }) {
         [attributeKey]: e.target.value,
       };
     });
-    console.log(updatedData);
     
   }
 
   function handleUpdate() {
-    console.log("isEditable", isEditable)
     setIsEditable(!isEditable);
   
 

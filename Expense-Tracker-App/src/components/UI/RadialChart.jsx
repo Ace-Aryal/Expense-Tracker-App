@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 function RadialChart({expense , budget ,size , message}) { //
   const [percentage , setPercentage ] =  useState(expense/budget*100 || 0.1) //for optimization
-  console.log("percentage" ,percentage);
   
   const  data = [
     { name: 'Expended',

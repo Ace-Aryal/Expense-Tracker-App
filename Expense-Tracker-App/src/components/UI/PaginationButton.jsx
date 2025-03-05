@@ -24,7 +24,6 @@ function handlePageChange(){
 
         return prevVal+1
 })
-    console.log(pageNumber);
 }
 
 

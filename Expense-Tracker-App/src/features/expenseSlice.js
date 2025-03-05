@@ -66,7 +66,6 @@ export const expenseSlice = createSlice({
 
     deleteItem: (state = initialState, action) => {
       //expecting id as payload
-      console.log(action.payload);
 
       const updatedExpense = state.expenses.filter(
         (item) => item.id !== action.payload
@@ -86,7 +85,6 @@ export const expenseSlice = createSlice({
         return action.payload;
       });
       localStorage.setItem("expenses", JSON.stringify(state.expenses));
-      console.log(state.expenses);
     },
 
     calculateTotal: (state, action) => {
@@ -105,7 +103,6 @@ export const expenseSlice = createSlice({
         const expenselife = Math.floor((Date.now() - expenseDateMS) / 86400000);
 
         if (expense.isMapped) {
-          console.log(expense);
           // updates the total if the totals are outdated
           if (expenselife > 1 && expense.addedDateFrame.addedToDay)
             state.totals.todaytotal -= expense.amount;
@@ -185,12 +182,10 @@ export const expenseSlice = createSlice({
       const yearStart = startOfYear(now);
       const yearStartMS = new Date(yearStart).getTime();
       //expecting object containing id of expense an adjust amount
-      console.log("updating", state.totals);
 
       const expenseDateMS = Date.parse(action.payload.date);
       const expenseLife = (Date.now() - expenseDateMS) / 86_400_000; // in days
 
-      console.log("expense life", expenseLife);
 
       state.totals.allTimeTotal += action.payload.adjustAmount;
       if (expenseLife < 365) {
@@ -285,9 +280,7 @@ export const expenseSlice = createSlice({
       
       helperDataStorer.forEach((expense) => {
         state.catagoryExpenseData.forEach((item) => {
-          console.log(expense.category);
           
-          console.log(item.name);
           if (expense.category.toLowerCase() === item.name.toLowerCase()) {
             
             
