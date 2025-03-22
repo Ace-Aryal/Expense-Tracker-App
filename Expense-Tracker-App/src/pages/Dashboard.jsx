@@ -11,6 +11,20 @@ const Dashboard = () => {
   const { monthTotal, todaytotal, weekTotal } = useSelector(
     (state) => state.expense.totals
   );
+
+  const credentialsListArr = useSelector(
+    (state) => state.credentials.credentialsList
+  );
+
+  const credentialsListArrCopy = [...credentialsListArr];
+
+  const currentUserEmail = JSON.parse(sessionStorage.getItem("current-user"));
+
+  const currentUser = credentialsListArrCopy.filter(
+    (credentials) => credentials.email === currentUserEmail.email
+  );
+  console.log(currentUser);
+
   const { weeklyBudget, dailyBudget } =
     useSelector((state) => state.expense.budget) || 0;
 
@@ -49,6 +63,9 @@ const Dashboard = () => {
 
         <DonutChartComponent timeframe={7} />
       </div>
+      <p className="text-center mt-8 text-xl font-bold text-cyan-600">
+        Welcome {currentUser[0].username}
+      </p>
     </div>
   );
 };

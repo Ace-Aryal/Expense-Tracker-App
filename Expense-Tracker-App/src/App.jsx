@@ -20,12 +20,17 @@ function App() {
   const [isLoggedin, setIsLoggedin] = React.useState(false);
   const expenseObject = useSelector((state) => state.expense);
   useEffect(() => {
+    const currentUser = JSON.parse(sessionStorage.getItem("current-user"));
+
     dispatch(calculateTotal());
     dispatch(setBalance());
 
     // chart
     dispatch(createDatasFromExpenseData(7));
     dispatch(createDatasFromExpenseData(30));
+    if (currentUser) {
+      setIsLoggedin(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -37,10 +42,10 @@ function App() {
     <div className="bg-[#dfe8f1]">
       {isLoggedin && <Navbar setIsLoggedin={setIsLoggedin} />}
       <Routes>
+        <Route index element={<LandingPage setIsLoggedin={setIsLoggedin} />} />
         {!isLoggedin && (
           <>
             {" "}
-            <Route index element={<LandingPage />} />
             <Route path="signup" element={<Signup />} />
             <Route
               path="login"

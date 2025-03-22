@@ -18,7 +18,7 @@ export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="bg-white  dark:bg-gray-700 dark:text-white">
+    <div className="bg-white  dark:bg-[#a7c6ed] dark:text-white">
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
           aria-label="Global"
@@ -38,7 +38,7 @@ export default function LandingPage() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-800"
             >
               <span className="sr-only">Open main menu</span>
               <Bars3Icon aria-hidden="true" className="size-6" />
@@ -49,14 +49,14 @@ export default function LandingPage() {
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-sm/6 font-semibold text-gray-100"
+                className="text-sm/6 font-semibold text-gray-800"
               >
                 {item.name}
               </Link>
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link to="login" className="text-sm/6 font-semibold text-gray-100">
+            <Link to="login" className="text-sm/6 font-semibold text-teal-700">
               Log in <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>
@@ -128,7 +128,7 @@ export default function LandingPage() {
         </div>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
-            <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-100 sm:text-7xl">
+            <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-600 sm:text-7xl">
               Track Expenses Achive Goals
             </h1>
             <p className="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
@@ -145,7 +145,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 to="https://chatgpt.com"
-                className="text-sm/6 font-semibold text-gray-100"
+                className="text-sm/6 font-semibold text-indigo-500"
               >
                 Learn more <span aria-hidden="true">→</span>
               </Link>

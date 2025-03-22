@@ -32,6 +32,7 @@ export default function Navbar({ setIsLoggedin }) {
 
   function handleLogout() {
     setIsLoggedin(false);
+    sessionStorage.removeItem("current-user");
     navigate("/");
   }
 
@@ -57,8 +58,10 @@ export default function Navbar({ setIsLoggedin }) {
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
               <Link to="/">
-                {" "}
                 <img
+                  onClick={() => {
+                    sessionStorage.removeItem("current-user");
+                  }}
                   alt="Your Company"
                   src="https://logosandtypes.com/wp-content/uploads/2024/12/xsplit.svg"
                   className="h-8 w-auto"

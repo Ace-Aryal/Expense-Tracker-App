@@ -3,11 +3,7 @@ import { createSlice } from "@reduxjs/toolkit"
 export const authSlice = createSlice({
     name: "credentials",
     initialState: {
-        credentialsList: [{
-            username: "developer",
-            email: "admin@gmail.com",
-            password: "admin"
-        }
+        credentialsList: JSON.parse(localStorage.getItem("accounts")) || [
         ]
     },
     reducers: {
