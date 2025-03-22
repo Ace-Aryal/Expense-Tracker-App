@@ -1,27 +1,48 @@
 # Expense Tracker App
 
-A React-based application to efficiently manage and track your expenses. Monitor your spending habits, set budgets, and gain insights into your financial health.&#8203;:contentReference[oaicite:2]{index=2}
+An intuitive React-based application designed to help users efficiently manage and track their expenses. Monitor your spending habits, set budgets, and gain insights into your financial health with ease.
+
+---
+
+## Overview
+
+The Expense Tracker App allows users to add daily expenses, view a detailed history of transactions, set budgets per category, and visualize spending trends through interactive charts. The application is optimized for both desktop and mobile devices and uses local storage to persist data between sessions.
+
+---
 
 ## Features
 
-- **Add Expenses**: :contentReference[oaicite:3]{index=3}&#8203;:contentReference[oaicite:4]{index=4}
-- **Expense History**: :contentReference[oaicite:5]{index=5}&#8203;:contentReference[oaicite:6]{index=6}
-- **Budget Management**: :contentReference[oaicite:7]{index=7}&#8203;:contentReference[oaicite:8]{index=8}
-- **Data Persistence**: :contentReference[oaicite:9]{index=9}&#8203;:contentReference[oaicite:10]{index=10}
-- **Responsive Design**: :contentReference[oaicite:11]{index=11}&#8203;:contentReference[oaicite:12]{index=12}
+- **Add Expenses:**  
+  Easily record your daily expenses with details such as amount, category, and description.
+
+- **Expense History:**  
+  View a comprehensive list of all expenses with options to filter and sort by date, category, or amount.
+
+- **Budget Management:**  
+  Set monthly budgets for different categories and receive notifications when approaching budget limits.
+
+- **Data Persistence:**  
+  Utilizes local storage to securely save expenses and budget data, ensuring information is retained across sessions.
+
+- **Responsive Design:**  
+  Optimized for both desktop and mobile devices, providing a seamless user experience across various screen sizes.
+
+---
 
 ## Technologies Used
 
-- **Frontend**:
-  - :contentReference[oaicite:13]{index=13}&#8203;:contentReference[oaicite:14]{index=14}
-  - :contentReference[oaicite:15]{index=15}&#8203;:contentReference[oaicite:16]{index=16}
-  - :contentReference[oaicite:17]{index=17}&#8203;:contentReference[oaicite:18]{index=18}
+- **Frontend:**
+  - React.js
+  - HTML5
+  - CSS3
+
+---
 
 ## Installation
 
-To set up the Expense Tracker App locally:
+Follow these steps to set up the Expense Tracker App locally:
 
-1. **Clone the Repository**:
+1. **Clone the Repository:**
 
    ```bash
    git clone https://github.com/Ace-Aryal/Expense-Tracker-App.git
