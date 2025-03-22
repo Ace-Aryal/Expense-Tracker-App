@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 function Login(props) {
@@ -8,9 +8,10 @@ function Login(props) {
   );
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
+  const [unableToLogin, setUnableTologin] = useState(false);
   function handleCreditianlsChange(e) {
     if (e.target.name === "email") {
+      setUnableTologin(false);
       setEmail(e.target.value);
     } else {
       setPassword(e.target.value);
@@ -30,6 +31,8 @@ function Login(props) {
       return;
     }
     props.setIsLoggedin(false);
+    setEmail("Wrong Credentials");
+    setUnableTologin(true);
     return;
   }
 
@@ -66,10 +69,11 @@ function Login(props) {
                 </label>
                 <input
                   onChange={handleCreditianlsChange}
+                  value={email}
                   type="email"
                   name="email"
                   id="email"
-                  class="bg-gray-50 border border-gray-500 text-gray-900 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-[#c3d7f1] dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className={`${unableToLogin ? "text-red-500" : "dark:text-gray-900"} bg-gray-50 border border-gray-500  rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-[#c3d7f1] dark:border-gray-500 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   placeholder="name@company.com"
                   required=""
                 />
@@ -84,6 +88,7 @@ function Login(props) {
                 <input
                   onChange={handleCreditianlsChange}
                   type="password"
+                  value={password}
                   name="password"
                   id="password"
                   placeholder="••••••••"
