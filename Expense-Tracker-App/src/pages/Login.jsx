@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-
+import { Link, useNavigate } from "react-router-dom";
 function Login(props) {
+  const navigate = useNavigate();
   const credentialsListArr = useSelector(
     (state) => state.credentials.credentialsList
   );
@@ -18,17 +19,16 @@ function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    let results = credentialsListArr.find((cred) =>(cred.email === email && cred.password === password) ); 
-    if(results){
-      props.setIsLoggedin(true)
-      return
+    let results = credentialsListArr.find(
+      (cred) => cred.email === email && cred.password === password
+    );
+    if (results) {
+      props.setIsLoggedin(true);
+      navigate("/dashboard");
+      return;
     }
-    props.setIsLoggedin(false)
-    return
-  
-
-
-
+    props.setIsLoggedin(false);
+    return;
   }
 
   return (
@@ -124,12 +124,12 @@ function Login(props) {
               </button>
               <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
-                <a
-                  href="#"
+                <Link
+                  to="/signup"
                   class="font-medium text-indigo-600 hover:underline dark:text-indigo-500"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </form>
           </div>

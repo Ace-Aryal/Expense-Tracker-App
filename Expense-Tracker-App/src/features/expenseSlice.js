@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useState } from "react";
+
 import {
   format,
   startOfWeek,
@@ -56,7 +56,7 @@ export const expenseSlice = createSlice({
 
       return {
         ...state,
-        expenses: [...state.expenses, action.payload].sort(
+        expenses: [...state.expenses, action.payload].sort( // sort acc to date
           (a, b) =>
             Number(b.date.split("-").join("")) -
             Number(a.date.split("-").join(""))
@@ -104,35 +104,52 @@ export const expenseSlice = createSlice({
 
         if (expense.isMapped) {
           // updates the total if the totals are outdated
-          if (expenselife > 1 && expense.addedDateFrame.addedToDay)
-            state.totals.todaytotal -= expense.amount;
-          if (expenselife > 7 && expense.addedDateFrame.addedToWeek)
-            state.totals.weekTotal -= expense.amount;
-          if (expenselife > 30 && expense.addedDateFrame.addedToMonth)
-            state.totals.monthTotal -= expense.amount;
-          if (expenselife > 90 && expense.addedDateFrame.addedToQuarter)
-            state.totals.threeMonthTotal -= expense.amount;
-          if (expenselife > 365 && expense.addedDateFrame.adedToYear)
-            state.totals.oneYearTotal -= expense.amount;
+          if (expenselife > 1 && expense.addedDateFrame.addedToDay) {
+            state.totals.todaytotal -= expense.amount
+            expense.addedDateFrame.addedToDay = false
+          };
+          if (expenselife > 7 && expense.addedDateFrame.addedToWeek) {
+            state.totals.weekTotal -= expense.amount
+            expense.addedDateFrame.addedToWeek = false
+          };
+          if (expenselife > 30 && expense.addedDateFrame.addedToMonth) {
+            state.totals.monthTotal -= expense.amount
+            expense.addedDateFrame.addedToMonth = false
+          };
+          if (expenselife > 90 && expense.addedDateFrame.addedToQuarter) {
+            state.totals.threeMonthTotal -= expense.amount
+            expense.addedDateFrame.addedToQuarter = false
+          };
+          if (expenselife > 365 && expense.addedDateFrame.adedToYear) {
+            state.totals.oneYearTotal -= expense.amount
+            expense.addedDateFrame.adedToYear = false
+          };
           if (
             expense.addedDateFrame.addedToCalenderWeek &&
             expenseDateMS < weekStartMS
-          )
-            state.totals.thisWeekTotal -= expense.amount;
+          ) {
+            state.totals.thisWeekTotal -= expense.amount
+            expense.addedDateFrame.addedToCalenderWeek = false
+          };
           if (
             expense.addedDateFrame.addedToCalenderMonth &&
             expenseDateMS < monthStartMS
-          )
-            state.totals.thisMonthTotal -= expense.amount;
+          ) {
+            state.totals.thisMonthTotal -= expense.amount
+            expense.addedDateFrame.addedToCalenderMonth = false
+          };
           if (
             expense.addedDateFrame.addedToCalenderYear &&
             expenseDateMS < yearStartMS
-          )
-            state.totals.thisYearTotal -= expense.amount;
-          localStorage.setItem("totals", JSON.stringify(state.totals));
+          ) {
+            state.totals.thisYearTotal -= expense.amount
+            expense.addedDateFrame.addedToCalenderYear = false;
+          };
+
 
           return;
         }
+
         if (expenseDateMS > weekStartMS) {
           expense.addedDateFrame.addedToCalenderWeek = true;
           state.totals.thisWeekTotal += Number(expense.amount);
@@ -167,7 +184,7 @@ export const expenseSlice = createSlice({
         }
         state.totals.allTimeTotal += Number(expense.amount);
 
-        expense.isMapped = true;
+        expense.isMapped = true; // flags if totals are calculated or not using the expense
 
         localStorage.setItem("totals", JSON.stringify(state.totals));
       });
@@ -252,38 +269,38 @@ export const expenseSlice = createSlice({
 
     createExpensesAccToCatagory: (state, action) => {
 
-        state.catagoryExpenseData = [
-         { name: "Food", value: 0, color: "indigo" },
-          { name: "Transport", value: 0, color: "gray" },
-          { name: "Lodging", value: 0, color: "red" },
-          { name: "Gadgets", value: 0, color: "grape" },
-          { name: "Fees", value: 0, color: "cyan" },
-          { name: "Bills", value: 0, color: "teal" },
-          { name: "Miscellanous", value: 0, color: "limw" },
-          { name: "Others", value: 0, color: "orange" },
-        ]
+      state.catagoryExpenseData = [
+        { name: "Food", value: 0, color: "indigo" },
+        { name: "Transport", value: 0, color: "gray" },
+        { name: "Lodging", value: 0, color: "red" },
+        { name: "Gadgets", value: 0, color: "grape" },
+        { name: "Fees", value: 0, color: "cyan" },
+        { name: "Bills", value: 0, color: "teal" },
+        { name: "Miscellanous", value: 0, color: "limw" },
+        { name: "Others", value: 0, color: "orange" },
+      ]
 
       const helperDataStorer = state.expenses.filter(
         (expense) => {
           const expenseDateMS = Date.parse(expense.date)
-          
-          
-        if ((Date.now() - expenseDateMS) / 86400000 < action.payload) {
-        
-          
-          
-          return expense
-        }
+
+
+          if ((Date.now() - expenseDateMS) / 86400000 < action.payload) {
+
+
+
+            return expense
+          }
         }
       );
-     ;
-      
+      ;
+
       helperDataStorer.forEach((expense) => {
         state.catagoryExpenseData.forEach((item) => {
-          
+
           if (expense.category.toLowerCase() === item.name.toLowerCase()) {
-            
-            
+
+
             item.value += Number(expense.amount)
           }
         });

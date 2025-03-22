@@ -1,18 +1,21 @@
-import {createSlice} from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 
 export const authSlice = createSlice({
-    name : "credentials",
-    initialState : {
-        credentialsList:[{
-        email : "admin@gmail.com",
-        password : "admin"
-    }]},
-    reducers : {
-        changePassword : (state , action) =>{
-            state.password = action.payload
+    name: "credentials",
+    initialState: {
+        credentialsList: [{
+            username: "developer",
+            email: "admin@gmail.com",
+            password: "admin"
+        }
+        ]
+    },
+    reducers: {
+        createAccount: (state, action) => {
+            state.credentialsList.push(action.payload)
         }
     }
 })
 
-export const {changePassword} = authSlice.actions
+export const { createAccount } = authSlice.actions
 export default authSlice.reducer

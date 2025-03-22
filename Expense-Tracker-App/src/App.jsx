@@ -1,70 +1,68 @@
-import React, { useEffect, useMemo } from 'react'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import Layout from './router/Layout'
-import {  Routes, Route } from "react-router-dom";
-import Reports from './pages/Reports'
-import PageNotFound from './pages/PageNotFound'
-import Addexpenses from './pages/Addexpenses';
-import UpdateExpenses from './pages/UpdateExpenses';
-import Navbar from './components/Layouts/Navbar';
-import Footer from './components/Layouts/Footer';
-import { calculateTotal , setBalance} from './features/expenseSlice';
-import { useDispatch ,useSelector } from 'react-redux';
-import { createDatasFromExpenseData } from './features/chartDataSlice';
+import React, { useEffect, useMemo } from "react";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Layout from "./router/Layout";
+import { Routes, Route } from "react-router-dom";
+import Reports from "./pages/Reports";
+import PageNotFound from "./pages/PageNotFound";
+import Addexpenses from "./pages/Addexpenses";
+import UpdateExpenses from "./pages/UpdateExpenses";
+import Navbar from "./components/Layouts/Navbar";
+import Footer from "./components/Layouts/Footer";
+import { calculateTotal, setBalance } from "./features/expenseSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createDatasFromExpenseData } from "./features/chartDataSlice";
+import LandingPage from "./pages/LandingPage";
+import Signup from "./pages/Signup";
+
 function App() {
-  const dispatch = useDispatch()
-  const [isLoggedin , setIsLoggedin] = React.useState(false)
-  const chartData = useSelector(state=> state.chartData.datas)
-    useEffect( ()=> {
-      dispatch(calculateTotal())
-      dispatch(setBalance())
-     
-      dispatch(createDatasFromExpenseData(7))
-      dispatch(createDatasFromExpenseData(30))
-    } , [ ]
-    )
+  const dispatch = useDispatch();
+  const [isLoggedin, setIsLoggedin] = React.useState(false);
+  const expenseObject = useSelector((state) => state.expense);
+  useEffect(() => {
+    dispatch(calculateTotal());
+    dispatch(setBalance());
 
+    // chart
+    dispatch(createDatasFromExpenseData(7));
+    dispatch(createDatasFromExpenseData(30));
+  }, []);
 
-  
-  
-    
-  
+  useEffect(() => {
+    localStorage.setItem("totals", JSON.stringify(expenseObject.totals));
+    localStorage.setItem("expenses", JSON.stringify(expenseObject.expenses));
+  }, [calculateTotal]);
 
-  if(!isLoggedin){
-    return <Login setIsLoggedin={setIsLoggedin}/>
-  }
-  
-  
-
-  
   return (
+    <div className="bg-[#dfe8f1]">
+      {isLoggedin && <Navbar setIsLoggedin={setIsLoggedin} />}
+      <Routes>
+        {!isLoggedin && (
+          <>
+            {" "}
+            <Route index element={<LandingPage />} />
+            <Route path="signup" element={<Signup />} />
+            <Route
+              path="login"
+              element={<Login setIsLoggedin={setIsLoggedin} />}
+            />{" "}
+          </>
+        )}
+        {isLoggedin && (
+          <>
+            {" "}
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="analyse" element={<Reports />} />
+            <Route path="add" element={<Addexpenses />} />
+            <Route path="update" element={<UpdateExpenses />} />
+          </>
+        )}
 
-  <div className='bg-[#dfe8f1]'>
-    
-  <Navbar/>
-   <Routes>
-    
-          <Route index element={<Dashboard/>} />
-          <Route path="analyse" element={<Reports/>} />
-          <Route path="add" element={<Addexpenses/>} />
-          <Route path='update' element={<UpdateExpenses/>}/>
-
-        
-        <Route path="*" element={<PageNotFound/>} />
-
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
-  <Footer />
-      
-  
-</div>
+      {isLoggedin && <Footer />}
+    </div>
+  );
+}
 
-  
-   
-  )} 
-
-
-
-
-
-export default App
+export default App;
