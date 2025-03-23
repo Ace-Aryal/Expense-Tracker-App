@@ -31,7 +31,6 @@ export default function Navbar({ setIsLoggedin }) {
   );
 
   function handleLogout() {
-    setIsLoggedin(false);
     sessionStorage.removeItem("current-user");
     navigate("/");
   }

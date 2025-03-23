@@ -18,19 +18,18 @@ function Login(props) {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     let results = credentialsListArr.find(
       (cred) => cred.email === email && cred.password === password
     );
     if (results) {
-      props.setIsLoggedin(true);
-
       sessionStorage.setItem("current-user", JSON.stringify({ email }));
+      props.setCurrentuser(JSON.parse(sessionStorage.getItem("current-user")));
       navigate("/dashboard");
       return;
     }
-    props.setIsLoggedin(false);
+
     setEmail("Wrong Credentials");
     setUnableTologin(true);
     return;

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Layout from "./router/Layout";
@@ -17,26 +17,37 @@ import Signup from "./pages/Signup";
 
 function App() {
   const dispatch = useDispatch();
-  const [isLoggedin, setIsLoggedin] = React.useState(false);
+  const [isLoggedin, setIsLoggedin] = React.useState(
+    JSON.parse(sessionStorage.getItem("current-user"))
+  );
+  const [currentUser, setCurrentuser] = useState(
+    JSON.parse(sessionStorage.getItem("current-user"))
+  );
+
   const expenseObject = useSelector((state) => state.expense);
   useEffect(() => {
-    const currentUser = JSON.parse(sessionStorage.getItem("current-user"));
-
     dispatch(calculateTotal());
     dispatch(setBalance());
 
     // chart
     dispatch(createDatasFromExpenseData(7));
     dispatch(createDatasFromExpenseData(30));
-    if (currentUser) {
-      setIsLoggedin(true);
-    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("totals", JSON.stringify(expenseObject.totals));
     localStorage.setItem("expenses", JSON.stringify(expenseObject.expenses));
   }, [calculateTotal]);
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log(currentUser);
+
+      setIsLoggedin(true);
+      return;
+    }
+    setIsLoggedin(false);
+  }, [currentUser]);
 
   return (
     <div className="bg-[#dfe8f1]">
@@ -49,14 +60,14 @@ function App() {
             <Route path="signup" element={<Signup />} />
             <Route
               path="login"
-              element={<Login setIsLoggedin={setIsLoggedin} />}
+              element={<Login setCurrentuser={setCurrentuser} />}
             />{" "}
           </>
         )}
         {isLoggedin && (
           <>
             {" "}
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route path={`dashboard`} element={<Dashboard />} />
             <Route path="analyse" element={<Reports />} />
             <Route path="add" element={<Addexpenses />} />
             <Route path="update" element={<UpdateExpenses />} />
