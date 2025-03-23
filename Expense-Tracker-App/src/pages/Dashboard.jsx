@@ -23,7 +23,6 @@ const Dashboard = () => {
   const currentUser = credentialsListArrCopy.filter(
     (credentials) => credentials.email === currentUserEmail.email
   );
-  console.log(currentUser);
 
   const { weeklyBudget, dailyBudget } =
     useSelector((state) => state.expense.budget) || 0;

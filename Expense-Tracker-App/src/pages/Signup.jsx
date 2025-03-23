@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createAccount } from "../features/authSlice";
@@ -14,6 +14,7 @@ export default function Signup() {
   const creadentialsArray = useSelector(
     (state) => state.credentials.credentialsList
   );
+
   function handleInputchange(e) {
     const { name, value } = e.target;
     if (name === "username") {
@@ -45,15 +46,14 @@ export default function Signup() {
 
   function handleSignup(e) {
     e.preventDefault();
-
+    let exists = emailAlreadyExists;
     if (creadentialsArray) {
-      setEmailAlreadyExists(
-        creadentialsArray.find(
-          (credentials) => credentials.email === credentials.email
-        )
-      );
+      exists = creadentialsArray.some((existingCredentials) => {
+        return credentials.email === existingCredentials.email;
+      });
+      setEmailAlreadyExists(exists);
     }
-    if (emailAlreadyExists) {
+    if (exists) {
       setCredentials((prevval) => {
         return {
           ...prevval,
@@ -62,6 +62,7 @@ export default function Signup() {
       });
       return;
     }
+
     dispatch(createAccount(credentials));
     alert("Account created sucessfully ! Login to get started ");
     navigate("/login");
@@ -72,8 +73,6 @@ export default function Signup() {
     });
   }
   useEffect(() => {
-    console.log(creadentialsArray);
-
     localStorage.setItem("accounts", JSON.stringify(creadentialsArray));
   }, [handleSignup]);
 
