@@ -12,6 +12,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { Button } from "@mantine/core";
+import authService from "../../appwrite/authService";
+import { useState } from "react";
 
 const navigation = [
   { name: "Dashboard", href: "dashboard", current: true },
@@ -25,14 +27,21 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ setIsLoggedin }) {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const monthlyBalance = useSelector(
     (state) => state.expense.balance.monthlyBalance
   );
 
-  function handleLogout() {
-    sessionStorage.removeItem("current-user");
-    navigate("/");
+  async function handleLogout() {
+    try {
+      setIsLoading(true);
+      await authService.logout();
+      sessionStorage.removeItem("current-user");
+      navigate("/");
+    } catch (e) {
+      throw error;
+    }
   }
 
   return (
@@ -99,7 +108,7 @@ export default function Navbar({ setIsLoggedin }) {
             className="bg-none mx-2 p-2 rounded-xl text-indigo-500  shadow-gray-500 "
           >
             <span className="text font-semibold" aria-hidden="true">
-              Logout &rarr;
+              {isLoading ? "Logging out" : "Logout →"}
             </span>
           </button>
 

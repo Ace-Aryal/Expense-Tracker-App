@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 import {
   format,
@@ -15,6 +15,11 @@ import {
 export const expenseSlice = createSlice({
   name: "expense",
   initialState: {
+    allExpenses: {},
+    allTotals: {},
+    allBalances: {},
+    allBudgets: {},
+    currentUser: sessionStorage.getItem("current-user")?.email,
     expenses: JSON.parse(localStorage.getItem("expenses")) || [], // use this general syntax to avoid any unnecessary errors
     totals: JSON.parse(localStorage.getItem("totals")) || {
       todaytotal: 0,

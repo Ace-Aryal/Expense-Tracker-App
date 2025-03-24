@@ -2,11 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createAccount } from "../features/authSlice";
+import authService from "../appwrite/authService";
 export default function Signup() {
   const [credentials, setCredentials] = useState({
-    username: "",
     email: "",
     password: "",
+    username: "",
   });
   const [emailAlreadyExists, setEmailAlreadyExists] = useState(false);
   const dispatch = useDispatch();
@@ -44,37 +45,25 @@ export default function Signup() {
     }
   }
 
-  function handleSignup(e) {
+  async function handleSignup(e) {
     e.preventDefault();
-    let exists = emailAlreadyExists;
-    if (creadentialsArray) {
-      exists = creadentialsArray.some((existingCredentials) => {
-        return credentials.email === existingCredentials.email;
+    try {
+      await authService.createAccount({ ...credentials });
+      dispatch(createAccount(credentials));
+      alert("Account created sucessfully ! Login to get started ");
+      navigate("/login");
+      setCredentials({
+        username: "",
+        email: "",
+        password: "",
       });
-      setEmailAlreadyExists(exists);
+    } catch (error) {
+      throw error;
     }
-    if (exists) {
-      setCredentials((prevval) => {
-        return {
-          ...prevval,
-          email: "Account already exists with provided email address",
-        };
-      });
-      return;
-    }
-
-    dispatch(createAccount(credentials));
-    alert("Account created sucessfully ! Login to get started ");
-    navigate("/login");
-    setCredentials({
-      username: "",
-      email: "",
-      password: "",
-    });
   }
-  useEffect(() => {
-    localStorage.setItem("accounts", JSON.stringify(creadentialsArray));
-  }, [handleSignup]);
+  // useEffect(() => {
+  //   localStorage.setItem("accounts", JSON.stringify(creadentialsArray));
+  // }, [handleSignup]);
 
   return (
     <div className="dark:bg-[#a7c6ed] min-h-screen flex justify-center items-center">

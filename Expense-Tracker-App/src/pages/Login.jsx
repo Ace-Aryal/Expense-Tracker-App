@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import authService from "../appwrite/authService";
+
 function Login(props) {
   const navigate = useNavigate();
   const credentialsListArr = useSelector(
@@ -8,32 +10,42 @@ function Login(props) {
   );
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [isLoading, setIsloading] = useState(false);
   const [unableToLogin, setUnableTologin] = useState(false);
-  function handleCreditianlsChange(e) {
+  const handleCreditianlsChange = function (e) {
     if (e.target.name === "email") {
       setUnableTologin(false);
       setEmail(e.target.value);
     } else {
       setPassword(e.target.value);
     }
-  }
+    console.log("cred", email, password);
+  };
 
-  async function handleSubmit(e) {
+  const handleSubmit = useCallback(async function (e) {
     e.preventDefault();
-    let results = credentialsListArr.find(
-      (cred) => cred.email === email && cred.password === password
-    );
-    if (results) {
-      sessionStorage.setItem("current-user", JSON.stringify({ email }));
-      props.setCurrentuser(JSON.parse(sessionStorage.getItem("current-user")));
-      navigate("/dashboard");
-      return;
-    }
+    // authService.logout();
+    if (e.target.id != "form") return;
+    try {
+      console.log("cred", email, password);
+      const results = await authService.login({ email, password });
+      console.log("res", results);
 
-    setEmail("Wrong Credentials");
-    setUnableTologin(true);
-    return;
-  }
+      if (results) {
+        sessionStorage.setItem("current-user", JSON.stringify({ email }));
+        props.setCurrentuser(
+          JSON.parse(sessionStorage.getItem("current-user"))
+        );
+        navigate("/dashboard");
+        return;
+      }
+      setEmail("Wrong Credentials");
+      setIsloading(false);
+      setUnableTologin(true);
+    } catch (error) {
+      throw error;
+    }
+  }, []);
 
   return (
     <section class="bg-gray-50 dark:bg-[#a7c6ed]">
@@ -55,6 +67,7 @@ function Login(props) {
               Sign in to your account
             </h1>
             <form
+              id="form"
               onSubmit={handleSubmit}
               class="space-y-4 md:space-y-6"
               action="#"
@@ -126,7 +139,7 @@ function Login(props) {
                 type="submit"
                 class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
               >
-                Sign in
+                {isLoading ? "Signing In" : "Sign In"}
               </button>
               <p class="text-sm font-light text-gray-500 dark:text-gray-800">
                 Don’t have an account yet?{" "}
