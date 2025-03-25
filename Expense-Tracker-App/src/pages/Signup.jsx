@@ -54,6 +54,10 @@ export default function Signup() {
       dispatch(createAccount(credentials));
       alert("Account created sucessfully ! Login to get started ");
       navigate("/login");
+
+      // const response = await databaseService.createUserDocument({ email });
+      // console.log("response", response);
+
       setCredentials({
         username: "",
         email: "",

@@ -39,7 +39,13 @@ export default function Navbar({ setIsLoggedin }) {
     setIsLoading(true);
     try {
       await authService.logout();
-      dispatch(setCurrentUser("Admin"));
+      dispatch(
+        setCurrentUser({
+          username: "",
+          email: "",
+          isDocumentCreated: false,
+        })
+      );
       sessionStorage.removeItem("current-user");
       navigate("/");
     } catch (e) {

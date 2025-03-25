@@ -5,7 +5,8 @@ export const authSlice = createSlice({
     initialState: {
         currentUser: {
             username: "Admin",
-            email: ""
+            email: "",
+            isDocumentCreated: false
         },
         credentialsList: JSON.parse(localStorage.getItem("accounts")) || [
         ]
@@ -16,10 +17,13 @@ export const authSlice = createSlice({
         },
         setCurrentUser: (state, action) => {
             state.currentUser = action.payload
+        },
+        setIsDocumentCreated: (state, action) => {
+            state.currentUser.isDocumentCreated = action.payload
         }
 
     }
 })
 
-export const { createAccount, setCurrentUser } = authSlice.actions
+export const { createAccount, setCurrentUser, setIsDocumentCreated } = authSlice.actions
 export default authSlice.reducer

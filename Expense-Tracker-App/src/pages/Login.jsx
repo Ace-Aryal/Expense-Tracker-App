@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import authService from "../appwrite/authService";
+import databaseService from "../appwrite/databaseService";
+import { setCurrentUser } from "../features/authSlice";
 
 function Login(props) {
   const navigate = useNavigate();
-  const credentialsListArr = useSelector(
-    (state) => state.credentials.credentialsList
-  );
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.credentials.currentUser);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isLoading, setIsloading] = useState(false);
@@ -39,12 +40,15 @@ function Login(props) {
         console.log("res", results);
 
         if (results) {
+          dispatch(
+            setCurrentUser({ ...currentUser, email, username: "Admin" })
+          );
           sessionStorage.setItem("current-user", JSON.stringify({ email }));
+
           props.setCurrentuser(
             JSON.parse(sessionStorage.getItem("current-user"))
           );
           navigate("/dashboard");
-          return;
         }
       } catch (error) {
         setEmail("Wrong Credentials");

@@ -8,31 +8,55 @@ import { createDatasFromExpenseData } from "../features/chartDataSlice";
 import DonutChartComponent from "../components/UI/DonutChartComponent";
 import authService from "../appwrite/authService";
 import { setCurrentUser } from "../features/authSlice";
+import databaseService from "../appwrite/databaseService";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { monthTotal, todaytotal, weekTotal } = useSelector(
     (state) => state.expense.totals
   );
-  const currentUser = useSelector(
-    (state) => state.credentials.currentUser.username
-  );
+  const currentUser = useSelector((state) => state.credentials.currentUser);
 
   const { weeklyBudget, dailyBudget } =
     useSelector((state) => state.expense.budget) || 0;
 
   async function handleCurrentUser() {
-    if (currentUser !== "Admin") return;
+    console.log(currentUser);
+
+    if (currentUser.username !== "Admin" && !currentUser.username) return;
     try {
       const user = await authService.getCurrentUser();
-      console.log("curr", user);
 
       if (user.status) {
-        dispatch(setCurrentUser({ username: user.name, email: user.email }));
+        dispatch(
+          setCurrentUser({
+            ...currentUser,
+            username: user.name,
+            email: user.email,
+          })
+        );
+        handleDocumentCreation();
         return;
       }
-      dispatch(setCurrentUser({ username: "Admmin", email: "" }));
     } catch (error) {
-      dispatch(setCurrentUser({ username: "Admmin", email: "" }));
+      dispatch(
+        setCurrentUser({ ...currentUser, username: "Admmin", email: "" })
+      );
+      console.error(error);
+    }
+  }
+  async function handleDocumentCreation() {
+    console.log(currentUser);
+
+    if (currentUser.username === "Admin" || currentUser.isDocumentCreated)
+      return;
+
+    const { email } = currentUser;
+    console.log(email);
+    try {
+      const response = await databaseService.getuserDocument({ email });
+      if (response.total !== 0) return;
+      databaseService.createUserDocument(currentUser.email);
+    } catch (error) {
       console.error(error);
     }
   }
@@ -75,7 +99,7 @@ const Dashboard = () => {
         <DonutChartComponent timeframe={7} />
       </div>
       <p className="text-center mt-8 text-xl font-bold text-cyan-600">
-        Welcome {currentUser || "Admin"}
+        Welcome {`${currentUser.username}` || "Admin"}
       </p>
     </div>
   );
