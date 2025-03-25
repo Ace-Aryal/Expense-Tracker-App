@@ -12,6 +12,7 @@ export default function Signup() {
   const [emailAlreadyExists, setEmailAlreadyExists] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsloadiing] = useState(false);
   const creadentialsArray = useSelector(
     (state) => state.credentials.credentialsList
   );
@@ -48,6 +49,7 @@ export default function Signup() {
   async function handleSignup(e) {
     e.preventDefault();
     try {
+      setIsloadiing(true);
       await authService.createAccount({ ...credentials });
       dispatch(createAccount(credentials));
       alert("Account created sucessfully ! Login to get started ");
@@ -58,7 +60,9 @@ export default function Signup() {
         password: "",
       });
     } catch (error) {
-      throw error;
+      console.error(error);
+    } finally {
+      setIsloadiing(false);
     }
   }
   // useEffect(() => {
@@ -170,7 +174,7 @@ export default function Signup() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign Up
+                {isLoading ? "Signing Up" : "Sign Up"}
               </button>
             </div>
           </form>

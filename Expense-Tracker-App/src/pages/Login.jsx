@@ -13,39 +13,49 @@ function Login(props) {
   const [isLoading, setIsloading] = useState(false);
   const [unableToLogin, setUnableTologin] = useState(false);
   const handleCreditianlsChange = function (e) {
-    if (e.target.name === "email") {
+    const { name } = e.target;
+    console.log("cred", email, password);
+    if (name === "email") {
       setUnableTologin(false);
       setEmail(e.target.value);
-    } else {
-      setPassword(e.target.value);
+      return;
     }
-    console.log("cred", email, password);
+
+    if (name === "password") {
+      setPassword(e.target.value);
+      return;
+    }
   };
 
-  const handleSubmit = useCallback(async function (e) {
-    e.preventDefault();
-    // authService.logout();
-    if (e.target.id != "form") return;
-    try {
-      console.log("cred", email, password);
-      const results = await authService.login({ email, password });
-      console.log("res", results);
+  const handleSubmit = useCallback(
+    async function (e) {
+      e.preventDefault();
+      // authService.logout();
 
-      if (results) {
-        sessionStorage.setItem("current-user", JSON.stringify({ email }));
-        props.setCurrentuser(
-          JSON.parse(sessionStorage.getItem("current-user"))
-        );
-        navigate("/dashboard");
-        return;
+      try {
+        setIsloading(true);
+        console.log("cred", email, password);
+        const results = await authService.login({ email, password });
+        console.log("res", results);
+
+        if (results) {
+          sessionStorage.setItem("current-user", JSON.stringify({ email }));
+          props.setCurrentuser(
+            JSON.parse(sessionStorage.getItem("current-user"))
+          );
+          navigate("/dashboard");
+          return;
+        }
+      } catch (error) {
+        setEmail("Wrong Credentials");
+        setUnableTologin(true);
+        console.error(error);
+      } finally {
+        setIsloading(false);
       }
-      setEmail("Wrong Credentials");
-      setIsloading(false);
-      setUnableTologin(true);
-    } catch (error) {
-      throw error;
-    }
-  }, []);
+    },
+    [email, password]
+  );
 
   return (
     <section class="bg-gray-50 dark:bg-[#a7c6ed]">

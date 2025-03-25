@@ -10,10 +10,11 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@mantine/core";
 import authService from "../../appwrite/authService";
 import { useState } from "react";
+import { setCurrentUser } from "../../features/authSlice";
 
 const navigation = [
   { name: "Dashboard", href: "dashboard", current: true },
@@ -27,6 +28,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ setIsLoggedin }) {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const monthlyBalance = useSelector(
@@ -34,13 +36,17 @@ export default function Navbar({ setIsLoggedin }) {
   );
 
   async function handleLogout() {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       await authService.logout();
+      dispatch(setCurrentUser("Admin"));
       sessionStorage.removeItem("current-user");
       navigate("/");
     } catch (e) {
-      throw error;
+      alert("Error logging out , Try again");
+      console.error(e);
+    } finally {
+      setIsLoading(false);
     }
   }
 
