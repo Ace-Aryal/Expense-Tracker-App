@@ -5,11 +5,11 @@ import { createDatasFromExpenseData } from '../../features/chartDataSlice';
 import {useEffect} from "react"
 function AreaGraph() {
   const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(createDatasFromExpenseData(7))
+  // useEffect(() => {
+  //   dispatch(createDatasFromExpenseData(7))
 
     
-  }, [dispatch])
+  // }, [dispatch])
 
   const data = useSelector(state=> state.chartData.datas.weekData)
   

@@ -46,7 +46,7 @@ function Login(props) {
           sessionStorage.setItem("current-user", JSON.stringify({ email }));
 
           props.setCurrentuser(
-            JSON.parse(sessionStorage.getItem("current-user"))
+            currentUser
           );
           navigate("/dashboard");
         }

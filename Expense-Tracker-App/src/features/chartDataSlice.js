@@ -5,6 +5,7 @@ import { useEffect } from "react";
 export const chartSlice = createSlice({
   name: "chartData",
   initialState: {
+
     datas: {
       weekData: [],
       monthData: [],
@@ -33,9 +34,10 @@ export const chartSlice = createSlice({
 
       }
 
-      //action.payload is either 7 or 30
-      const expensesData = JSON.parse(localStorage.getItem("expenses")) || [];
+      //action.payload.noOfDays is either 7 or 30
+      const expensesData = action.payload.expenses || [];
 
+      console.log("exp data", expensesData);
 
       // this variale temporarily stores the data either of 7 days or 30 days ,
       const helperDataStorer = expensesData.filter((expense) => { // filter only returns if condn is true but mp always returns sth
@@ -44,7 +46,7 @@ export const chartSlice = createSlice({
 
 
 
-        if ((Date.now() - expenseDateMS) / 86400000 < action.payload) {
+        if ((Date.now() - expenseDateMS) / 86400000 < action.payload.noOfDays) {
 
           return expense;
         }
@@ -64,7 +66,7 @@ export const chartSlice = createSlice({
           }
         });
 
-        if (action.payload === 7) { // for 7 day graoh
+        if (action.payload.noOfDays === 7) { // for 7 day graoh
 
           state.datas.weekData.map((item, index) => {
             const formattedDate = format(parseISO(expense.date), "MMM-d"); // date format like Apr-9
@@ -88,7 +90,7 @@ export const chartSlice = createSlice({
 
         }
 
-        if (action.payload === 30) {// same but for 30 day
+        if (action.payload.noOfDays === 30) {// same but for 30 day
           state.datas.monthData.map((item, index) => {
             const formattedDate = format(parseISO(expense.date), "MMM-d");
             if (item.date === formattedDate) {
@@ -110,11 +112,11 @@ export const chartSlice = createSlice({
 
         const formattedDate = format(parseISO(date), "MMM-d"); // Outputs: Feb-16
 
-        if (action.payload === 7) {
+        if (action.payload.noOfDays === 7) {
           const DailyExpensesTotal = new DailyExpensesTotals(formattedDate, dailyAmount, id, [expense.id])
           state.datas.weekData = [DailyExpensesTotal.toPlainObject(), ...state.datas.weekData]
         }
-        if (action.payload === 30) {
+        if (action.payload.noOfDays === 30) {
           const DailyExpensesTotal = new DailyExpensesTotals(formattedDate, dailyAmount, id, [expense.id])
           state.datas.monthData = [
             DailyExpensesTotal.toPlainObject(), ...state.datas.monthData
@@ -123,7 +125,7 @@ export const chartSlice = createSlice({
       });
 
       // to delete outdated items
-      if (action.payload == 7) {
+      if (action.payload.noOfDays == 7) {
         helperDataStorer.map((expense) => {
           const filteredArray =
             state.datas.weekData.filter(
@@ -139,7 +141,7 @@ export const chartSlice = createSlice({
           return;
         });
 
-        if (action.payload == 30) {
+        if (action.payload.noOfDays == 30) {
           helperDataStorer.map((expense) => {
             const filteredArray =
               state.datas.weekData.filter(

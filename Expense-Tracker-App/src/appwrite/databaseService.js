@@ -25,10 +25,30 @@ export class Services {
             const response = await this.database.createDocument(conf.appwritreDatabaseID, conf.appwritreCollectionID, ID.unique(), {
 
                 email,
-                expenses: "",
-                totals: "",
-                balance: "",
-                budget: ""
+                expenses: "[]",
+                totals: JSON.stringify({
+                    todaytotal: 0,
+                    weekTotal: 0,
+                    monthTotal: 0,
+                    threeMonthTotal: 0,
+                    oneYearTotal: 0,
+                    allTimeTotal: 0,
+                    thisWeekTotal: 0,
+                    thisMonthTotal: 0,
+                    thisYearTotal: 0
+                }),
+                balance: JSON.stringify({
+                    dailyBalance: 0,
+                    weeklyBalance: 0,
+                    monthlyBalance: 0,
+                    quaterlyBalance: 0,
+                    yearlyBalance: 0,
+                },),
+
+                budget: JSON.stringify({
+                    monthlyBudget: 0,
+                    dailyBudget: 0,
+                })
             })
             console.log(response);
             return response
@@ -42,19 +62,21 @@ export class Services {
         }
     }
 
-    async updateUserDocument({ email, expenses, totals, balance, budget }) {
+    async updateUserDocument({ email, expenses, totals, balance, budget, documentID }) {
         try {
+            console.log(documentID);
+
             const response = await this.database.updateDocument(
                 conf.appwritreDatabaseID,
                 conf.appwritreCollectionID,
+                documentID, {
 
-                JSON.stringify({
-                    email,
-                    expenses,
-                    totals,
-                    balance,
-                    budget
-                })
+                email,
+                expenses: JSON.stringify(expenses),
+                totals: JSON.stringify(totals),
+                balance: JSON.stringify(balance),
+                budget: JSON.stringify(budget)
+            }
             )
 
         } catch (error) {
@@ -81,7 +103,7 @@ export class Services {
 
 
     async getuserDocument({ email }) {
-        console.log(email);
+
 
         try {
             return this.database.listDocuments(

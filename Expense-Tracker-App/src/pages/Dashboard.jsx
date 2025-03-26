@@ -8,63 +8,16 @@ import { createDatasFromExpenseData } from "../features/chartDataSlice";
 import DonutChartComponent from "../components/UI/DonutChartComponent";
 import authService from "../appwrite/authService";
 import { setCurrentUser } from "../features/authSlice";
-import databaseService from "../appwrite/databaseService";
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { monthTotal, todaytotal, weekTotal } = useSelector(
     (state) => state.expense.totals
   );
+  const stateExpenses = useSelector((state) => state.expense);
   const currentUser = useSelector((state) => state.credentials.currentUser);
-
   const { weeklyBudget, dailyBudget } =
     useSelector((state) => state.expense.budget) || 0;
-
-  async function handleCurrentUser() {
-    console.log(currentUser);
-
-    if (currentUser.username !== "Admin" && !currentUser.username) return;
-    try {
-      const user = await authService.getCurrentUser();
-
-      if (user.status) {
-        dispatch(
-          setCurrentUser({
-            ...currentUser,
-            username: user.name,
-            email: user.email,
-          })
-        );
-        handleDocumentCreation();
-        return;
-      }
-    } catch (error) {
-      dispatch(
-        setCurrentUser({ ...currentUser, username: "Admmin", email: "" })
-      );
-      console.error(error);
-    }
-  }
-  async function handleDocumentCreation() {
-    console.log(currentUser);
-
-    if (currentUser.username === "Admin" || currentUser.isDocumentCreated)
-      return;
-
-    const { email } = currentUser;
-    console.log(email);
-    try {
-      const response = await databaseService.getuserDocument({ email });
-      if (response.total !== 0) return;
-      databaseService.createUserDocument(currentUser.email);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    dispatch(createDatasFromExpenseData(7));
-    handleCurrentUser();
-  }, []);
 
   return (
     <div

@@ -8,7 +8,7 @@ export const authSlice = createSlice({
             email: "",
             isDocumentCreated: false
         },
-        credentialsList: JSON.parse(localStorage.getItem("accounts")) || [
+        credentialsList: [
         ]
     },
     reducers: {

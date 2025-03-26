@@ -15,13 +15,9 @@ import {
 export const expenseSlice = createSlice({
   name: "expense",
   initialState: {
-    allExpenses: {},
-    allTotals: {},
-    allBalances: {},
-    allBudgets: {},
-    currentUser: sessionStorage.getItem("current-user")?.email,
-    expenses: JSON.parse(localStorage.getItem("expenses")) || [], // use this general syntax to avoid any unnecessary errors
-    totals: JSON.parse(localStorage.getItem("totals")) || {
+    documentID: null,
+    expenses: [], // use this general syntax to avoid any unnecessary errors
+    totals: {
       todaytotal: 0,
       weekTotal: 0,
       monthTotal: 0,
@@ -32,14 +28,14 @@ export const expenseSlice = createSlice({
       thisMonthTotal: 0,
       thisYearTotal: 0,
     },
-    balance: JSON.parse(localStorage.getItem("balance")) || {
+    balance: {
       dailyBalance: 0,
       weeklyBalance: 0,
       monthlyBalance: 0,
       quaterlyBalance: 0,
       yearlyBalance: 0,
     },
-    budget: JSON.parse(localStorage.getItem("budget")) || {
+    budget: {
       monthlyBudget: 0,
       dailyBudget: 0,
     },
@@ -56,17 +52,23 @@ export const expenseSlice = createSlice({
   },
 
   reducers: {
+    setDatas: (state, action) => {
+      state.documentID = action.payload.documentID
+      state.expenses = action.payload.expenses
+      state.totals = action.payload.totals
+      state.budget = action.payload.budget
+      state.balance = action.payload.balance
+    },
+
     addItem: (state = initialState, action) => {
       //expecting object as payload
 
-      return {
-        ...state,
-        expenses: [...state.expenses, action.payload].sort( // sort acc to date
-          (a, b) =>
-            Number(b.date.split("-").join("")) -
-            Number(a.date.split("-").join(""))
-        ),
-      };
+      state.expenses = [...state.expenses, action.payload].sort( // sort acc to date
+        (a, b) =>
+          Number(b.date.split("-").join("")) -
+          Number(a.date.split("-").join(""))
+      )
+
     },
 
     deleteItem: (state = initialState, action) => {
@@ -77,7 +79,6 @@ export const expenseSlice = createSlice({
       );
 
       state.expenses = updatedExpense;
-      localStorage.setItem("expenses", JSON.stringify(state.expenses));
 
       // in reudux toolkit we can mutate the state directly but not in react with useState
     },
@@ -89,7 +90,6 @@ export const expenseSlice = createSlice({
         }
         return action.payload;
       });
-      localStorage.setItem("expenses", JSON.stringify(state.expenses));
     },
 
     calculateTotal: (state, action) => {
@@ -191,7 +191,6 @@ export const expenseSlice = createSlice({
 
         expense.isMapped = true; // flags if totals are calculated or not using the expense
 
-        localStorage.setItem("totals", JSON.stringify(state.totals));
       });
     },
 
@@ -236,7 +235,6 @@ export const expenseSlice = createSlice({
         state.totals.thisYearTotal += action.payload.adjustAmount;
       }
 
-      localStorage.setItem("totals", JSON.stringify(state.totals));
     },
 
     setBalance: (state, action) => {
@@ -251,16 +249,7 @@ export const expenseSlice = createSlice({
       state.balance.yearlyBalance =
         (state.budget.monthlyBudget / 30) * 365 - state.totals.oneYearTotal;
 
-      localStorage.setItem(
-        "balance",
-        JSON.stringify({
-          dailyBalance: state.balance.dailyBalance,
-          weeklyBalance: state.balance.weeklyBalance,
-          monthlyBalance: state.balance.monthlyBalance,
-          quaterlyBalance: state.balance.quaterlyBalance,
-          yearlyBalance: state.balance.yearlyBalance,
-        })
-      );
+
     },
 
     setBudget: (state, action) => {
@@ -269,7 +258,6 @@ export const expenseSlice = createSlice({
       state.budget.weeklyBudget = Math.floor((action.payload / 30) * 7);
       state.budget.quaterBudget = Math.floor(action.payload * 3);
       state.budget.yearBudget = Math.floor((action.payload * 365) / 30);
-      localStorage.setItem("budget", JSON.stringify(state.budget));
     },
 
     createExpensesAccToCatagory: (state, action) => {
@@ -322,6 +310,7 @@ export const {
   setBalance,
   setBudget,
   updateTotal,
-  createExpensesAccToCatagory
+  createExpensesAccToCatagory,
+  setDatas
 } = expenseSlice.actions; // to use the reducers from components
 export default expenseSlice.reducer; // for store
