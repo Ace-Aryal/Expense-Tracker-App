@@ -34,8 +34,13 @@ The Expense Tracker App allows users to add daily expenses, view a detailed hist
 - **Frontend:**
   - React.js
   - HTML5
-  - CSS3
+  - Tailwind CSS
+  - Mantine UI
+  - Fontawesome
 
+- **Backend and deployment**
+  -Appwrite (Database and Authentication)
+  -Vercel 
 ---
 
 ## Installation
@@ -45,4 +50,4 @@ Follow these steps to set up the Expense Tracker App locally:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/Ace-Aryal/Expense-Tracker-App.git
+   git clone https://github.com/Ace-Aryal/Xpenso.git
