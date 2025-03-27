@@ -1,4 +1,4 @@
-# Expense Tracker App
+# XPENSO
 
 An intuitive React-based application designed to help users efficiently manage and track their expenses. Monitor your spending habits, set budgets, and gain insights into your financial health with ease.
 
