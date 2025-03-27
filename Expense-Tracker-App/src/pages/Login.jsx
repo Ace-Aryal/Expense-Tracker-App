@@ -43,11 +43,8 @@ function Login(props) {
           dispatch(
             setCurrentUser({ ...currentUser, email, username: "Admin" })
           );
-          sessionStorage.setItem("current-user", JSON.stringify({ email }));
 
-          props.setCurrentuser(
-            currentUser
-          );
+          props.setCurrentuser(currentUser);
           navigate("/dashboard");
         }
       } catch (error) {

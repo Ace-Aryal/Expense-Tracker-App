@@ -64,7 +64,7 @@ export class Services {
 
     async updateUserDocument({ email, expenses, totals, balance, budget, documentID }) {
         try {
-            console.log(documentID);
+            console.log("budget", JSON.stringify(budget));
 
             const response = await this.database.updateDocument(
                 conf.appwritreDatabaseID,

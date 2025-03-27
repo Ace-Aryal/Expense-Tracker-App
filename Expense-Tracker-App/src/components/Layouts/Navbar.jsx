@@ -31,6 +31,7 @@ export default function Navbar({ setIsLoggedin }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const currentUser = useSelector((state) => state.credentials.currentUser);
   const monthlyBalance = useSelector(
     (state) => state.expense.balance.monthlyBalance
   );
@@ -46,7 +47,7 @@ export default function Navbar({ setIsLoggedin }) {
           isDocumentCreated: false,
         })
       );
-      sessionStorage.removeItem("current-user");
+      localStorage.removeItem("current-user");
       navigate("/");
     } catch (e) {
       alert("Error logging out , Try again");
@@ -80,7 +81,7 @@ export default function Navbar({ setIsLoggedin }) {
               <Link to="/">
                 <img
                   onClick={() => {
-                    sessionStorage.removeItem("current-user");
+                    localStorage.removeItem("current-user");
                   }}
                   alt="Your Company"
                   src="https://logosandtypes.com/wp-content/uploads/2024/12/xsplit.svg"

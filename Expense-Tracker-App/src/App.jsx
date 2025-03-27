@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Reports from "./pages/Reports";
 import PageNotFound from "./pages/PageNotFound";
 import Addexpenses from "./pages/Addexpenses";
@@ -19,11 +19,13 @@ import { setDatas } from "./features/expenseSlice";
 import authService from "./appwrite/authService";
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggedin, setIsLoggedin] = React.useState(
-    JSON.parse(sessionStorage.getItem("current-user"))
+    JSON.parse(localStorage.getItem("current-user"))
   );
   const [currentUser, setCurrentuser] = useState(
-    JSON.parse(sessionStorage.getItem("current-user"))
+    JSON.parse(localStorage.getItem("current-user"))
   );
   const email = useSelector((state) => state.credentials.currentUser.email);
   const expenseObject = useSelector((state) => state.expense);
@@ -38,26 +40,31 @@ function App() {
     if (currentStateUser.username !== "Admin" && !currentStateUser.username)
       return;
     try {
-      const user = await authService.getCurrentUser();
+      const user = await authService.getCurrentUser().then((user) => {
+        const { email, name } = user;
+        console.log("user", user);
 
-      if (user.status) {
-        dispatch(
-          setCurrentStateUser({
-            ...currentStateUser,
-            username: user.name,
-            email: user.email,
-          })
-        );
-        handleDocumentCreation();
-        return;
-      }
+        if (user.status) {
+          dispatch(
+            setCurrentStateUser({
+              ...currentStateUser,
+              username: name,
+              email: email,
+            })
+          );
+
+          localStorage.setItem("current-user", JSON.stringify({ name, email }));
+          handleDocumentCreation();
+          return;
+        }
+      });
     } catch (error) {
       console.error(error);
 
       dispatch(
         setCurrentStateUser({
           ...currentStateUser,
-          username: "Admmin",
+          username: "Admin",
           email: "",
         })
       );
@@ -76,41 +83,66 @@ function App() {
 
     const { email } = currentStateUser;
     try {
-      let response = await databaseService.getuserDocument({ email });
+      let response = await databaseService
+        .getuserDocument({ email })
+        .then((response) => {
+          console.log("response 1", response);
+          if (response.total === 0) return;
+          dispatch(
+            setDatas({
+              documentID: response.documents[0].$id,
+              expenses: JSON.parse(response.documents[0].expenses),
+              totals: JSON.parse(response.documents[0].totals),
+              budget: JSON.parse(response.documents[0].budget),
+              balance: JSON.parse(response.documents[0].balance),
+            })
+          );
+        });
       console.log("resp", response);
 
       if (response.total === 0) {
         await databaseService.createUserDocument(currentStateUser.email);
-        response = await databaseService.getuserDocument({ email });
-      }
+        response = await databaseService
+          .getuserDocument({ email })
+          .then((response) => {
+            console.log("response", response);
 
-      dispatch(
-        setDatas({
-          documentID: response.documents[0].$id,
-          expenses: JSON.parse(response.documents[0].expenses),
-          totals: JSON.parse(response.documents[0].totals),
-          budget: JSON.parse(response.documents[0].budget),
-          balance: JSON.parse(response.documents[0].balance),
-        })
-      );
+            dispatch(
+              setDatas({
+                documentID: response.documents[0].$id,
+                expenses: JSON.parse(response.documents[0].expenses),
+                totals: JSON.parse(response.documents[0].totals),
+                budget: JSON.parse(response.documents[0].budget),
+                balance: JSON.parse(response.documents[0].balance),
+              })
+            );
+          });
+      }
 
       // dispatch(createDatasFromExpenseData(7));
     } catch (error) {
-      console.error(error);
+      console.error("get doc error", error);
     }
   }
 
   useEffect(() => {
+    handleDocumentCreation();
+  }, [currentStateUser]);
+
+  useEffect(() => {
+    console.log(isLoggedin);
+
     if (!isLoggedin) {
       return;
     }
     dispatch(calculateTotal());
     dispatch(setBalance());
     handleCurrentUser();
+    navigate("/dashboard");
     // chart
     dispatch(createDatasFromExpenseData({ noOfDays: 7, expenses }));
     dispatch(createDatasFromExpenseData({ noOfDays: 30, expenses }));
-  }, []);
+  }, [isLoggedin]);
 
   useEffect(() => {
     if (currentUser) {
@@ -124,8 +156,6 @@ function App() {
     if (!isLoggedin) {
       return;
     }
-    dispatch(createDatasFromExpenseData({ noOfDays: 7, expenses }));
-    dispatch(createDatasFromExpenseData({ noOfDays: 30, expenses }));
     console.log("doc id, email", documentID, email, expenseObject);
 
     databaseService.updateUserDocument({
@@ -136,6 +166,8 @@ function App() {
       balance,
       budget,
     });
+    dispatch(createDatasFromExpenseData({ noOfDays: 7, expenses }));
+    dispatch(createDatasFromExpenseData({ noOfDays: 30, expenses }));
   }, [expenseObject]);
 
   return (
